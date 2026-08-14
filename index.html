@@ -653,6 +653,7 @@
             background-clip: text;
         }
     </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -687,12 +688,12 @@
                     </p>
                     <div class="hero-stats">
                         <div class="stat-card">
-                            <div class="stat-value" data-count="2">0</div>
+                            <div class="stat-value" data-count="4">0</div>
                             <div class="stat-label">Years Cloud Exp</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-value" data-count="8">0</div>
-                            <div class="stat-label">Talks/Podcasts</div>
+                            <div class="stat-value" data-count="6">0</div>
+                            <div class="stat-label">Talks & Podcasts</div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-value" data-count="7">0</div>
@@ -1170,7 +1171,8 @@
             { text: '  portfolio_url = "https://alam-ahmed.dev"', type: 'success', delay: 3500 },
             { text: '  status      = "READY_FOR_PRODUCTION"', type: 'success', delay: 3600 },
             { text: '', type: 'info', delay: 3800 },
-            { text: 'Boot sequence complete. Welcome, recruiter.', type: 'success', delay: 4000 },
+            { text: '[WARN] Detected recruiter eyeballs. Increasing font size by 0% and pretending to be humble...', type: 'warn', delay: 3900 },
+            { text: 'Boot sequence complete. Welcome, recruiter.', type: 'success', delay: 4200 },
         ];
 
         const bootEl = document.getElementById('boot-sequence');
@@ -1309,7 +1311,7 @@
                     const timer = setInterval(() => {
                         current += increment;
                         if (current >= target) {
-                            entry.target.textContent = target + (target === 2 ? '+' : '');
+                            entry.target.textContent = target;
                             clearInterval(timer);
                         } else {
                             entry.target.textContent = Math.floor(current);
