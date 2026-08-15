@@ -1152,8 +1152,8 @@
                             <div class="stat-label">Years Cloud Exp</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-value" data-count="6">0</div>
-                            <div class="stat-label">Talks & Podcasts</div>
+                            <div class="stat-value" data-count="7">0</div>
+                            <div class="stat-label">Talks & Publications</div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-value" data-count="52">0</div>
@@ -1406,7 +1406,7 @@
                     <div class="talk-venue">Logicata — Secrets Manager, GuardDuty AI, Trillion-Dollar Billing</div>
                     <div class="talk-meta">
                         <span>Aug 2026</span>
-                        <a href="#" class="talk-link">Listen &rarr;</a>
+                        <span style="opacity: 0.5;">Link soon</span>
                     </div>
                 </div>
                 <div class="talk-card">
@@ -1424,7 +1424,7 @@
                     <div class="talk-venue">London DevOps Meetup</div>
                     <div class="talk-meta">
                         <span>Mar 2026</span>
-                        <a href="#" class="talk-link">Details &rarr;</a>
+                        <span style="opacity: 0.5;">Link soon</span>
                     </div>
                 </div>
                 <div class="talk-card">
@@ -2284,11 +2284,14 @@
                 '<span class="wrn">Currently levelling up:</span> AZ-104 (Azure Administrator)'
             ],
             talks: () => [
+                '<span class="inf">Article:</span> The Next Frontier in IAM — AWS Builder Center (2026)',
                 'Terraforming the Well-Architected Way — AWS London HQ (33)',
                 'eBPF: Revolutionizing Cloud-Native Security — Cloud Native London (50)',
                 'Security as Code with Terraform & OPA — Yorkshire DevOps (35)',
                 'LogiCast AWS News Podcast S5E27 · + more in the /talks section'
             ],
+            article: () => CLI_COMMANDS.talks(),
+            articles: () => CLI_COMMANDS.talks(),
             certs: () => [
                 '52 badges on Credly. Highlights:',
                 'AWS Well-Architected Proficient · AWS Security Champion · AWS EKS',
