@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alam Ahmed | Cloud Engineer :: Infrastructure Dashboard</title>
+    <meta name="description" content="Alam Ahmed — Cloud Engineer & AWS Community Builder. I design and automate secure infrastructure across AWS and Azure with Terraform, Kubernetes, and Security as Code.">
+    <meta name="theme-color" content="#05080f">
+    <meta property="og:title" content="Alam Ahmed | Cloud Engineer">
+    <meta property="og:description" content="From NOC trenches to cloud architecture. Terraform, Kubernetes, Security as Code — AWS Community Builder.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' fill='%2300d4aa'%3E%E2%97%88%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -24,12 +31,60 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        html { scroll-behavior: smooth; }
+
         body {
             background: var(--bg-primary);
             color: var(--text-primary);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             line-height: 1.6;
+        }
+
+        ::selection { background: var(--accent-success); color: var(--bg-primary); }
+
+        :focus-visible {
+            outline: 2px solid var(--accent-info);
+            outline-offset: 3px;
+            border-radius: 2px;
+        }
+
+        /* Skip link */
+        .skip-link {
+            position: fixed;
+            top: -100px;
+            left: 1rem;
+            z-index: 10001;
+            background: var(--accent-success);
+            color: var(--bg-primary);
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: top 0.2s;
+        }
+        .skip-link:focus { top: 1rem; }
+
+        /* Scroll progress */
+        #scroll-progress {
+            position: fixed;
+            top: 0; left: 0;
+            height: 2px;
+            width: 0;
+            background: linear-gradient(90deg, var(--accent-success), var(--accent-info));
+            z-index: 1001;
+            box-shadow: 0 0 8px var(--glow-success);
+        }
+
+        /* CRT scanlines — subtle texture */
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            background: repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 3px);
         }
 
         /* Boot Sequence Overlay */
@@ -45,20 +100,30 @@
             padding: 2rem;
             font-family: 'JetBrains Mono', monospace;
             font-size: 14px;
-            transition: opacity 0.8s ease-out, visibility 0.8s;
+            transition: opacity 0.6s ease-out, visibility 0.6s;
+            cursor: pointer;
         }
         #boot-sequence.done { opacity: 0; visibility: hidden; pointer-events: none; }
+        .boot-inner { max-width: 760px; width: 100%; margin: 0 auto; }
         .boot-line {
             color: var(--accent-success);
             opacity: 0;
             transform: translateX(-10px);
-            animation: bootIn 0.3s forwards;
+            animation: bootIn 0.25s forwards;
             margin: 2px 0;
+            white-space: pre-wrap;
         }
         .boot-line.error { color: var(--accent-alert); }
         .boot-line.warn { color: var(--accent-warn); }
         .boot-line.info { color: var(--accent-info); }
         @keyframes bootIn { to { opacity: 1; transform: translateX(0); } }
+        .boot-hint {
+            margin-top: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            opacity: 0.7;
+            animation: blink 2s infinite;
+        }
 
         /* Particle Canvas */
         #particles {
@@ -84,14 +149,18 @@
             top: 0; width: 100%;
             background: rgba(5, 8, 15, 0.85);
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
             z-index: 100;
             padding: 1rem 0;
+            transition: padding 0.3s;
         }
+        header.scrolled { padding: 0.55rem 0; }
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 1rem;
         }
         .logo {
             font-family: 'JetBrains Mono', monospace;
@@ -102,6 +171,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            white-space: nowrap;
         }
         .logo::before {
             content: '◈';
@@ -112,7 +182,7 @@
 
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 1.6rem;
             list-style: none;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.85rem;
@@ -122,8 +192,9 @@
             text-decoration: none;
             transition: color 0.3s;
             position: relative;
+            white-space: nowrap;
         }
-        .nav-links a:hover { color: var(--accent-success); }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent-success); }
         .nav-links a::after {
             content: '';
             position: absolute;
@@ -132,7 +203,19 @@
             background: var(--accent-success);
             transition: width 0.3s;
         }
-        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--accent-success);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            padding: 0.35rem 0.7rem;
+            cursor: pointer;
+        }
 
         .status-indicator {
             display: flex;
@@ -141,6 +224,7 @@
             font-size: 0.75rem;
             color: var(--accent-success);
             font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap;
         }
         .status-dot {
             width: 8px; height: 8px;
@@ -175,6 +259,12 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+        }
+        .hero-content h1.glitching { animation: glitchFlicker 0.3s steps(2) 2; }
+        @keyframes glitchFlicker {
+            0% { text-shadow: 2px 0 var(--accent-alert), -2px 0 var(--accent-info); }
+            50% { text-shadow: -2px 0 var(--accent-alert), 2px 0 var(--accent-info); }
+            100% { text-shadow: none; }
         }
         .hero-content .subtitle {
             font-family: 'JetBrains Mono', monospace;
@@ -291,14 +381,19 @@
             line-height: 1.8;
             min-height: 300px;
         }
-        .terminal-line { margin: 0.25rem 0; opacity: 0; animation: fadeIn 0.3s forwards; }
+        .terminal-line {
+            margin: 0.25rem 0;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+        .terminal-line.visible { opacity: 1; transform: none; }
         .terminal-prompt { color: var(--accent-success); }
         .terminal-command { color: var(--text-primary); }
         .terminal-output { color: var(--text-secondary); padding-left: 1.5rem; }
         .terminal-highlight { color: var(--accent-info); }
         .terminal-warn { color: var(--accent-warn); }
         .terminal-success { color: var(--accent-success); }
-        @keyframes fadeIn { to { opacity: 1; } }
         .cursor {
             display: inline-block;
             width: 8px; height: 16px;
@@ -311,6 +406,7 @@
 
         /* Sections */
         section { padding: 6rem 0; position: relative; }
+        .section-alt { background: var(--bg-secondary); }
         .section-header { margin-bottom: 3rem; }
         .section-tag {
             font-family: 'JetBrains Mono', monospace;
@@ -421,6 +517,41 @@
             color: var(--accent-success);
         }
 
+        /* Videos */
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        .video-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .video-card:hover {
+            border-color: var(--accent-info);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4), 0 0 20px var(--glow-info);
+        }
+        .video-embed {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+        .video-embed iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border-radius: 12px 12px 0 0;
+        }
+        .video-body { padding: 1.25rem; }
+        .video-body .talk-type { margin-bottom: 0.5rem; }
+        .video-body h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .video-body p { color: var(--text-secondary); font-size: 0.85rem; }
+
         /* Talks Grid */
         .talks-grid {
             display: grid;
@@ -443,6 +574,7 @@
             width: 100%; height: 3px;
             background: linear-gradient(90deg, var(--accent-success), var(--accent-info));
             transform: scaleX(0);
+            transform-origin: left;
             transition: transform 0.3s;
         }
         .talk-card:hover::before { transform: scaleX(1); }
@@ -630,14 +762,64 @@
             font-size: 0.8rem;
         }
 
+        /* Back to top */
+        #back-to-top {
+            position: fixed;
+            bottom: 2rem; right: 2rem;
+            width: 44px; height: 44px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--accent-success);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s;
+            z-index: 99;
+        }
+        #back-to-top.show { opacity: 1; visibility: visible; transform: none; }
+        #back-to-top:hover {
+            border-color: var(--accent-success);
+            box-shadow: 0 0 20px var(--glow-success);
+        }
+
         /* Responsive */
+        @media (max-width: 860px) {
+            .nav-toggle { display: block; }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%; left: 0; right: 0;
+                flex-direction: column;
+                gap: 0;
+                background: rgba(5, 8, 15, 0.97);
+                border-bottom: 1px solid var(--border);
+                padding: 0.5rem 2rem 1rem;
+            }
+            .nav-links.open { display: flex; }
+            .nav-links li { padding: 0.6rem 0; }
+            .status-indicator span:last-child { display: none; }
+        }
         @media (max-width: 768px) {
             .hero-grid, .contact-grid { grid-template-columns: 1fr; }
             .hero-content h1 { font-size: 2.2rem; }
-            .nav-links { display: none; }
-            .talks-grid, .skills-grid, .certs-grid { grid-template-columns: 1fr; }
+            .talks-grid, .skills-grid, .certs-grid, .videos-grid { grid-template-columns: 1fr; }
             .hero-stats { grid-template-columns: 1fr; }
             section { padding: 4rem 0; }
+            #boot-sequence { font-size: 12px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            #particles, .scanlines { display: none; }
         }
 
         ::-webkit-scrollbar { width: 8px; }
@@ -653,36 +835,45 @@
             background-clip: text;
         }
     </style>
-<base target="_blank">
 </head>
-<body>
+<body id="top">
 
-    <div id="boot-sequence"></div>
-    <canvas id="particles"></canvas>
+    <a href="#about" class="skip-link">Skip to content</a>
+    <div id="scroll-progress" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
 
-    <header>
-        <nav class="container">
-            <a href="#" class="logo">alam_ahmed.tf</a>
-            <ul class="nav-links">
-                <li><a href="#about">/about</a></li>
-                <li><a href="#experience">/experience</a></li>
-                <li><a href="#talks">/talks</a></li>
-                <li><a href="#skills">/skills</a></li>
-                <li><a href="#contact">/contact</a></li>
+    <div id="boot-sequence" role="status" aria-label="Loading sequence">
+        <div class="boot-inner" id="boot-inner"></div>
+        <div class="boot-hint" style="max-width: 760px; margin-left: auto; margin-right: auto; width: 100%;">» press any key or click to skip</div>
+    </div>
+    <canvas id="particles" aria-hidden="true"></canvas>
+
+    <header id="site-header">
+        <nav class="container" aria-label="Main navigation">
+            <a href="#top" class="logo">alam_ahmed.tf</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#about" data-spy="about">/about</a></li>
+                <li><a href="#experience" data-spy="experience">/experience</a></li>
+                <li><a href="#videos" data-spy="videos">/videos</a></li>
+                <li><a href="#talks" data-spy="talks">/talks</a></li>
+                <li><a href="#skills" data-spy="skills">/skills</a></li>
+                <li><a href="#contact" data-spy="contact">/contact</a></li>
             </ul>
             <div class="status-indicator">
-                <span class="status-dot"></span>
+                <span class="status-dot" aria-hidden="true"></span>
                 <span>SYSTEM ONLINE</span>
             </div>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">≡</button>
         </nav>
     </header>
 
+    <main>
     <section class="hero" id="about">
         <div class="container">
             <div class="hero-grid">
                 <div class="hero-content">
-                    <h1>Alam Ahmed</h1>
-                    <div class="subtitle" id="typewriter"></div>
+                    <h1 id="hero-name" data-text="Alam Ahmed">Alam Ahmed</h1>
+                    <div class="subtitle" id="typewriter" aria-live="polite"></div>
                     <p class="description">
                         From NOC trenches to cloud architecture. I design and automate infrastructure across AWS and Azure using Terraform and Ansible, orchestrate with Docker and Kubernetes, and enforce security with Python, Bash, and Security as Code tools like OPA and Conftest.
                     </p>
@@ -701,7 +892,7 @@
                         </div>
                     </div>
                     <div class="cta-group">
-                        <a href="https://www.linkedin.com/in/alam-ahmed-cloud-engineer" target="_blank" class="btn btn-primary">
+                        <a href="https://www.linkedin.com/in/alam-ahmed-cloud-engineer" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
                             <span>&#8599;</span> Connect on LinkedIn
                         </a>
                         <a href="mailto:alamzaibahmad615@gmail.com" class="btn btn-secondary">
@@ -710,7 +901,7 @@
                     </div>
                 </div>
 
-                <div class="terminal-window">
+                <div class="terminal-window" aria-label="Terminal introduction">
                     <div class="terminal-header">
                         <div class="terminal-btn red"></div>
                         <div class="terminal-btn yellow"></div>
@@ -849,50 +1040,49 @@
         </div>
     </section>
 
-    
-    <section style="background: var(--bg-secondary); padding-top: 4rem;">
+    <section id="videos" class="section-alt" style="padding-top: 4rem;">
         <div class="container">
             <div class="section-header">
                 <div class="section-tag">Video Evidence</div>
                 <h2 class="section-title">Featured <span class="gradient-text">Talks</span></h2>
                 <p class="section-desc">Watch me present on cloud-native security, infrastructure automation, and DevOps practices.</p>
             </div>
-            <div class="videos-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem;">
-                <div class="video-card" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: all 0.3s;">
-                    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-                        <iframe src="https://www.youtube.com/embed/QUyqRie6-tU" title="Terraforming the Well-Architected Way" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 12px 12px 0 0;"></iframe>
+            <div class="videos-grid">
+                <div class="video-card">
+                    <div class="video-embed">
+                        <iframe src="https://www.youtube.com/embed/QUyqRie6-tU" title="Terraforming the Well-Architected Way" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
-                    <div style="padding: 1.25rem;">
-                        <div class="talk-type speaker" style="margin-bottom: 0.5rem;">&#9679; AWS London WAUG</div>
-                        <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Terraforming the Well-Architected Way</h3>
-                        <p style="color: var(--text-secondary); font-size: 0.85rem;">AWS Head Office, London — 33 attendees</p>
-                    </div>
-                </div>
-                <div class="video-card" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: all 0.3s;">
-                    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-                        <iframe src="https://www.youtube.com/embed/IzayRY93z88" title="eBPF: Revolutionizing Cloud-Native Security" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 12px 12px 0 0;"></iframe>
-                    </div>
-                    <div style="padding: 1.25rem;">
-                        <div class="talk-type speaker" style="margin-bottom: 0.5rem;">&#9679; Cloud Native London</div>
-                        <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">eBPF: Revolutionizing Cloud-Native Security</h3>
-                        <p style="color: var(--text-secondary); font-size: 0.85rem;">London — 50 attendees</p>
+                    <div class="video-body">
+                        <div class="talk-type speaker">&#9679; AWS London WAUG</div>
+                        <h3>Terraforming the Well-Architected Way</h3>
+                        <p>AWS Head Office, London — 33 attendees</p>
                     </div>
                 </div>
-                <div class="video-card" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: all 0.3s;">
-                    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-                        <iframe src="https://www.youtube.com/embed/eiNhcvhAvX8" title="Security as Code with Terraform & OPA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 12px 12px 0 0;"></iframe>
+                <div class="video-card">
+                    <div class="video-embed">
+                        <iframe src="https://www.youtube.com/embed/IzayRY93z88" title="eBPF: Revolutionizing Cloud-Native Security" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
-                    <div style="padding: 1.25rem;">
-                        <div class="talk-type speaker" style="margin-bottom: 0.5rem;">&#9679; Yorkshire DevOps</div>
-                        <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Security as Code with Terraform & OPA</h3>
-                        <p style="color: var(--text-secondary); font-size: 0.85rem;">Yorkshire — 35 attendees</p>
+                    <div class="video-body">
+                        <div class="talk-type speaker">&#9679; Cloud Native London</div>
+                        <h3>eBPF: Revolutionizing Cloud-Native Security</h3>
+                        <p>London — 50 attendees</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-embed">
+                        <iframe src="https://www.youtube.com/embed/eiNhcvhAvX8" title="Security as Code with Terraform & OPA" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-body">
+                        <div class="talk-type speaker">&#9679; Yorkshire DevOps</div>
+                        <h3>Security as Code with Terraform & OPA</h3>
+                        <p>Yorkshire — 35 attendees</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="talks" style="background: var(--bg-secondary);">
+    <section id="talks" class="section-alt">
         <div class="container">
             <div class="section-header">
                 <div class="section-tag">Event Logs</div>
@@ -915,7 +1105,7 @@
                     <div class="talk-venue">AWS London Well-Architected User Group — AWS Head Office (33 attendees)</div>
                     <div class="talk-meta">
                         <span>Jul 2026</span>
-                        <a href="https://youtu.be/QUyqRie6-tU" target="_blank" class="talk-link">Watch &rarr;</a>
+                        <a href="https://youtu.be/QUyqRie6-tU" target="_blank" rel="noopener noreferrer" class="talk-link">Watch &rarr;</a>
                     </div>
                 </div>
                 <div class="talk-card">
@@ -933,7 +1123,7 @@
                     <div class="talk-venue">Cloud Native London — 50 attendees</div>
                     <div class="talk-meta">
                         <span>Feb 2026</span>
-                        <a href="https://youtu.be/IzayRY93z88" target="_blank" class="talk-link">Watch &rarr;</a>
+                        <a href="https://youtu.be/IzayRY93z88" target="_blank" rel="noopener noreferrer" class="talk-link">Watch &rarr;</a>
                     </div>
                 </div>
                 <div class="talk-card">
@@ -942,7 +1132,7 @@
                     <div class="talk-venue">Yorkshire DevOps — 35 attendees</div>
                     <div class="talk-meta">
                         <span>Oct 2025</span>
-                        <a href="https://youtu.be/eiNhcvhAvX8?si=J2YizLzjecnxfso0" target="_blank" class="talk-link">Watch &rarr;</a>
+                        <a href="https://youtu.be/eiNhcvhAvX8?si=J2YizLzjecnxfso0" target="_blank" rel="noopener noreferrer" class="talk-link">Watch &rarr;</a>
                     </div>
                 </div>
                 <div class="talk-card">
@@ -951,7 +1141,7 @@
                     <div class="talk-venue">Elastic London — 18 attendees</div>
                     <div class="talk-meta">
                         <span>Sep 2025</span>
-                        <a href="https://github.com/InfraPlatformer/elastic-terraform-demo" target="_blank" class="talk-link">Repo &rarr;</a>
+                        <a href="https://github.com/InfraPlatformer/elastic-terraform-demo" target="_blank" rel="noopener noreferrer" class="talk-link">Repo &rarr;</a>
                     </div>
                 </div>
             </div>
@@ -1030,7 +1220,7 @@
         </div>
     </section>
 
-    <section style="background: var(--bg-secondary);">
+    <section class="section-alt">
         <div class="container">
             <div class="section-header">
                 <div class="section-tag">Verified Artifacts</div>
@@ -1039,84 +1229,84 @@
             </div>
             <div class="certs-grid">
                 <div class="cert-item">
-                    <div class="cert-icon">&#127942;</div>
+                    <div class="cert-icon">&#9729;</div>
                     <div class="cert-text">
                         <h4>Well-Architected Proficient</h4>
                         <p>AWS — Mar 2024</p>
                     </div>
                 </div>
                 <div class="cert-item">
-                    <div class="cert-icon">&#127942;</div>
+                    <div class="cert-icon">&#9729;</div>
                     <div class="cert-text">
                         <h4>AWS Knowledge: Security Champion</h4>
                         <p>AWS — Sep 2025</p>
                     </div>
                 </div>
                 <div class="cert-item">
-                    <div class="cert-icon">&#127942;</div>
+                    <div class="cert-icon">&#9729;</div>
                     <div class="cert-text">
                         <h4>AWS Knowledge: Amazon EKS</h4>
                         <p>AWS — Apr 2025</p>
                     </div>
                 </div>
                 <div class="cert-item">
-                    <div class="cert-icon">&#127942;</div>
+                    <div class="cert-icon">&#128737;</div>
                     <div class="cert-text">
                         <h4>Fortinet Certified Associate Cybersecurity</h4>
                         <p>Fortinet — Expires Jul 2027</p>
                     </div>
                 </div>
                 <div class="cert-item">
-                    <div class="cert-icon">&#127942;</div>
+                    <div class="cert-icon">&#128737;</div>
                     <div class="cert-text">
                         <h4>Fortinet Certified Fundamentals Cybersecurity</h4>
                         <p>Fortinet — Expires Jul 2027</p>
                     </div>
                 </div>
                 <div class="cert-item">
-                    <div class="cert-icon">&#127942;</div>
+                    <div class="cert-icon">&#128230;</div>
                     <div class="cert-text">
                         <h4>Chainguard Container Crusader</h4>
                         <p>Chainguard — Jun 2025</p>
                     </div>
                 </div>
                 <div class="cert-item">
-                    <div class="cert-icon">&#127942;</div>
+                    <div class="cert-icon">&#128039;</div>
                     <div class="cert-text">
                         <h4>LFS261: DevOps and SRE Fundamentals</h4>
                         <p>The Linux Foundation — Aug 2025</p>
                     </div>
                 </div>
                 <div class="cert-item">
-                    <div class="cert-icon">&#127942;</div>
+                    <div class="cert-icon">&#128039;</div>
                     <div class="cert-text">
                         <h4>LFS158: Introduction to Kubernetes</h4>
                         <p>The Linux Foundation — Mar 2025</p>
                     </div>
                 </div>
                 <div class="cert-item">
-                    <div class="cert-icon">&#127942;</div>
+                    <div class="cert-icon">&#128200;</div>
                     <div class="cert-text">
                         <h4>Site Reliability Engineer Learning Path</h4>
                         <p>Datadog — May 2026</p>
                     </div>
                 </div>
                 <div class="cert-item">
-                    <div class="cert-icon">&#127942;</div>
+                    <div class="cert-icon">&#128200;</div>
                     <div class="cert-text">
                         <h4>Cloud Security Engineer — Cloud SIEM</h4>
                         <p>Datadog — May 2026</p>
                     </div>
                 </div>
                 <div class="cert-item">
-                    <div class="cert-icon">&#127942;</div>
+                    <div class="cert-icon">&#128029;</div>
                     <div class="cert-text">
                         <h4>Discovery: Platform Engineer</h4>
                         <p>Isovalent (Cilium) — Sep 2024</p>
                     </div>
                 </div>
                 <div class="cert-item">
-                    <div class="cert-icon">&#127942;</div>
+                    <div class="cert-icon">&#128039;</div>
                     <div class="cert-text">
                         <h4>LFD140: GitHub for Open Standards Development</h4>
                         <p>The Linux Foundation — Jan 2026</p>
@@ -1131,7 +1321,7 @@
                 </div>
             </div>
             <div style="text-align: center; margin-top: 2rem;">
-                <a href="https://www.credly.com/users/alam-zaib-ahmad/badges" target="_blank" class="btn btn-secondary" style="display: inline-flex;">
+                <a href="https://www.credly.com/users/alam-zaib-ahmad/badges" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="display: inline-flex;">
                     <span>&#127942;</span> View all 52 badges on Credly
                 </a>
             </div>
@@ -1165,14 +1355,14 @@
                             <div style="font-size: 0.8rem; color: var(--text-secondary);">alamzaibahmad615@gmail.com</div>
                         </div>
                     </a>
-                    <a href="https://www.linkedin.com/in/alam-ahmed-cloud-engineer" target="_blank" class="contact-link">
+                    <a href="https://www.linkedin.com/in/alam-ahmed-cloud-engineer" target="_blank" rel="noopener noreferrer" class="contact-link">
                         <div class="icon">&#128188;</div>
                         <div>
                             <div style="font-weight: 600;">LinkedIn</div>
                             <div style="font-size: 0.8rem; color: var(--text-secondary);">linkedin.com/in/alam-ahmed-cloud-engineer</div>
                         </div>
                     </a>
-                    <a href="https://github.com/InfraPlatformer" target="_blank" class="contact-link">
+                    <a href="https://github.com/InfraPlatformer" target="_blank" rel="noopener noreferrer" class="contact-link">
                         <div class="icon">&#9889;</div>
                         <div>
                             <div style="font-weight: 600;">GitHub</div>
@@ -1183,61 +1373,125 @@
             </div>
         </div>
     </section>
+    </main>
 
     <footer>
         <div class="container">
             <p>Built with HTML, CSS & caffeine. Deployed on <span style="color: var(--accent-success);">GitHub Pages</span>.</p>
-            <p style="margin-top: 0.5rem; opacity: 0.6;">&copy; 2026 Alam Ahmed. All systems operational.</p>
+            <p style="margin-top: 0.5rem; opacity: 0.6;">&copy; <span id="footer-year">2026</span> Alam Ahmed. All systems operational.</p>
         </div>
     </footer>
 
+    <button id="back-to-top" aria-label="Back to top">&#8593;</button>
+
     <script>
-        // Boot Sequence
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* ---------- Boot Sequence (skippable) ---------- */
         const bootLines = [
-            { text: 'BIOS Date: 08/13/2026 14:26:00 UTC', type: 'info', delay: 100 },
-            { text: 'CPU: Cloud Engineer v2.0', type: 'success', delay: 200 },
-            { text: 'Memory Test: 640K OK... 1048576K OK', type: 'success', delay: 300 },
-            { text: 'Initializing Terraform providers...', type: 'info', delay: 500 },
-            { text: '  - provider[registry.terraform.io/hashicorp/aws] ~> 5.0', type: 'info', delay: 600 },
-            { text: '  - provider[registry.terraform.io/hashicorp/azurerm] ~> 3.0', type: 'info', delay: 700 },
-            { text: '  - provider[registry.terraform.io/hashicorp/kubernetes] ~> 2.0', type: 'info', delay: 800 },
-            { text: 'Loading modules: networking, compute, security...', type: 'warn', delay: 1000 },
-            { text: '  [WARN] Legacy MSP experience detected. Compiling to cloud-native...', type: 'warn', delay: 1200 },
-            { text: '  [OK] NOC troubleshooting skills imported successfully', type: 'success', delay: 1400 },
-            { text: 'Starting Kubernetes cluster...', type: 'info', delay: 1600 },
-            { text: '  Pod "alam-ahmed-portfolio" created', type: 'success', delay: 1800 },
-            { text: '  Service exposed on port 443', type: 'success', delay: 1900 },
-            { text: 'Running security scan (OPA + Conftest)...', type: 'info', delay: 2100 },
-            { text: '  [PASS] No misconfigurations found', type: 'success', delay: 2300 },
-            { text: '  [PASS] Security as Code policies enforced', type: 'success', delay: 2400 },
-            { text: 'Applying infrastructure...', type: 'info', delay: 2600 },
-            { text: '  aws_s3_bucket.portfolio: Creation complete', type: 'success', delay: 2800 },
-            { text: '  aws_cloudfront_distribution.cdn: Creation complete', type: 'success', delay: 2900 },
-            { text: '  kubernetes_ingress.portfolio: Creation complete', type: 'success', delay: 3000 },
-            { text: 'Apply complete! Resources: 42 added, 0 changed, 0 destroyed.', type: 'success', delay: 3200 },
-            { text: 'Outputs:', type: 'info', delay: 3400 },
-            { text: '  portfolio_url = "https://alam-ahmed.dev"', type: 'success', delay: 3500 },
-            { text: '  status      = "READY_FOR_PRODUCTION"', type: 'success', delay: 3600 },
-            { text: '', type: 'info', delay: 3800 },
-            { text: '[WARN] Detected recruiter eyeballs. Increasing font size by 0% and pretending to be humble...', type: 'warn', delay: 3900 },
-            { text: 'Boot sequence complete. Welcome, recruiter.', type: 'success', delay: 4200 },
+            { text: 'BIOS Date: 08/13/2026 14:26:00 UTC', type: 'info', delay: 80 },
+            { text: 'CPU: Cloud Engineer v2.0', type: 'success', delay: 180 },
+            { text: 'Memory Test: 640K OK... 1048576K OK', type: 'success', delay: 280 },
+            { text: 'Initializing Terraform providers...', type: 'info', delay: 420 },
+            { text: '  - provider[registry.terraform.io/hashicorp/aws] ~> 5.0', type: 'info', delay: 520 },
+            { text: '  - provider[registry.terraform.io/hashicorp/azurerm] ~> 3.0', type: 'info', delay: 620 },
+            { text: '  - provider[registry.terraform.io/hashicorp/kubernetes] ~> 2.0', type: 'info', delay: 720 },
+            { text: 'Loading modules: networking, compute, security...', type: 'warn', delay: 880 },
+            { text: '  [WARN] Legacy MSP experience detected. Compiling to cloud-native...', type: 'warn', delay: 1040 },
+            { text: '  [OK] NOC troubleshooting skills imported successfully', type: 'success', delay: 1200 },
+            { text: 'Starting Kubernetes cluster...', type: 'info', delay: 1360 },
+            { text: '  Pod "alam-ahmed-portfolio" created', type: 'success', delay: 1520 },
+            { text: '  Service exposed on port 443', type: 'success', delay: 1620 },
+            { text: 'Running security scan (OPA + Conftest)...', type: 'info', delay: 1780 },
+            { text: '  [PASS] No misconfigurations found', type: 'success', delay: 1940 },
+            { text: '  [PASS] Security as Code policies enforced', type: 'success', delay: 2040 },
+            { text: 'Applying infrastructure...', type: 'info', delay: 2200 },
+            { text: '  aws_s3_bucket.portfolio: Creation complete', type: 'success', delay: 2360 },
+            { text: '  aws_cloudfront_distribution.cdn: Creation complete', type: 'success', delay: 2460 },
+            { text: '  kubernetes_ingress.portfolio: Creation complete', type: 'success', delay: 2560 },
+            { text: 'Apply complete! Resources: 42 added, 0 changed, 0 destroyed.', type: 'success', delay: 2720 },
+            { text: 'Outputs:', type: 'info', delay: 2880 },
+            { text: '  portfolio_url = "https://alam-ahmed.dev"', type: 'success', delay: 2980 },
+            { text: '  status      = "READY_FOR_PRODUCTION"', type: 'success', delay: 3080 },
+            { text: '', type: 'info', delay: 3220 },
+            { text: '[WARN] Detected recruiter eyeballs. Increasing font size by 0% and pretending to be humble...', type: 'warn', delay: 3320 },
+            { text: 'Boot sequence complete. Welcome, recruiter.', type: 'success', delay: 3600 },
         ];
 
         const bootEl = document.getElementById('boot-sequence');
-        bootLines.forEach((line, i) => {
-            setTimeout(() => {
-                const div = document.createElement('div');
-                div.className = `boot-line ${line.type}`;
-                div.textContent = line.text;
-                div.style.animationDelay = '0s';
-                bootEl.appendChild(div);
-                if (i === bootLines.length - 1) {
-                    setTimeout(() => { bootEl.classList.add('done'); }, 1200);
-                }
-            }, line.delay);
-        });
+        const bootInner = document.getElementById('boot-inner');
+        const bootTimers = [];
+        let bootDone = false;
 
-        // Typewriter Effect
+        function finishBoot() {
+            if (bootDone) return;
+            bootDone = true;
+            bootTimers.forEach(clearTimeout);
+            bootEl.classList.add('done');
+            afterBoot();
+        }
+
+        if (prefersReduced) {
+            finishBoot();
+        } else {
+            bootLines.forEach((line, i) => {
+                bootTimers.push(setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = `boot-line ${line.type}`;
+                    div.textContent = line.text;
+                    bootInner.appendChild(div);
+                    if (i === bootLines.length - 1) {
+                        bootTimers.push(setTimeout(finishBoot, 1100));
+                    }
+                }, line.delay));
+            });
+            bootEl.addEventListener('click', finishBoot);
+            window.addEventListener('keydown', function onKey() {
+                finishBoot();
+                window.removeEventListener('keydown', onKey);
+            });
+        }
+
+        /* ---------- Post-boot: terminal reveal, typewriter, counters ---------- */
+        function afterBoot() {
+            // Staggered terminal reveal
+            const lines = document.querySelectorAll('.terminal-line');
+            lines.forEach((line, i) => {
+                setTimeout(() => line.classList.add('visible'), prefersReduced ? 0 : i * 140);
+            });
+
+            // Typewriter
+            setTimeout(typeWriter, prefersReduced ? 0 : 600);
+
+            // Stat counters
+            const counterObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    const target = parseInt(entry.target.dataset.count, 10);
+                    if (prefersReduced) {
+                        entry.target.textContent = target;
+                    } else {
+                        let current = 0;
+                        const increment = target / 50;
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current >= target) {
+                                entry.target.textContent = target;
+                                clearInterval(timer);
+                            } else {
+                                entry.target.textContent = Math.floor(current);
+                            }
+                        }, 30);
+                    }
+                    counterObserver.unobserve(entry.target);
+                });
+            });
+            document.querySelectorAll('.stat-value[data-count]').forEach(el => counterObserver.observe(el));
+
+            if (!prefersReduced) scheduleGlitch();
+        }
+
+        /* ---------- Typewriter ---------- */
         const phrases = [
             'Cloud Engineer',
             'AWS Community Builder',
@@ -1270,78 +1524,115 @@
             }
             setTimeout(typeWriter, typeSpeed);
         }
-        setTimeout(typeWriter, 4500);
 
-        // Particle Network
+        /* ---------- Glitch flicker on the name ---------- */
+        const heroName = document.getElementById('hero-name');
+        const GLYPHS = '!<>-_\\/[]{}—=+*^?#01';
+        function scheduleGlitch() {
+            setTimeout(() => {
+                const original = heroName.dataset.text;
+                const chars = original.split('');
+                const hits = 2 + Math.floor(Math.random() * 3);
+                for (let i = 0; i < hits; i++) {
+                    const idx = Math.floor(Math.random() * chars.length);
+                    if (chars[idx] !== ' ') chars[idx] = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+                }
+                heroName.textContent = chars.join('');
+                heroName.classList.add('glitching');
+                setTimeout(() => {
+                    heroName.textContent = original;
+                    heroName.classList.remove('glitching');
+                }, 280);
+                scheduleGlitch();
+            }, 5000 + Math.random() * 4000);
+        }
+
+        /* ---------- Particle Network (pauses when tab hidden) ---------- */
         const canvas = document.getElementById('particles');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
+        if (!prefersReduced) {
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let rafId = null;
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 2 + 1;
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
             }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-            }
-            draw() {
-                ctx.fillStyle = 'rgba(0, 212, 170, 0.5)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
+            resizeCanvas();
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(resizeCanvas, 150);
+            });
 
-        for (let i = 0; i < 60; i++) particles.push(new Particle());
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.size = Math.random() * 2 + 1;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                }
+                draw() {
+                    ctx.fillStyle = 'rgba(0, 212, 170, 0.5)';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
 
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach((p, i) => {
-                p.update();
-                p.draw();
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[j].x - p.x;
-                    const dy = particles[j].y - p.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 150) {
-                        ctx.strokeStyle = `rgba(0, 212, 170, ${0.2 * (1 - dist / 150)})`;
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
+            const particleCount = window.innerWidth < 768 ? 30 : 60;
+            for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach((p, i) => {
+                    p.update();
+                    p.draw();
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[j].x - p.x;
+                        const dy = particles[j].y - p.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 150) {
+                            ctx.strokeStyle = `rgba(0, 212, 170, ${0.2 * (1 - dist / 150)})`;
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
                     }
+                });
+                rafId = requestAnimationFrame(animateParticles);
+            }
+            animateParticles();
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    cancelAnimationFrame(rafId);
+                    rafId = null;
+                } else if (!rafId) {
+                    animateParticles();
                 }
             });
-            requestAnimationFrame(animateParticles);
         }
-        animateParticles();
 
-        // Intersection Observer
+        /* ---------- Scroll reveal: timeline & skill bars ---------- */
         const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    if (entry.target.querySelectorAll('.skill-fill').length) {
-                        entry.target.querySelectorAll('.skill-fill').forEach(fill => {
-                            fill.style.width = fill.dataset.width + '%';
-                        });
-                    }
+                    entry.target.querySelectorAll('.skill-fill').forEach(fill => {
+                        fill.style.width = fill.dataset.width + '%';
+                    });
+                    observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
@@ -1349,35 +1640,78 @@
         document.querySelectorAll('.timeline-item').forEach(el => observer.observe(el));
         document.querySelectorAll('.skill-category').forEach(el => observer.observe(el));
 
-        // Counter animation
-        const counterObserver = new IntersectionObserver((entries) => {
+        /* ---------- Scroll-spy ---------- */
+        const spyLinks = document.querySelectorAll('.nav-links a[data-spy]');
+        const spyObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    const target = parseInt(entry.target.dataset.count);
-                    let current = 0;
-                    const increment = target / 50;
-                    const timer = setInterval(() => {
-                        current += increment;
-                        if (current >= target) {
-                            entry.target.textContent = target;
-                            clearInterval(timer);
-                        } else {
-                            entry.target.textContent = Math.floor(current);
-                        }
-                    }, 30);
-                    counterObserver.unobserve(entry.target);
+                    spyLinks.forEach(link => {
+                        link.classList.toggle('active', link.dataset.spy === entry.target.id);
+                    });
+                }
+            });
+        }, { rootMargin: '-40% 0px -55% 0px' });
+        ['about', 'experience', 'videos', 'talks', 'skills', 'contact'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) spyObserver.observe(el);
+        });
+
+        /* ---------- Scroll effects: progress bar, header, back-to-top ---------- */
+        const progressBar = document.getElementById('scroll-progress');
+        const siteHeader = document.getElementById('site-header');
+        const backToTop = document.getElementById('back-to-top');
+        let ticking = false;
+
+        function onScroll() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            progressBar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+            siteHeader.classList.toggle('scrolled', scrollTop > 40);
+            backToTop.classList.toggle('show', scrollTop > 600);
+            ticking = false;
+        }
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(onScroll);
+                ticking = true;
+            }
+        }, { passive: true });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
+        });
+
+        /* ---------- Mobile nav ---------- */
+        const navToggle = document.getElementById('nav-toggle');
+        const navLinks = document.getElementById('nav-links');
+        navToggle.addEventListener('click', () => {
+            const open = navLinks.classList.toggle('open');
+            navToggle.setAttribute('aria-expanded', open);
+            navToggle.textContent = open ? '×' : '≡';
+        });
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+                navToggle.setAttribute('aria-expanded', 'false');
+                navToggle.textContent = '≡';
+            });
+        });
+
+        /* ---------- Smooth scroll (guarded) ---------- */
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const id = this.getAttribute('href');
+                if (id === '#') { e.preventDefault(); return; }
+                const target = document.querySelector(id);
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth' });
                 }
             });
         });
-        document.querySelectorAll('.stat-value[data-count]').forEach(el => counterObserver.observe(el));
 
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-            });
-        });
+        /* ---------- Footer year ---------- */
+        document.getElementById('footer-year').textContent = new Date().getFullYear();
     </script>
 </body>
 </html>
