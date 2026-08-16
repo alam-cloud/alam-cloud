@@ -1105,7 +1105,7 @@
 
     <div id="boot-sequence" role="status" aria-label="Loading sequence">
         <div class="boot-inner" id="boot-inner"></div>
-        <div class="boot-hint" style="max-width: 760px; margin-left: auto; margin-right: auto; width: 100%;">» press any key or click to skip</div>
+        <div class="boot-hint" style="max-width: 760px; margin-left: auto; margin-right: auto; width: 100%;">» loading portfolio… click to skip</div>
     </div>
     <canvas id="particles" aria-hidden="true"></canvas>
 
@@ -1117,6 +1117,7 @@
                 <li><a href="#experience" data-spy="experience">/experience</a></li>
                 <li><a href="#videos" data-spy="videos">/videos</a></li>
                 <li><a href="#talks" data-spy="talks">/talks</a></li>
+                <li><a href="#writing" data-spy="writing">/writing</a></li>
                 <li><a href="#projects" data-spy="projects">/projects</a></li>
                 <li><a href="#skills" data-spy="skills">/skills</a></li>
                 <li><a href="#contact" data-spy="contact">/contact</a></li>
@@ -1133,7 +1134,7 @@
     <div class="container print-only" style="padding-top: 0;">
         <h1 style="font-family: 'JetBrains Mono', monospace; font-size: 1.6rem;">Alam Ahmed — Cloud Engineer</h1>
         <p style="font-size: 0.85rem; color: #333;">
-            Hemel Hempstead, UK · alamzaibahmad615@gmail.com · linkedin.com/in/alam-ahmed-cloud-engineer · github.com/InfraPlatformer
+            Hemel Hempstead, UK · alamzaibahmad615@gmail.com · linkedin.com/in/alam-ahmed-cloud-engineer · github.com/alam-cloud
         </p>
         <hr style="border: none; border-top: 1px solid #ccc; margin: 0.6rem 0;">
     </div>
@@ -1152,7 +1153,7 @@
                             <div class="stat-label">Years Cloud Exp</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-value" data-count="7">0</div>
+                            <div class="stat-value" data-count="11">0</div>
                             <div class="stat-label">Talks & Publications</div>
                         </div>
                         <div class="stat-card">
@@ -1256,8 +1257,18 @@
                     <div class="telemetry-value info">eu-west-2</div>
                     <div class="telemetry-sub">Hemel Hempstead → London · remote OK</div>
                 </div>
+                <div class="telemetry-card">
+                    <div class="telemetry-label">Total Visitors <span style="color: var(--accent);">● live</span></div>
+                    <div class="telemetry-value"><span id="live-visitors">—</span></div>
+                    <div class="telemetry-sub">counted in a real Postgres DB · you're one of them</div>
+                </div>
+                <div class="telemetry-card">
+                    <div class="telemetry-label">DB Latency <span style="color: var(--accent);">● live</span></div>
+                    <div class="telemetry-value info"><span id="live-latency">—</span> ms</div>
+                    <div class="telemetry-sub" id="live-latency-sub">round-trip to Supabase, just now</div>
+                </div>
             </div>
-            <div class="telemetry-note">// gauges simulated for ambience — the career stats are real</div>
+            <div class="telemetry-note">// visitors &amp; db latency are live from a real database — the career stats are real too; only the squiggly gauges are simulated</div>
         </div>
     </section>
 
@@ -1396,7 +1407,7 @@
         <div class="container">
             <div class="section-header">
                 <div class="section-tag">Event Logs</div>
-                <h2 class="section-title">Talks, Podcasts & <span class="gradient-text">Publications</span></h2>
+                <h2 class="section-title">Talks & <span class="gradient-text">Podcasts</span></h2>
                 <p class="section-desc">Sharing knowledge with the community. Because building in public is how we level up.</p>
             </div>
             <div class="talks-grid">
@@ -1458,12 +1469,69 @@
         </div>
     </section>
 
+    <section id="writing">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">Published Intelligence</div>
+                <h2 class="section-title">Writing on <span class="gradient-text">AWS Builder Center</span></h2>
+                <p class="section-desc">Long-form articles on cloud security, IAM, eBPF, and developer velocity — published as an AWS Community Builder.</p>
+            </div>
+            <div class="talks-grid">
+                <div class="talk-card">
+                    <div class="talk-type author">&#9679; Article</div>
+                    <h3 class="talk-title">The Next Frontier in IAM: Manufacturing Identity Context</h3>
+                    <div class="talk-venue">From "who are you" to "where are you coming from" — building verifiable network perimeters with AWS VPC endpoint condition keys</div>
+                    <div class="talk-meta">
+                        <span>2026</span>
+                        <a href="https://builder.aws.com/content/3DJRRyyA8ui8OWYptbZIqJntgxM/the-next-frontier-in-iam-manufacturing-identity-context-from-who-are-you-to-where-are-you-coming-from-building-verifiable-network-perimeters-with-aws-vpc-endpoint-condition-keys" target="_blank" rel="noopener noreferrer" class="talk-link">Read &rarr;</a>
+                    </div>
+                </div>
+                <div class="talk-card">
+                    <div class="talk-type author">&#9679; Article &middot; &#11088; Spotlight Pick</div>
+                    <h3 class="talk-title">The Unseen Pipeline: Engineering Developer Velocity with AWS DevTools in 2026</h3>
+                    <div class="talk-venue">Featured in the AWS Community Builders Spotlight — how Kiro, AgentCore and Transform are reshaping developer experience</div>
+                    <div class="talk-meta">
+                        <span>Jun 2026</span>
+                        <a href="https://builder.aws.com/content/3ElShp5DBoeQCRfc5kaBhwsruIe/the-unseen-pipeline-engineering-developer-velocity-with-aws-devtools-in-2026" target="_blank" rel="noopener noreferrer" class="talk-link">Read &rarr;</a>
+                    </div>
+                </div>
+                <div class="talk-card">
+                    <div class="talk-type author">&#9679; Article</div>
+                    <h3 class="talk-title">The Zero-Trust Fortress: Architecting Impenetrable AWS Environments</h3>
+                    <div class="talk-venue">Eliminating standing privileges with Resource Control Policies and ephemeral credentials — data perimeters and continuous compliance</div>
+                    <div class="talk-meta">
+                        <span>Apr 2026</span>
+                        <a href="https://builder.aws.com/content/3CAyBe68kyewNBVJBaVvNgvrdqf/the-zero-trust-fortress-architecting-impenetrable-aws-environments-with-resource-control-policies-and-ephemeral-credentials" target="_blank" rel="noopener noreferrer" class="talk-link">Read &rarr;</a>
+                    </div>
+                </div>
+                <div class="talk-card">
+                    <div class="talk-type author">&#9679; Article</div>
+                    <h3 class="talk-title">Automating Cloud Defense with IaC &amp; eBPF on AWS</h3>
+                    <div class="talk-venue">Combining eBPF-based security tools (Falco, Tetragon) with infrastructure as code for runtime threat detection</div>
+                    <div class="talk-meta">
+                        <span>Apr 2026</span>
+                        <a href="https://builder.aws.com/content/3BtlMnU1yojvC6zRCErCRo6f6x7/automating-cloud-defense-with-iac-and-ebpf-on-aws" target="_blank" rel="noopener noreferrer" class="talk-link">Read &rarr;</a>
+                    </div>
+                </div>
+                <div class="talk-card">
+                    <div class="talk-type author">&#9679; Article</div>
+                    <h3 class="talk-title">Breaking into Cloud: My Journey as an Aspiring Platform Engineer</h3>
+                    <div class="talk-venue">The career-switch playbook — from first-line networking to cloud engineering, and what actually worked</div>
+                    <div class="talk-meta">
+                        <span>Jul 2025</span>
+                        <a href="https://builder.aws.com/content/2zm7OJ7NUq3YDnvGCc7thxUoQM0/breaking-into-cloud-my-journey-as-an-aspiring-platform-engineer" target="_blank" rel="noopener noreferrer" class="talk-link">Read &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="projects" class="section-alt">
         <div class="container">
             <div class="section-header">
                 <div class="section-tag">Open Source</div>
                 <h2 class="section-title">Projects & <span class="gradient-text">Repos</span> <span class="live-badge">LIVE · GITHUB API</span></h2>
-                <p class="section-desc">Pulled fresh from github.com/InfraPlatformer every visit. What I'm building, breaking, and documenting.</p>
+                <p class="section-desc">Pulled fresh from github.com/alam-cloud every visit (older work lives on my legacy account, InfraPlatformer). What I'm building, breaking, and documenting.</p>
             </div>
             <div class="projects-grid" id="projects-grid">
                 <div class="repo-skeleton"></div>
@@ -1750,11 +1818,11 @@
                             <div style="font-size: 0.8rem; color: var(--text-secondary);">linkedin.com/in/alam-ahmed-cloud-engineer</div>
                         </div>
                     </a>
-                    <a href="https://github.com/InfraPlatformer" target="_blank" rel="noopener noreferrer" class="contact-link">
+                    <a href="https://github.com/alam-cloud" target="_blank" rel="noopener noreferrer" class="contact-link">
                         <div class="icon">&#9889;</div>
                         <div>
                             <div style="font-weight: 600;">GitHub</div>
-                            <div style="font-size: 0.8rem; color: var(--text-secondary);">github.com/InfraPlatformer</div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary);">github.com/alam-cloud</div>
                         </div>
                     </a>
                 </div>
@@ -1768,7 +1836,7 @@
             <p>Built with HTML, CSS & caffeine. Deployed on <span style="color: var(--accent-success);">GitHub Pages</span>.</p>
             <p style="margin-top: 0.5rem; opacity: 0.6;">&copy; <span id="footer-year">2026</span> Alam Ahmed. All systems operational.</p>
             <p class="shortcuts" style="margin-top: 0.75rem; opacity: 0.6;">
-                shortcuts: <kbd>~</kbd> terminal &middot; <kbd>1</kbd>–<kbd>7</kbd> jump to section &middot; try <span class="mono" style="color: var(--accent-warn);">sudo hire alam</span>
+                shortcuts: <kbd>~</kbd> terminal &middot; <kbd>1</kbd>–<kbd>8</kbd> jump to section &middot; try <span class="mono" style="color: var(--accent-warn);">sudo hire alam</span>
             </p>
         </div>
     </footer>
@@ -1858,6 +1926,9 @@
                 finishBoot();
                 window.removeEventListener('keydown', onKey);
             });
+            // Failsafe: never hold visitors on the boot screen longer than 4s,
+            // even if a timer is throttled (background tab, slow device).
+            bootTimers.push(setTimeout(finishBoot, 4000));
         }
 
         /* ---------- Post-boot: terminal reveal, typewriter, counters ---------- */
@@ -2059,7 +2130,7 @@
                 }
             });
         }, { rootMargin: '-40% 0px -55% 0px' });
-        ['about', 'experience', 'videos', 'talks', 'projects', 'skills', 'contact'].forEach(id => {
+        ['about', 'experience', 'videos', 'talks', 'writing', 'projects', 'skills', 'contact'].forEach(id => {
             const el = document.getElementById(id);
             if (el) spyObserver.observe(el);
         });
@@ -2221,11 +2292,11 @@
             }));
             const more = document.createElement('a');
             more.className = 'repo-card';
-            more.href = 'https://github.com/InfraPlatformer';
+            more.href = 'https://github.com/alam-cloud';
             more.target = '_blank';
             more.rel = 'noopener noreferrer';
             more.innerHTML = `
-                <span class="repo-name">InfraPlatformer</span>
+                <span class="repo-name">alam-cloud</span>
                 <span class="repo-desc">Live feed is rate-limited right now — browse all repos directly on GitHub.</span>
                 <span class="repo-meta"><span>View profile &rarr;</span></span>`;
             projectsGrid.appendChild(more);
@@ -2236,14 +2307,70 @@
                 const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
                 if (cached && Date.now() - cached.t < 3600000) { renderRepos(cached.data); return; }
             } catch (e) { /* ignore corrupt cache */ }
-            fetch('https://api.github.com/users/InfraPlatformer/repos?sort=pushed&per_page=6&type=public')
-                .then(res => { if (!res.ok) throw new Error('rate-limited'); return res.json(); })
+            const GH_USER = 'alam-cloud';
+            const GH_LEGACY = 'InfraPlatformer';
+            const fetchRepos = (user) =>
+                fetch(`https://api.github.com/users/${user}/repos?sort=pushed&per_page=6&type=public`)
+                    .then(res => { if (!res.ok) throw new Error('rate-limited'); return res.json(); })
+                    .then(data => {
+                        if (!Array.isArray(data) || !data.length) throw new Error('empty');
+                        return data;
+                    });
+            fetchRepos(GH_USER)
+                .catch(() => fetchRepos(GH_LEGACY))  // legacy account, until repos are moved
                 .then(data => {
-                    if (!Array.isArray(data) || !data.length) throw new Error('empty');
                     try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), data })); } catch (e) {}
                     renderRepos(data);
                 })
                 .catch(renderRepoFallback);
+        })();
+
+        /* ---------- Guestbook (Supabase free tier) ---------- */
+        const SUPABASE_URL = 'https://aegzmbudzrnupnknamoi.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_8iS6Mf5aP9UERrpxIj_WUQ_pKxf81Y1';
+        const guestbookReady = () =>
+            !SUPABASE_URL.includes('PASTE_') && !SUPABASE_ANON_KEY.includes('PASTE_');
+        let sbClient = null;
+        async function getSb() {
+            if (!guestbookReady()) return null;
+            if (!sbClient) {
+                const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+                sbClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            }
+            return sbClient;
+        }
+        const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        /* ---------- Live infrastructure metrics (Supabase) ---------- */
+        (async function liveMetrics() {
+            const visEl = document.getElementById('live-visitors');
+            const latEl = document.getElementById('live-latency');
+            const latSub = document.getElementById('live-latency-sub');
+            if (!guestbookReady()) {
+                visEl.textContent = 'soon';
+                latEl.textContent = '—';
+                latSub.textContent = 'database not provisioned yet';
+                return;
+            }
+            try {
+                const t0 = performance.now();
+                const sb = await getSb();
+                const { data, error } = await sb.rpc('increment_visitors');
+                const ms = Math.round(performance.now() - t0);
+                if (error) throw error;
+                latEl.textContent = ms;
+                // Count-up animation for the real visitor count
+                const target = parseInt(data, 10);
+                const t1 = performance.now(), dur = 1200;
+                (function tick() {
+                    const p = Math.min((performance.now() - t1) / dur, 1);
+                    visEl.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))).toLocaleString();
+                    if (p < 1) requestAnimationFrame(tick);
+                })();
+            } catch (e) {
+                visEl.textContent = 'err';
+                latSub.textContent = 'metrics feed unreachable — site still fine, it is static';
+            }
         })();
 
         /* ---------- Interactive CLI ---------- */
@@ -2261,9 +2388,12 @@
                 '  <span class="inf">experience</span>    work history summary',
                 '  <span class="inf">skills</span>        top of the stack',
                 '  <span class="inf">talks</span>         speaking & community',
+                '  <span class="inf">writing</span>       published AWS articles',
                 '  <span class="inf">certs</span>         certification highlights',
                 '  <span class="inf">contact</span>       how to reach Alam',
                 '  <span class="inf">cv</span>            print / save this page as a PDF CV',
+                '  <span class="inf">sign &lt;name&gt; &lt;msg&gt;</span>  sign the guestbook',
+                '  <span class="inf">guestbook</span>     read the guestbook',
                 '  <span class="inf">sudo hire alam</span>  you know you want to',
                 '  <span class="inf">clear</span>         wipe the terminal',
                 '  <span class="inf">exit</span>          close this terminal'
@@ -2290,8 +2420,17 @@
                 'Security as Code with Terraform & OPA — Yorkshire DevOps (35)',
                 'LogiCast AWS News Podcast S5E27 · + more in the /talks section'
             ],
-            article: () => CLI_COMMANDS.talks(),
-            articles: () => CLI_COMMANDS.talks(),
+            article: () => CLI_COMMANDS.writing(),
+            articles: () => CLI_COMMANDS.writing(),
+            writing: () => [
+                '<span class="ok">Published on AWS Builder Center:</span>',
+                '  <span class="inf">2026</span>  The Next Frontier in IAM: Manufacturing Identity Context',
+                '  <span class="inf">Jun 26</span> The Unseen Pipeline: Engineering Developer Velocity <span class="wrn">&#11088; Spotlight pick</span>',
+                '  <span class="inf">Apr 26</span> The Zero-Trust Fortress: Impenetrable AWS Environments',
+                '  <span class="inf">Apr 26</span> Automating Cloud Defense with IaC & eBPF',
+                '  <span class="inf">Jul 25</span> Breaking into Cloud: Aspiring Platform Engineer',
+                'Full list + links in the /writing section'
+            ],
             certs: () => [
                 '52 badges on Credly. Highlights:',
                 'AWS Well-Architected Proficient · AWS Security Champion · AWS EKS',
@@ -2300,9 +2439,23 @@
             contact: () => [
                 '<span class="ok">email</span>    <a href="mailto:alamzaibahmad615@gmail.com">alamzaibahmad615@gmail.com</a>',
                 '<span class="ok">linkedin</span>  <a href="https://www.linkedin.com/in/alam-ahmed-cloud-engineer" target="_blank" rel="noopener noreferrer">alam-ahmed-cloud-engineer</a>',
-                '<span class="ok">github</span>    <a href="https://github.com/InfraPlatformer" target="_blank" rel="noopener noreferrer">InfraPlatformer</a>'
+                '<span class="ok">github</span>    <a href="https://github.com/alam-cloud" target="_blank" rel="noopener noreferrer">alam-cloud</a> <span class="muted">(legacy: InfraPlatformer)</span>'
             ],
             cv: () => { window.print(); return ['Opening print dialog — save as PDF for a recruiter-friendly CV.']; },
+            guestbook: async () => {
+                const sb = await getSb();
+                if (!sb) return ['<span class="wrn">guestbook offline</span> — database not provisioned yet. Check back soon.'];
+                const { data, error } = await sb.from('guestbook').select('name, message, created_at').order('created_at', { ascending: false }).limit(10);
+                if (error) return [`<span class="wrn">query failed:</span> ${esc(error.message)}`];
+                if (!data.length) return ['Guestbook is empty. Be the first: <span class="inf">sign YourName your message</span>'];
+                const lines = ['<span class="ok">== guestbook (last ' + data.length + ') ==</span>'];
+                data.forEach(r => {
+                    const d = new Date(r.created_at).toISOString().slice(0, 10);
+                    lines.push(`<span class="inf">${d}</span> <span class="ok">${esc(r.name)}</span>: ${esc(r.message)}`);
+                });
+                lines.push('', 'Leave yours: <span class="inf">sign YourName your message</span>');
+                return lines;
+            },
             clear: () => { cliOutput.innerHTML = ''; return []; },
             exit: () => { closeCli(); return []; },
             'sudo hire alam': () => [
@@ -2352,8 +2505,32 @@
                 echo.innerHTML = `<span class="ok">guest:~$</span> ${raw.replace(/</g, '&lt;')}`;
                 cliOutput.appendChild(echo);
                 const cmd = raw.toLowerCase();
-                if (CLI_COMMANDS[cmd]) {
-                    cliPrint(CLI_COMMANDS[cmd]());
+                if (cmd.startsWith('sign')) {
+                    const arg = raw.slice(4).trim();
+                    if (!arg) {
+                        cliPrint(['usage: <span class="inf">sign YourName your message here</span>']);
+                    } else {
+                        const sp = arg.indexOf(' ');
+                        const name = sp === -1 ? arg : arg.slice(0, sp);
+                        const message = sp === -1 ? '' : arg.slice(sp + 1).trim();
+                        if (!message || name.length > 30 || message.length > 200) {
+                            cliPrint(['<span class="wrn">rejected:</span> need a name AND a message (name ≤30 chars, message ≤200).']);
+                        } else {
+                            cliPrint(['<span class="muted">provisioning guestbook entry...</span>']);
+                            (async () => {
+                                const sb = await getSb();
+                                if (!sb) { cliPrint(['<span class="wrn">guestbook offline</span> — database not provisioned yet. Check back soon.']); return; }
+                                const { error } = await sb.from('guestbook').insert({ name, message });
+                                cliPrint(error
+                                    ? [`<span class="wrn">deploy failed:</span> ${esc(error.message)}`]
+                                    : ['<span class="ok">entry committed.</span> guestbook updated — run <span class="inf">guestbook</span> to see it.']);
+                            })();
+                        }
+                    }
+                } else if (CLI_COMMANDS[cmd]) {
+                    const out = CLI_COMMANDS[cmd]();
+                    if (out instanceof Promise) out.then(lines => cliPrint(lines)).catch(() => cliPrint(['<span class="wrn">command failed.</span>']));
+                    else cliPrint(out);
                 } else if (cmd.startsWith('sudo')) {
                     cliPrint(['<span class="wrn">sudo:</span> nice try. Only approved command is <span class="inf">sudo hire alam</span>.']);
                 } else if (cmd === 'rm -rf /' || cmd.includes('rm -rf')) {
@@ -2372,7 +2549,7 @@
         });
 
         /* ---------- Global keyboard shortcuts ---------- */
-        const SECTION_ORDER = ['about', 'experience', 'videos', 'talks', 'projects', 'skills', 'contact'];
+        const SECTION_ORDER = ['about', 'experience', 'videos', 'talks', 'writing', 'projects', 'skills', 'contact'];
         document.addEventListener('keydown', e => {
             const typing = /^(input|textarea)$/i.test(document.activeElement.tagName);
             if (e.key === 'Escape' && cliOverlay.classList.contains('open')) { closeCli(); return; }
