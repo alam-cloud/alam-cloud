@@ -7,8 +7,16 @@
     <meta name="description" content="Alam Ahmed — Cloud Engineer & AWS Community Builder. I design and automate secure infrastructure across AWS and Azure with Terraform, Kubernetes, and Security as Code.">
     <meta name="theme-color" content="#05080f">
     <meta property="og:title" content="Alam Ahmed | Cloud Engineer">
-    <meta property="og:description" content="From NOC trenches to cloud architecture. Terraform, Kubernetes, Security as Code — AWS Community Builder.">
+    <meta property="og:description" content="Cloud Engineer & AWS Community Builder. Terraform, Kubernetes, Security as Code — secure, automated infrastructure on AWS and Azure.">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://alamahmed.dev/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:image" content="https://alamahmed.dev/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Alam Ahmed — Cloud Engineer. Terraform, Kubernetes, eBPF, Security as Code.">
+    <meta name="twitter:image" content="https://alamahmed.dev/og-image.png">
+    <link rel="canonical" href="https://alamahmed.dev/">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' fill='%2300d4aa'%3E%E2%97%88%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -87,41 +95,102 @@
             background: repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 3px);
         }
 
-        /* Boot Sequence Overlay */
+        /* Deploy Splash — quick, professional entry (replaces old scrolling boot log) */
         #boot-sequence {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: var(--bg-primary);
+            background: radial-gradient(ellipse at 50% 40%, #0a1220 0%, var(--bg-primary) 65%);
             z-index: 9999;
             display: flex;
-            flex-direction: column;
+            align-items: center;
             justify-content: center;
             padding: 2rem;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            transition: opacity 0.6s ease-out, visibility 0.6s;
+            transition: opacity 0.5s ease-out, visibility 0.5s;
             cursor: pointer;
         }
         #boot-sequence.done { opacity: 0; visibility: hidden; pointer-events: none; }
-        .boot-inner { max-width: 760px; width: 100%; margin: 0 auto; }
-        .boot-line {
-            color: var(--accent-success);
-            opacity: 0;
-            transform: translateX(-10px);
-            animation: bootIn 0.25s forwards;
-            margin: 2px 0;
-            white-space: pre-wrap;
+        .boot-card {
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            animation: splashIn 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
         }
-        .boot-line.error { color: var(--accent-alert); }
-        .boot-line.warn { color: var(--accent-warn); }
-        .boot-line.info { color: var(--accent-info); }
-        @keyframes bootIn { to { opacity: 1; transform: translateX(0); } }
-        .boot-hint {
-            margin-top: 2rem;
+        @keyframes splashIn { from { opacity: 0; transform: translateY(14px) scale(0.97); } to { opacity: 1; transform: none; } }
+        .boot-logo {
+            font-size: 2.6rem;
+            color: var(--accent-info);
+            text-shadow: 0 0 24px var(--glow-info);
+            animation: pulse 1.6s infinite;
+            line-height: 1;
+        }
+        .boot-name {
+            margin-top: 0.9rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 0.5px;
+        }
+        .boot-name span { color: var(--accent-success); }
+        .boot-stages {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin: 1.4rem 0 1rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
-            font-size: 0.75rem;
-            opacity: 0.7;
+        }
+        .boot-stage {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.65rem;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--bg-card);
+            transition: all 0.25s;
+            white-space: nowrap;
+        }
+        .boot-stage::before {
+            content: '';
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: all 0.25s;
+        }
+        .boot-stage.active { border-color: var(--accent-info); color: var(--accent-info); }
+        .boot-stage.active::before { background: var(--accent-info); box-shadow: 0 0 8px var(--glow-info); animation: blink 0.8s infinite; }
+        .boot-stage.passed { border-color: var(--accent-success); color: var(--accent-success); }
+        .boot-stage.passed::before { background: var(--accent-success); box-shadow: 0 0 8px var(--glow-success); }
+        .boot-bar {
+            height: 4px;
+            border-radius: 2px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+        .boot-bar-fill {
+            height: 100%;
+            width: 0;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--accent-success), var(--accent-info));
+            box-shadow: 0 0 12px var(--glow-success);
+            transition: width 0.3s ease;
+        }
+        .boot-status {
+            margin-top: 0.7rem;
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            min-height: 1.1em;
+        }
+        .boot-status .ok { color: var(--accent-success); }
+        .boot-hint {
+            margin-top: 1.6rem;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            opacity: 0.6;
             animation: blink 2s infinite;
         }
 
@@ -406,6 +475,7 @@
 
         /* Sections */
         section { padding: 6rem 0; position: relative; }
+        section[id] { scroll-margin-top: 76px; }
         .section-alt { background: var(--bg-secondary); }
         .section-header { margin-bottom: 3rem; }
         .section-tag {
@@ -786,6 +856,7 @@
             box-shadow: 0 0 20px var(--glow-success);
         }
 
+
         /* Telemetry strip */
         .telemetry-grid {
             display: grid;
@@ -925,16 +996,52 @@
         .arch-node-accent { stroke: var(--accent-success); }
         .arch-text {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
+            font-size: 15px;
             fill: var(--text-primary);
         }
         .arch-sub {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
+            font-size: 12px;
             fill: var(--text-secondary);
         }
         .arch-edge { stroke: #334155; stroke-width: 1.5; fill: none; }
         .arch-edge-dashed { stroke: #334155; stroke-width: 1.2; fill: none; stroke-dasharray: 5 5; }
+
+        /* Interactive architecture diagram */
+        .arch-wrap svg { min-width: 940px; }
+        .anode { cursor: pointer; outline: none; }
+        .anode rect { transition: stroke 0.2s, stroke-width 0.2s; }
+        .anode:hover rect, .anode:focus-visible rect, .anode.active rect {
+            stroke: var(--accent-success);
+            stroke-width: 2;
+        }
+        .anode:hover text, .anode:focus-visible text, .anode.active text { fill: var(--accent-success); }
+        .arch-detail {
+            margin-top: 1.25rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent-success);
+            border-radius: 10px;
+            padding: 1.1rem 1.25rem;
+        }
+        .arch-detail-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--accent-success);
+            margin-bottom: 0.4rem;
+        }
+        .arch-detail-body { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; }
+        .arch-detail-certs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.7rem; }
+        .arch-cert-chip {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            color: var(--accent-info);
+            border: 1px solid var(--accent-info);
+            border-radius: 4px;
+            padding: 0.15rem 0.5rem;
+            letter-spacing: 0.5px;
+        }
 
         /* CLI overlay */
         #cli-overlay {
@@ -1019,8 +1126,9 @@
 
         @media print {
             header, #particles, .scanlines, #boot-sequence, #cli-overlay,
-            #back-to-top, #scroll-progress, .cta-group, #videos,
-            #print-cv, .boot-hint, footer .shortcuts, .telemetry-note, .arch-wrap { display: none !important; }
+            #back-to-top, #scroll-progress, .cta-group, #videos, .skip-link,
+            #print-cv, .boot-hint, footer .shortcuts, .telemetry-note, .arch-wrap, .arch-detail,
+            #telemetry, .live-certs, .article-section { display: none !important; }
             body { background: #fff; color: #111; line-height: 1.45; }
             .container { max-width: 100%; padding: 0; }
             section, .hero { padding: 0.9rem 0 !important; min-height: 0 !important; page-break-inside: avoid; }
@@ -1043,6 +1151,13 @@
             .hero-stats { grid-template-columns: repeat(3, 1fr); }
             .skills-grid, .certs-grid, .talks-grid, .telemetry-grid, .projects-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
             .tag, .talk-meta, .terminal-prompt, .terminal-command { color: #333 !important; border-color: #ccc; }
+            .tag { background: #fff !important; }
+            .contact-link { background: #fff !important; border: 1px solid #ccc !important; box-shadow: none !important; }
+            .contact-link div, .contact-link div div { color: #111 !important; }
+            .contact-link .icon { background: #f0f0f0 !important; }
+            footer, footer a { color: #555 !important; background: none !important; }
+            .cert-print-list { margin: 0; padding-left: 1.2rem; color: #111; font-size: 0.9rem; }
+            .cert-print-list li { margin-bottom: 0.25rem; }
             a { color: #111 !important; text-decoration: none !important; }
             .print-only { display: block !important; }
         }
@@ -1088,6 +1203,15 @@
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-success); }
 
+        .hero-avatar {
+            width: 96px; height: 96px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-success);
+            box-shadow: 0 0 24px var(--glow-success);
+            margin-bottom: 1.25rem;
+            object-fit: cover;
+        }
+
         .mono { font-family: 'JetBrains Mono', monospace; }
         .gradient-text {
             background: linear-gradient(135deg, var(--accent-success), var(--accent-info));
@@ -1095,7 +1219,585 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
+
+        /* Embedded long-form article */
+        .article-section {
+            --bg: #05080f;
+            --bg-soft: #0a0f1c;
+            --panel: #0d1321;
+            --panel-strong: #111a2b;
+            --line: #1e293b;
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+            --green: #00d4aa;
+            --blue: #38bdf8;
+            --yellow: #ffd93d;
+            --red: #ff6b6b;
+            --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            padding: 5rem 0 6rem;
+            border-top: 1px solid var(--border);
+            background:
+                radial-gradient(circle at 16% 10%, rgba(0, 212, 170, 0.08), transparent 30rem),
+                radial-gradient(circle at 88% 22%, rgba(56, 189, 248, 0.07), transparent 28rem),
+                var(--bg);
+            scroll-margin-top: 4.5rem;
+        }
+        .article-section .article-hero {
+            width: min(1120px, calc(100% - 2rem));
+            margin: 0 auto;
+            padding: clamp(5rem, 10vw, 8.5rem) 0 3.5rem;
+        }
+        .article-section .kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: .7rem;
+            color: var(--green);
+            font: 700 .74rem var(--mono);
+            letter-spacing: .18em;
+            text-transform: uppercase;
+        }
+        .article-section .kicker::before { content: '//'; color: var(--muted); }
+        .article-section h1 {
+            max-width: 15ch;
+            margin: 1.1rem 0 1.4rem;
+            font: 800 clamp(2.7rem, 7vw, 5.8rem)/.96 var(--mono);
+            letter-spacing: -.065em;
+        }
+        .article-section .gradient-text {
+            background: linear-gradient(135deg, var(--green), var(--blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .article-section .standfirst {
+            max-width: 49rem;
+            margin: 0;
+            color: var(--muted);
+            font-size: clamp(1.05rem, 2vw, 1.28rem);
+            line-height: 1.72;
+        }
+        .article-section .meta-panel {
+            width: min(47rem, 100%);
+            margin-top: 2.2rem;
+            border: 1px solid var(--line);
+            border-radius: .8rem;
+            overflow: hidden;
+            background: rgba(13, 19, 33, .84);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, .24);
+        }
+        .article-section .meta-bar {
+            display: flex;
+            gap: .45rem;
+            align-items: center;
+            padding: .75rem .9rem;
+            border-bottom: 1px solid var(--line);
+            background: rgba(17, 26, 43, .78);
+        }
+        .article-section .dot { width: .68rem; height: .68rem; border-radius: 50%; }
+        .article-section .dot.red { background: #ff5f57; } .article-section .dot.yellow { background: #febc2e; } .article-section .dot.green { background: #28c840; }
+        .article-section .meta-title { margin-left: .45rem; color: var(--muted); font: 500 .74rem var(--mono); }
+        .article-section .meta-body {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+        }
+        .article-section .meta-item { padding: 1rem; border-right: 1px solid var(--line); }
+        .article-section .meta-item:last-child { border-right: 0; }
+        .article-section .meta-label { color: var(--blue); font: 700 .66rem var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+        .article-section .meta-value { margin-top: .35rem; color: var(--text); font: 500 .84rem var(--mono); }
+
+        .article-section .article-layout {
+            position: relative;
+            z-index: 1;
+            width: min(1180px, calc(100% - 2rem));
+            margin: 0 auto;
+            padding-bottom: 6rem;
+            display: grid;
+            grid-template-columns: 15.5rem minmax(0, 44rem);
+            justify-content: center;
+            gap: clamp(3rem, 6vw, 5.5rem);
+        }
+        .article-section .article-toc {
+            position: sticky;
+            top: 6.2rem;
+            align-self: start;
+            max-height: calc(100vh - 7rem);
+            overflow: auto;
+            border-left: 1px solid var(--line);
+            padding: .4rem 0 .4rem 1.1rem;
+        }
+        .article-section .toc-title {
+            margin-bottom: .9rem;
+            color: var(--green);
+            font: 700 .72rem var(--mono);
+        }
+        .article-section .article-toc a {
+            display: block;
+            margin: .55rem 0;
+            color: var(--muted);
+            font: 500 .72rem/1.5 var(--mono);
+            text-decoration: none;
+        }
+        .article-section .article-toc a:hover, .article-section .article-toc a:focus-visible { color: var(--green); }
+        .article-section .article-toc .toc-sub { padding-left: .8rem; color: #64748b; }
+
+        .article-section article { min-width: 0; }
+        .article-section .article-body > * { max-width: 44rem; }
+        .article-section .article-body p, .article-section .article-body li {
+            color: #c6d0dd;
+            font-size: 1.035rem;
+        }
+        .article-section .article-body p { margin: 1.35rem 0; }
+        .article-section .article-body h2, .article-section .article-body h3 {
+            color: var(--text);
+            font-family: var(--mono);
+            letter-spacing: -.025em;
+            scroll-margin-top: 6.5rem;
+        }
+        .article-section .article-body h2 {
+            margin: 4.4rem 0 1.2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            font-size: clamp(1.45rem, 3vw, 2rem);
+            line-height: 1.2;
+        }
+        .article-section .article-body h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+        .article-section .article-body h3 {
+            margin: 2.4rem 0 .7rem;
+            color: var(--blue);
+            font-size: 1.05rem;
+        }
+        .article-section .article-body a { color: var(--blue); text-decoration-color: rgba(56, 189, 248, .4); text-underline-offset: .22em; }
+        .article-section .article-body a:hover { color: var(--green); }
+        .article-section .article-body strong { color: var(--text); font-weight: 700; }
+        .article-section .article-body hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
+        .article-section .article-body ul, .article-section .article-body ol { padding-left: 1.35rem; margin: 1.25rem 0; }
+        .article-section .article-body li { margin: .55rem 0; }
+        .article-section .article-body li::marker { color: var(--green); }
+        .article-section .article-body code:not(pre code) {
+            padding: .12rem .32rem;
+            border: 1px solid rgba(30, 41, 59, .9);
+            border-radius: .28rem;
+            background: rgba(13, 19, 33, .92);
+            color: #7dd3fc;
+            font: .82em var(--mono);
+        }
+        .article-section .article-body pre, .article-section .article-body .sourceCode {
+            margin: 1.6rem 0 2rem;
+            border: 1px solid rgba(30, 41, 59, .95);
+            border-radius: .7rem;
+            background: #080d18;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, .22);
+            overflow: auto;
+        }
+        .article-section .article-body pre {
+            padding: 1.1rem 1.2rem;
+        }
+        /* Mobile overflow fixes: wrap long unbroken identifiers (e.g. AWS resource
+           names) in prose; on narrow screens let wide tables scroll instead of
+           breaking the page layout */
+        .article-section .article-body p,
+        .article-section .article-body li {
+            overflow-wrap: anywhere;
+        }
+        @media (max-width: 640px) {
+            .article-section .article-body table {
+                display: block;
+                max-width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+        .article-section .article-body .sourceCode pre { margin: 0; border: 0; box-shadow: none; }
+        .article-lazy-placeholder {
+            color: var(--text-secondary);
+            font-family: var(--mono);
+            font-size: .85rem;
+            padding: 1rem 0;
+        }
+        .article-lazy-placeholder a { color: var(--accent-info); }
+        .article-section .article-body pre code {
+            color: #dbeafe;
+            font: 400 .79rem/1.68 var(--mono);
+            white-space: pre;
+        }
+        .article-section .article-body .co { color: #64748b; font-style: normal; }
+        .article-section .article-body .kw, .article-section .article-body .cf { color: #38bdf8; }
+        .article-section .article-body .st, .article-section .article-body .ss { color: #86efac; }
+        .article-section .article-body .fu, .article-section .article-body .va { color: #5eead4; }
+        .article-section .article-body .dv, .article-section .article-body .cn { color: #fbbf24; }
+        .article-section .article-body .ot { color: #c4b5fd; }
+        .article-section .article-body table {
+            width: 100%;
+            margin: 1.7rem 0 2.2rem;
+            border-collapse: collapse;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: .65rem;
+            font-size: .9rem;
+        }
+        .article-section .article-body th, .article-section .article-body td {
+            padding: .85rem .9rem;
+            border: 1px solid var(--line);
+            text-align: left;
+            vertical-align: top;
+        }
+        .article-section .article-body th {
+            background: var(--panel-strong);
+            color: var(--green);
+            font-family: var(--mono);
+            font-size: .76rem;
+        }
+        .article-section .article-body td { background: rgba(13, 19, 33, .62); }
+        .article-section .article-body em { color: var(--muted); }
+        .article-section .copy-code {
+            position: sticky;
+            top: .6rem;
+            float: right;
+            margin: .6rem .6rem -2.2rem .7rem;
+            z-index: 2;
+            border: 1px solid var(--line);
+            border-radius: .4rem;
+            background: rgba(13, 19, 33, .94);
+            color: var(--muted);
+            padding: .35rem .55rem;
+            cursor: pointer;
+            font: 700 .65rem var(--mono);
+        }
+        .article-section .copy-code:hover, .article-section .copy-code:focus-visible { color: var(--green); border-color: rgba(0, 212, 170, .5); }
+
+        .article-section .article-body img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 1.6rem auto;
+            border: 1px solid var(--line);
+            border-radius: .7rem;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, .35);
+        }
+        .article-section .article-body figure { margin: 1.6rem 0 2rem; }
+        .article-section .article-body figcaption {
+            margin-top: .6rem;
+            color: var(--muted);
+            font: 500 .74rem var(--mono);
+            text-align: center;
+        }
+
+        .article-section .article-footer {
+            width: min(44rem, calc(100% - 2rem));
+            margin: 0 auto 5rem;
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .article-section .button {
+            display: inline-flex;
+            align-items: center;
+            gap: .55rem;
+            border: 1px solid var(--line);
+            border-radius: .55rem;
+            padding: .82rem 1rem;
+            background: rgba(13, 19, 33, .82);
+            color: var(--text);
+            text-decoration: none;
+            font: 700 .78rem var(--mono);
+            transition: transform .2s ease, border-color .2s ease, color .2s ease;
+        }
+        .article-section .button:hover, .article-section .button:focus-visible {
+            transform: translateY(-2px);
+            border-color: rgba(0, 212, 170, .55);
+            color: var(--green);
+        }
+
+        @media (min-width: 1240px) {
+            .article-section .article-body > pre, .article-section .article-body > .sourceCode, .article-section .article-body > table {
+                /* Breakout for wide code/tables, bounded so the block can never
+                   reach the sticky TOC: shift left by (gap − 1rem), grow right by
+                   the same, and never extend past the viewport edge. */
+                width: min(58rem, calc(100vw - 15.5rem - clamp(3rem, 6vw, 5.5rem) - 5rem));
+                max-width: none;
+                margin-left: calc(1rem - clamp(3rem, 6vw, 5.5rem));
+            }
+        }
+        @media (max-width: 980px) {
+            .article-section .article-layout { display: block; }
+            .article-section .article-toc {
+                position: static;
+                max-height: none;
+                margin-bottom: 2.5rem;
+                border: 1px solid var(--line);
+                border-radius: .7rem;
+                padding: 1rem;
+                background: rgba(13, 19, 33, .72);
+            }
+            .article-section .meta-body { grid-template-columns: 1fr; }
+            .article-section .meta-item { border-right: 0; border-bottom: 1px solid var(--line); }
+            .article-section .meta-item:last-child { border-bottom: 0; }
+            .article-section .nav-links { display: none; }
+        }
+        @media (max-width: 640px) {
+            .article-section .article-hero { padding-top: 4.5rem; }
+            .article-section h1 { font-size: clamp(2.25rem, 13vw, 3.4rem); }
+            .article-section .article-body p, .article-section .article-body li { font-size: .98rem; }
+            .article-section .article-body pre { padding: .9rem; }
+            .article-section .article-body pre code { font-size: .73rem; }
+        }
+        .article-section .article-hero { padding: 0 0 3.5rem; }
+        .article-section .article-layout { padding-bottom: 2rem; }
+        .article-section .article-footer { margin-bottom: 0; }
     </style>
+    <style>
+        /* ============ Slide Decks ============ */
+        .decks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 1.75rem;
+        }
+        .deck-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .deck-card:hover {
+            border-color: var(--accent-success);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 44px rgba(0,0,0,0.45), 0 0 22px var(--glow-success);
+        }
+        .deck-cover {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            cursor: pointer;
+            border: none;
+            padding: 0;
+            background: var(--bg-secondary);
+            display: block;
+            width: 100%;
+        }
+        .deck-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease, filter 0.4s ease;
+        }
+        .deck-card:hover .deck-cover img { transform: scale(1.04); }
+        .deck-cover::after {
+            content: '▶ present';
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-success);
+            background: rgba(5, 8, 15, 0.55);
+            backdrop-filter: blur(2px);
+            opacity: 0;
+            transition: opacity 0.3s;
+            letter-spacing: 1px;
+        }
+        .deck-cover:hover::after, .deck-cover:focus-visible::after { opacity: 1; }
+        .deck-count-badge {
+            position: absolute;
+            top: 0.7rem; right: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 1px;
+            color: var(--bg-primary);
+            background: var(--accent-success);
+            border-radius: 4px;
+            padding: 0.2rem 0.55rem;
+            font-weight: 700;
+            z-index: 1;
+        }
+        .deck-body { padding: 1.25rem 1.35rem 1.35rem; display: flex; flex-direction: column; flex: 1; }
+        .deck-body .talk-type { margin-bottom: 0.6rem; }
+        .deck-body h3 { font-size: 1.02rem; font-weight: 600; margin-bottom: 0.4rem; line-height: 1.4; }
+        .deck-venue { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.9rem; }
+        .deck-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+        .deck-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.5rem 0.95rem;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.25s;
+            border: 1px solid var(--border);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .deck-btn.primary {
+            background: var(--accent-success);
+            border-color: var(--accent-success);
+            color: var(--bg-primary);
+        }
+        .deck-btn.primary:hover { box-shadow: 0 0 18px var(--glow-success); transform: translateY(-1px); }
+        .deck-btn:not(.primary):hover { border-color: var(--accent-info); color: var(--accent-info); box-shadow: 0 0 14px var(--glow-info); }
+
+        /* ============ Deck Viewer (fullscreen overlay) ============ */
+        #deck-viewer {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(3, 6, 12, 0.97);
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+        #deck-viewer.open { display: flex; }
+        #deck-viewer.visible { opacity: 1; }
+        .dv-titlebar {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.7rem 1.1rem;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+        }
+        .dv-titlebar .terminal-btn { cursor: pointer; }
+        .dv-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+            min-width: 0;
+        }
+        .dv-title .dv-cmd { color: var(--accent-success); }
+        .dv-counter {
+            color: var(--accent-info);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .dv-btn {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.3rem 0.65rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .dv-btn:hover { border-color: var(--accent-success); color: var(--accent-success); }
+        .dv-stage {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 0;
+            padding: 1rem;
+        }
+        .dv-slide {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 6px;
+            box-shadow: 0 20px 70px rgba(0,0,0,0.6);
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        .dv-nav {
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 18%;
+            min-width: 64px;
+            border: none;
+            background: transparent;
+            color: var(--accent-success);
+            font-size: 2rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.25s;
+            font-family: 'JetBrains Mono', monospace;
+            z-index: 2;
+        }
+        .dv-stage:hover .dv-nav, .dv-nav:focus-visible { opacity: 0.9; }
+        .dv-nav:hover { text-shadow: 0 0 18px var(--glow-success); }
+        .dv-nav.prev { left: 0; }
+        .dv-nav.next { right: 0; }
+        .dv-nav[disabled] { opacity: 0 !important; cursor: default; }
+        .dv-footer {
+            flex-shrink: 0;
+            border-top: 1px solid var(--border);
+            background: var(--bg-secondary);
+            padding: 0.55rem 1.1rem 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        .dv-progress {
+            height: 3px;
+            background: var(--bg-primary);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        .dv-progress-fill {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, var(--accent-success), var(--accent-info));
+            box-shadow: 0 0 8px var(--glow-success);
+            transition: width 0.25s ease;
+        }
+        .dv-hints { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+        .dv-hints kbd {
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0 0.35rem;
+            font-family: inherit;
+            color: var(--accent-warn);
+        }
+        @media (max-width: 640px) {
+            .decks-grid { grid-template-columns: 1fr; }
+            .dv-hints .dv-hint-keys { display: none; }
+            .dv-titlebar { font-size: 0.68rem; }
+        }
+        @media print {
+            #deck-viewer, #decks { display: none !important; }
+        }
+        .talk-slides-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            font: inherit;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+    </style>
+<base target="_blank">
 </head>
 <body id="top">
 
@@ -1104,8 +1806,19 @@
     <div class="scanlines" aria-hidden="true"></div>
 
     <div id="boot-sequence" role="status" aria-label="Loading sequence">
-        <div class="boot-inner" id="boot-inner"></div>
-        <div class="boot-hint" style="max-width: 760px; margin-left: auto; margin-right: auto; width: 100%;">» loading portfolio… click to skip</div>
+        <div class="boot-card">
+            <div class="boot-logo" aria-hidden="true">&#9672;</div>
+            <div class="boot-name">alam<span>_ahmed</span>.tf</div>
+            <div class="boot-stages" id="boot-stages" aria-hidden="true">
+                <span class="boot-stage">init</span>
+                <span class="boot-stage">validate</span>
+                <span class="boot-stage">plan</span>
+                <span class="boot-stage">apply</span>
+            </div>
+            <div class="boot-bar" aria-hidden="true"><div class="boot-bar-fill" id="boot-bar-fill"></div></div>
+            <div class="boot-status" id="boot-status">initializing providers…</div>
+            <div class="boot-hint">click anywhere to skip</div>
+        </div>
     </div>
     <canvas id="particles" aria-hidden="true"></canvas>
 
@@ -1117,6 +1830,7 @@
                 <li><a href="#experience" data-spy="experience">/experience</a></li>
                 <li><a href="#videos" data-spy="videos">/videos</a></li>
                 <li><a href="#talks" data-spy="talks">/talks</a></li>
+                <li><a href="#decks" data-spy="decks">/decks</a></li>
                 <li><a href="#writing" data-spy="writing">/writing</a></li>
                 <li><a href="#projects" data-spy="projects">/projects</a></li>
                 <li><a href="#skills" data-spy="skills">/skills</a></li>
@@ -1142,36 +1856,43 @@
         <div class="container">
             <div class="hero-grid">
                 <div class="hero-content">
+                    <img src="assets/avatar.webp" alt="Photo of Alam Ahmed" class="hero-avatar" width="96" height="96">
                     <h1 id="hero-name" data-text="Alam Ahmed">Alam Ahmed</h1>
                     <div class="subtitle" id="typewriter" aria-live="polite"></div>
                     <p class="description">
-                        From NOC trenches to cloud architecture. I design and automate infrastructure across AWS and Azure using Terraform and Ansible, orchestrate with Docker and Kubernetes, and enforce security with Python, Bash, and Security as Code tools like OPA and Conftest.
+                        I design and automate secure infrastructure across AWS and Azure — Terraform, Kubernetes, and Security as Code — backed by hands-on production incident response experience. Currently preparing for the AWS Solutions Architect Associate exam (January).
                     </p>
                     <div class="hero-stats">
                         <div class="stat-card">
-                            <div class="stat-value" data-count="4">0</div>
+                            <div class="stat-value" data-count="4" aria-label="4">0</div>
                             <div class="stat-label">Years Cloud Exp</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-value" data-count="11">0</div>
+                            <div class="stat-value" data-count="13" aria-label="13">0</div>
                             <div class="stat-label">Talks & Publications</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-value" data-count="52">0</div>
+                            <div class="stat-value" data-count="52" aria-label="52">0</div>
                             <div class="stat-label">Certifications</div>
                         </div>
                     </div>
                     <div class="cta-group">
-                        <a href="https://www.linkedin.com/in/alam-ahmed-cloud-engineer" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                            <span>&#8599;</span> Connect on LinkedIn
+                        <button type="button" class="btn btn-primary" onclick="window.print()">
+                            <span>&#9113;</span> Download CV (PDF)
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="open-terminal-btn">
+                            <span>&gt;_</span> Open Terminal
+                        </button>
+                        <a href="https://www.linkedin.com/in/alam-ahmed-cloud-engineer" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                            <span>&#8599;</span> LinkedIn
                         </a>
-                        <a href="mailto:alamzaibahmad615@gmail.com" class="btn btn-secondary">
-                            <span>&#9993;</span> Initiate Contact
+                        <a href="mailto:alamzaibahmad615@gmail.com" target="_self" class="btn btn-secondary">
+                            <span>&#9993;</span> Email
                         </a>
                     </div>
                 </div>
 
-                <div class="terminal-window" aria-label="Terminal introduction">
+                <div class="terminal-window" aria-label="Terminal introduction" id="hero-terminal" style="cursor: pointer;" title="Click to open the interactive shell">
                     <div class="terminal-header">
                         <div class="terminal-btn red"></div>
                         <div class="terminal-btn yellow"></div>
@@ -1184,32 +1905,23 @@
                             <span class="terminal-command">whoami</span>
                         </div>
                         <div class="terminal-line terminal-output">
-                            Cloud Engineer | AWS Community Builder | DevTools Advocate
+                            Cloud Engineer · AWS Community Builder (Dev-Tools)
                         </div>
                         <div class="terminal-line">
                             <span class="terminal-prompt">alam@cloud-engineer:~$</span>
-                            <span class="terminal-command">cat current_role.txt</span>
+                            <span class="terminal-command">cat focus.txt</span>
                         </div>
                         <div class="terminal-line terminal-output">
-                            Managed Services Support Analyst @ boxxe (NOC)<br>
-                            AWS Community Builder - Dev-Tools (Feb 2026 - Present)
+                            Secure, automated infrastructure — Terraform, Kubernetes,<br>
+                            Security as Code across AWS &amp; Azure
                         </div>
                         <div class="terminal-line">
                             <span class="terminal-prompt">alam@cloud-engineer:~$</span>
-                            <span class="terminal-command">terraform plan -target=career</span>
+                            <span class="terminal-command">aws configure get next_steps</span>
                         </div>
                         <div class="terminal-line terminal-output terminal-success">
-                            + Seeking Junior Cloud / DevOps Engineer roles<br>
-                            + Pursuing AZ-104 certification<br>
-                            + Building secure, scalable platforms
-                        </div>
-                        <div class="terminal-line">
-                            <span class="terminal-prompt">alam@cloud-engineer:~$</span>
-                            <span class="terminal-command">kubectl get pods --all-namespaces</span>
-                        </div>
-                        <div class="terminal-line terminal-output">
-                            <span class="terminal-success">Running:</span> Terraform, Docker, K8s, Python, Bash<br>
-                            <span class="terminal-warn">Pending:</span> AZ-104, Next speaking gig
+                            + Open to Cloud / Platform Engineer roles<br>
+                            + AWS Solutions Architect Associate — exam January
                         </div>
                         <div class="terminal-line">
                             <span class="terminal-prompt">alam@cloud-engineer:~$</span>
@@ -1225,12 +1937,6 @@
         <div class="container">
             <div class="telemetry-grid">
                 <div class="telemetry-card">
-                    <div class="telemetry-label">Career Uptime</div>
-                    <div class="telemetry-value"><span id="uptime-days">—</span> days</div>
-                    <div class="telemetry-sub">since Mar 2023 · zero critical failures</div>
-                    <canvas class="spark" width="72" height="28" data-color="#00d4aa" aria-hidden="true"></canvas>
-                </div>
-                <div class="telemetry-card">
                     <div class="telemetry-label">Tickets Resolved</div>
                     <div class="telemetry-value info"><span data-tele="1400">0</span>+</div>
                     <div class="telemetry-sub">P1–P4 · high CSAT @ Computors</div>
@@ -1238,37 +1944,26 @@
                 </div>
                 <div class="telemetry-card">
                     <div class="telemetry-label">Certifications</div>
-                    <div class="telemetry-value"><span data-tele="52">0</span></div>
+                    <div class="telemetry-value"><span data-tele="52" id="live-cert-count">0</span></div>
                     <div class="telemetry-sub">verified on Credly</div>
-                </div>
-                <div class="telemetry-card">
-                    <div class="telemetry-label">Caffeine Level</div>
-                    <div class="telemetry-value warn"><span id="coffee-cups">—</span> cups</div>
-                    <div class="telemetry-sub">today · status: OPTIMAL</div>
-                    <canvas class="spark" width="72" height="28" data-color="#ffd93d" aria-hidden="true"></canvas>
                 </div>
                 <div class="telemetry-card">
                     <div class="telemetry-label">Interview Status</div>
                     <div class="telemetry-value">OPERATIONAL</div>
-                    <div class="telemetry-sub">open to junior cloud / DevOps roles</div>
+                    <div class="telemetry-sub">open to cloud / platform engineer roles</div>
                 </div>
                 <div class="telemetry-card">
-                    <div class="telemetry-label">Region</div>
+                    <div class="telemetry-label">Region · <span id="london-clock">--:--:--</span> <span style="color: var(--accent-success);">● live</span></div>
                     <div class="telemetry-value info">eu-west-2</div>
-                    <div class="telemetry-sub">Hemel Hempstead → London · remote OK</div>
+                    <div class="telemetry-sub" id="region-weather">Hemel Hempstead → London · remote OK</div>
                 </div>
                 <div class="telemetry-card">
-                    <div class="telemetry-label">Total Visitors <span style="color: var(--accent);">● live</span></div>
-                    <div class="telemetry-value"><span id="live-visitors">—</span></div>
-                    <div class="telemetry-sub">counted in a real Postgres DB · you're one of them</div>
-                </div>
-                <div class="telemetry-card">
-                    <div class="telemetry-label">DB Latency <span style="color: var(--accent);">● live</span></div>
-                    <div class="telemetry-value info"><span id="live-latency">—</span> ms</div>
-                    <div class="telemetry-sub" id="live-latency-sub">round-trip to Supabase, just now</div>
+                    <div class="telemetry-label">Last Commit <span style="color: var(--accent-success);">● live</span></div>
+                    <div class="telemetry-value"><span id="gh-last-push">—</span></div>
+                    <div class="telemetry-sub" id="gh-last-push-sub">fetching GitHub activity…</div>
                 </div>
             </div>
-            <div class="telemetry-note">// visitors &amp; db latency are live from a real database — the career stats are real too; only the squiggly gauges are simulated</div>
+            <div class="telemetry-note">// weather, clock &amp; last commit are live; career stats are real</div>
         </div>
     </section>
 
@@ -1377,6 +2072,7 @@
                         <div class="talk-type speaker">&#9679; AWS London WAUG</div>
                         <h3>Terraforming the Well-Architected Way</h3>
                         <p>AWS Head Office, London — 33 attendees</p>
+                        <p style="margin-top: 0.6rem;"><button type="button" class="talk-link talk-slides-btn" data-deck="terraforming-the-well-architected-way">&#9654; Browse the 15 slides &rarr;</button></p>
                     </div>
                 </div>
                 <div class="video-card">
@@ -1387,6 +2083,7 @@
                         <div class="talk-type speaker">&#9679; Cloud Native London</div>
                         <h3>eBPF: Revolutionizing Cloud-Native Security</h3>
                         <p>London — 50 attendees</p>
+                        <p style="margin-top: 0.6rem;"><button type="button" class="talk-link talk-slides-btn" data-deck="ebpf-cloud-native-security">&#9654; Browse the 32 slides &rarr;</button></p>
                     </div>
                 </div>
                 <div class="video-card">
@@ -1414,10 +2111,14 @@
                 <div class="talk-card">
                     <div class="talk-type podcast">&#9679; Podcast</div>
                     <h3 class="talk-title">LogiCast AWS News Podcast — S5E27</h3>
-                    <div class="talk-venue">Logicata — Secrets Manager, GuardDuty AI, Trillion-Dollar Billing</div>
+                    <div class="talk-venue">Logicata — Secrets Manager × EventBridge, GuardDuty AI investigations, the trillion-dollar billing glitch &amp; career chat</div>
                     <div class="talk-meta">
                         <span>Aug 2026</span>
-                        <span style="opacity: 0.5;">Link soon</span>
+                        <span>
+                            <a href="https://open.spotify.com/episode/2C9PqJ07TJQMSXNt23qJ4x" target="_blank" rel="noopener noreferrer" class="talk-link">Listen &rarr;</a>
+                            &nbsp;·&nbsp;
+                            <a href="https://www.logicata.com/blog/logicast-aws-news-secrets-manager-eventbridge-integration-guardduty-ai-investigations-billing-glitch-and-more/" target="_blank" rel="noopener noreferrer" class="talk-link">Write-up &rarr;</a>
+                        </span>
                     </div>
                 </div>
                 <div class="talk-card">
@@ -1426,7 +2127,11 @@
                     <div class="talk-venue">AWS London Well-Architected User Group — AWS Head Office (33 attendees)</div>
                     <div class="talk-meta">
                         <span>Jul 2026</span>
-                        <a href="https://youtu.be/QUyqRie6-tU" target="_blank" rel="noopener noreferrer" class="talk-link">Watch &rarr;</a>
+                        <span>
+                            <button type="button" class="talk-link talk-slides-btn" data-deck="terraforming-the-well-architected-way">Slides &rarr;</button>
+                            &nbsp;·&nbsp;
+                            <a href="https://youtu.be/QUyqRie6-tU" target="_blank" rel="noopener noreferrer" class="talk-link">Watch &rarr;</a>
+                        </span>
                     </div>
                 </div>
                 <div class="talk-card">
@@ -1435,7 +2140,7 @@
                     <div class="talk-venue">London DevOps Meetup</div>
                     <div class="talk-meta">
                         <span>Mar 2026</span>
-                        <span style="opacity: 0.5;">Link soon</span>
+                        <button type="button" class="talk-link talk-slides-btn" data-deck="shifting-security-left">Slides &rarr;</button>
                     </div>
                 </div>
                 <div class="talk-card">
@@ -1444,7 +2149,11 @@
                     <div class="talk-venue">Cloud Native London — 50 attendees</div>
                     <div class="talk-meta">
                         <span>Feb 2026</span>
-                        <a href="https://youtu.be/IzayRY93z88" target="_blank" rel="noopener noreferrer" class="talk-link">Watch &rarr;</a>
+                        <span>
+                            <button type="button" class="talk-link talk-slides-btn" data-deck="ebpf-cloud-native-security">Slides &rarr;</button>
+                            &nbsp;·&nbsp;
+                            <a href="https://youtu.be/IzayRY93z88" target="_blank" rel="noopener noreferrer" class="talk-link">Watch &rarr;</a>
+                        </span>
                     </div>
                 </div>
                 <div class="talk-card">
@@ -1462,7 +2171,86 @@
                     <div class="talk-venue">Elastic London — 18 attendees</div>
                     <div class="talk-meta">
                         <span>Sep 2025</span>
-                        <a href="https://github.com/InfraPlatformer/elastic-terraform-demo" target="_blank" rel="noopener noreferrer" class="talk-link">Repo &rarr;</a>
+                        <span>
+                            <button type="button" class="talk-link talk-slides-btn" data-deck="elasticsearch-terraform">Slides &rarr;</button>
+                            &nbsp;·&nbsp;
+                            <a href="https://github.com/InfraPlatformer/elastic-terraform-demo" target="_blank" rel="noopener noreferrer" class="talk-link">Repo &rarr;</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="decks" class="section-alt">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">Slide Artifacts</div>
+                <h2 class="section-title">Talk <span class="gradient-text">Decks</span></h2>
+                <p class="section-desc">The actual slides from my talks — flip through them right here (<span style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">←</span>/<span style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">→</span> to navigate, <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">F</span> for fullscreen), or grab the PDF. 4 decks · 81 slides · zero “sorry, you had to be there.”</p>
+            </div>
+            <div class="decks-grid">
+                <div class="deck-card">
+                    <button type="button" class="deck-cover" data-deck="terraforming-the-well-architected-way" aria-label="Present slides: Terraforming the Well-Architected Way">
+                        <span class="deck-count-badge">15 SLIDES</span>
+                        <img src="decks/terraforming-the-well-architected-way/cover.jpg" alt="Title slide of Terraforming the Well-Architected Way" loading="lazy">
+                    </button>
+                    <div class="deck-body">
+                        <div class="talk-type speaker">&#9679; AWS London WAUG · Jul 2026</div>
+                        <h3>Terraforming the Well-Architected Way</h3>
+                        <div class="deck-venue">IaC reviews that actually catch risks — AWS Head Office, London (33 attendees)</div>
+                        <div class="deck-actions">
+                            <button type="button" class="deck-btn primary" data-deck="terraforming-the-well-architected-way">&#9654; Present</button>
+                            <a class="deck-btn" href="decks/terraforming-the-well-architected-way/terraforming-the-well-architected-way.pdf" target="_blank" rel="noopener noreferrer">&#8681; PDF</a>
+                            <a class="deck-btn" href="https://youtu.be/QUyqRie6-tU" target="_blank" rel="noopener noreferrer">&#9654; Recording</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="deck-card">
+                    <button type="button" class="deck-cover" data-deck="shifting-security-left" aria-label="Present slides: Shifting Security Left">
+                        <span class="deck-count-badge">12 SLIDES</span>
+                        <img src="decks/shifting-security-left/cover.jpg" alt="Title slide of Shifting Security Left" loading="lazy">
+                    </button>
+                    <div class="deck-body">
+                        <div class="talk-type speaker">&#9679; London DevOps Meetup · Mar 2026</div>
+                        <h3>Shifting Security Left — Building Secure CI/CD for Multi-Cloud</h3>
+                        <div class="deck-venue">Supply-chain security, signing, provenance &amp; attestations across AWS + Azure pipelines</div>
+                        <div class="deck-actions">
+                            <button type="button" class="deck-btn primary" data-deck="shifting-security-left">&#9654; Present</button>
+                            <a class="deck-btn" href="decks/shifting-security-left/shifting-security-left.pdf" target="_blank" rel="noopener noreferrer">&#8681; PDF</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="deck-card">
+                    <button type="button" class="deck-cover" data-deck="ebpf-cloud-native-security" aria-label="Present slides: eBPF Revolutionizing Cloud-Native Security">
+                        <span class="deck-count-badge">32 SLIDES</span>
+                        <img src="decks/ebpf-cloud-native-security/cover.jpg" alt="Title slide of eBPF: Revolutionizing Cloud-Native Security" loading="lazy">
+                    </button>
+                    <div class="deck-body">
+                        <div class="talk-type speaker">&#9679; Cloud Native London · Feb 2026</div>
+                        <h3>eBPF: Revolutionizing Cloud-Native Security</h3>
+                        <div class="deck-venue">Kernel-level observability &amp; runtime security with Cilium, Tetragon and Falco (50 attendees)</div>
+                        <div class="deck-actions">
+                            <button type="button" class="deck-btn primary" data-deck="ebpf-cloud-native-security">&#9654; Present</button>
+                            <a class="deck-btn" href="decks/ebpf-cloud-native-security/ebpf-cloud-native-security.pdf" target="_blank" rel="noopener noreferrer">&#8681; PDF</a>
+                            <a class="deck-btn" href="https://youtu.be/IzayRY93z88" target="_blank" rel="noopener noreferrer">&#9654; Recording</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="deck-card">
+                    <button type="button" class="deck-cover" data-deck="elasticsearch-terraform" aria-label="Present slides: Advanced Elasticsearch and Terraform Infrastructure">
+                        <span class="deck-count-badge">22 SLIDES</span>
+                        <img src="decks/elasticsearch-terraform/cover.jpg" alt="Title slide of Advanced Elasticsearch and Terraform Infrastructure" loading="lazy">
+                    </button>
+                    <div class="deck-body">
+                        <div class="talk-type speaker">&#9679; Elastic London · Sep 2025</div>
+                        <h3>Elastic Observability — Automating Elastic with Terraform</h3>
+                        <div class="deck-venue">Securing &amp; automating Elasticsearch across AWS and Azure — CI/CD, optimization results (18 attendees)</div>
+                        <div class="deck-actions">
+                            <button type="button" class="deck-btn primary" data-deck="elasticsearch-terraform">&#9654; Present</button>
+                            <a class="deck-btn" href="decks/elasticsearch-terraform/elasticsearch-terraform.pdf" target="_blank" rel="noopener noreferrer">&#8681; PDF</a>
+                            <a class="deck-btn" href="https://github.com/InfraPlatformer/elastic-terraform-demo" target="_blank" rel="noopener noreferrer">&#9889; Repo</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1474,54 +2262,75 @@
             <div class="section-header">
                 <div class="section-tag">Published Intelligence</div>
                 <h2 class="section-title">Writing on <span class="gradient-text">AWS Builder Center</span></h2>
-                <p class="section-desc">Long-form articles on cloud security, IAM, eBPF, and developer velocity — published as an AWS Community Builder.</p>
+                <p class="section-desc">Long-form articles on cloud security, IAM, eBPF, policy as code, and developer velocity — published as an AWS Community Builder. Cards refresh during the scheduled static build, not from a live browser API call.</p>
             </div>
             <div class="talks-grid">
-                <div class="talk-card">
-                    <div class="talk-type author">&#9679; Article</div>
-                    <h3 class="talk-title">The Next Frontier in IAM: Manufacturing Identity Context</h3>
-                    <div class="talk-venue">From "who are you" to "where are you coming from" — building verifiable network perimeters with AWS VPC endpoint condition keys</div>
+                <!-- BUILDER-ARTICLES:START -->
+                <div class="talk-card" style="border-color: rgba(255, 217, 61, 0.5); box-shadow: 0 0 24px rgba(255, 217, 61, 0.1);">
+                    <div class="talk-type author">&#9679; Article · New · &#11088; Spotlight Pick ×2</div>
+                    <h3 class="talk-title">Security as Code: Terraform Operations on AWS in the Age of Frontier Agents</h3>
+                    <div class="talk-venue">Featured in the AWS Community Builders Spotlight (Oct 12th edition) — my second spotlight. Running Terraform operations safely when AI agents are writing the plan</div>
                     <div class="talk-meta">
-                        <span>2026</span>
-                        <a href="https://builder.aws.com/content/3DJRRyyA8ui8OWYptbZIqJntgxM/the-next-frontier-in-iam-manufacturing-identity-context-from-who-are-you-to-where-are-you-coming-from-building-verifiable-network-perimeters-with-aws-vpc-endpoint-condition-keys" target="_blank" rel="noopener noreferrer" class="talk-link">Read &rarr;</a>
+                        <span>Oct 2026</span>
+                        <a href="https://dev.to/aws-builders/security-as-code-terraform-operations-on-aws-in-the-age-of-frontier-agents-10h4" target="_blank" rel="noopener noreferrer" class="talk-link">Read &#8599;</a>
                     </div>
                 </div>
                 <div class="talk-card">
-                    <div class="talk-type author">&#9679; Article &middot; &#11088; Spotlight Pick</div>
+                    <div class="talk-type author">&#9679; Article</div>
+                    <h3 class="talk-title">Security at the Speed of Synth: Policy as Code in the AWS DevToolchain</h3>
+                    <div class="talk-venue">CDK-nag, CloudFormation Guard, CodePipeline and Amazon Q Developer — making insecure infrastructure undeliverable across the developer loop</div>
+                    <div class="talk-meta">
+                        <span>Aug 2026</span>
+                        <a href="#security-at-the-speed-of-synth" class="talk-link">Read &rarr;</a>
+                    </div>
+                </div>
+                <div class="talk-card">
+                    <div class="talk-type author">&#9679; Article · Talk Recap</div>
+                    <h3 class="talk-title">Terraforming the Well-Architected Way: Recap from the AWS London WAUG Summer Special</h3>
+                    <div class="talk-venue">AWS London Well-Architected User Group recap — practical lessons on Terraform reviews that catch real risk</div>
+                    <div class="talk-meta">
+                        <span>Jul 2026</span>
+                        <a href="#terraforming-the-well-architected-way-recap-from-the-aws-london-waug-summer-special" class="talk-link">Read &rarr;</a>
+                    </div>
+                </div>
+                <div class="talk-card">
+                    <div class="talk-type author">&#9679; Article</div>
+                    <h3 class="talk-title">The Guarded Canary: How to Safely Ship AI-Generated Infrastructure on AWS</h3>
+                    <div class="talk-venue">A guarded deployment pattern for AI-generated infrastructure using Lambda MicroVMs, policy checks and progressive delivery</div>
+                    <div class="talk-meta">
+                        <span>Jul 2026</span>
+                        <a href="#the-guarded-canary-how-to-safely-ship-ai-generated-infrastructure-on-aws" class="talk-link">Read &rarr;</a>
+                    </div>
+                </div>
+                <div class="talk-card">
+                    <div class="talk-type author">&#9679; Article</div>
+                    <h3 class="talk-title">Terraform at MSP Scale: Engineering Multi-Tenant Infrastructure as a Service in 2026</h3>
+                    <div class="talk-venue">Beyond terraform apply — orchestrating hundreds of MSP accounts with guardrails and infrastructure as a product</div>
+                    <div class="talk-meta">
+                        <span>Jun 2026</span>
+                        <a href="#terraform-at-msp-scale-engineering-multi-tenant-infrastructure-as-a-service-in" class="talk-link">Read &rarr;</a>
+                    </div>
+                </div>
+                <div class="talk-card">
+                    <div class="talk-type author">&#9679; Article · ★ Spotlight Pick</div>
                     <h3 class="talk-title">The Unseen Pipeline: Engineering Developer Velocity with AWS DevTools in 2026</h3>
                     <div class="talk-venue">Featured in the AWS Community Builders Spotlight — how Kiro, AgentCore and Transform are reshaping developer experience</div>
                     <div class="talk-meta">
                         <span>Jun 2026</span>
-                        <a href="https://builder.aws.com/content/3ElShp5DBoeQCRfc5kaBhwsruIe/the-unseen-pipeline-engineering-developer-velocity-with-aws-devtools-in-2026" target="_blank" rel="noopener noreferrer" class="talk-link">Read &rarr;</a>
+                        <a href="#the-unseen-pipeline-engineering-developer-velocity-with-aws-dev-tools-in" class="talk-link">Read &rarr;</a>
                     </div>
                 </div>
                 <div class="talk-card">
                     <div class="talk-type author">&#9679; Article</div>
-                    <h3 class="talk-title">The Zero-Trust Fortress: Architecting Impenetrable AWS Environments</h3>
-                    <div class="talk-venue">Eliminating standing privileges with Resource Control Policies and ephemeral credentials — data perimeters and continuous compliance</div>
+                    <h3 class="talk-title">Progressive Delivery on AWS: AppConfig Feature Flags, Lambda Canary Deployments, and Real-Time Observability</h3>
+                    <div class="talk-venue">AppConfig targeting, Lambda canary deployments and CloudWatch Synthetics for automated promotion and rollback</div>
                     <div class="talk-meta">
-                        <span>Apr 2026</span>
-                        <a href="https://builder.aws.com/content/3CAyBe68kyewNBVJBaVvNgvrdqf/the-zero-trust-fortress-architecting-impenetrable-aws-environments-with-resource-control-policies-and-ephemeral-credentials" target="_blank" rel="noopener noreferrer" class="talk-link">Read &rarr;</a>
+                        <span>May 2026</span>
+                        <a href="#progressive-delivery-on-aws-app-config-feature-flags-lambda-canary-deployments-and-real-time-observability" class="talk-link">Read &rarr;</a>
                     </div>
                 </div>
-                <div class="talk-card">
-                    <div class="talk-type author">&#9679; Article</div>
-                    <h3 class="talk-title">Automating Cloud Defense with IaC &amp; eBPF on AWS</h3>
-                    <div class="talk-venue">Combining eBPF-based security tools (Falco, Tetragon) with infrastructure as code for runtime threat detection</div>
-                    <div class="talk-meta">
-                        <span>Apr 2026</span>
-                        <a href="https://builder.aws.com/content/3BtlMnU1yojvC6zRCErCRo6f6x7/automating-cloud-defense-with-iac-and-ebpf-on-aws" target="_blank" rel="noopener noreferrer" class="talk-link">Read &rarr;</a>
-                    </div>
-                </div>
-                <div class="talk-card">
-                    <div class="talk-type author">&#9679; Article</div>
-                    <h3 class="talk-title">Breaking into Cloud: My Journey as an Aspiring Platform Engineer</h3>
-                    <div class="talk-venue">The career-switch playbook — from first-line networking to cloud engineering, and what actually worked</div>
-                    <div class="talk-meta">
-                        <span>Jul 2025</span>
-                        <a href="https://builder.aws.com/content/2zm7OJ7NUq3YDnvGCc7thxUoQM0/breaking-into-cloud-my-journey-as-an-aspiring-platform-engineer" target="_blank" rel="noopener noreferrer" class="talk-link">Read &rarr;</a>
-                    </div>
-                </div>
+                <!-- BUILDER-ARTICLES:END -->
+
             </div>
         </div>
     </section>
@@ -1617,56 +2426,75 @@
         <div class="container">
             <div class="section-header">
                 <div class="section-tag">Reference Architecture</div>
-                <h2 class="section-title">How I <span class="gradient-text">Build</span></h2>
-                <p class="section-desc">The pattern I reach for: edge-cached, load-balanced, containerised, policy-checked, observable. Watch the packets flow.</p>
+                <h2 class="section-title">How I <span class="gradient-text">Connect</span></h2>
+                <p class="section-desc">Secure access to customer estates — the pattern from my NOC &amp; MSP work. One hardened door in, everything encrypted, everything logged. Hover or tap a node.</p>
             </div>
             <div class="arch-wrap">
-                <svg viewBox="0 0 940 330" role="img" aria-label="Diagram of a secure cloud platform: users connect through CDN and WAF to a load balancer, into a Kubernetes cluster backed by a database and object storage, with policy checks and observability alongside.">
-                    <path id="ap1" class="arch-edge" d="M130,155 H190"/>
-                    <path id="ap2" class="arch-edge" d="M320,155 H380"/>
-                    <path id="ap3" class="arch-edge" d="M500,155 H560"/>
-                    <path id="ap4" class="arch-edge" d="M760,155 H800"/>
-                    <path class="arch-edge-dashed" d="M440,70 V130"/>
-                    <path class="arch-edge-dashed" d="M450,250 V280 H660 V255"/>
+                <svg viewBox="0 0 1100 470" role="img" aria-label="Interactive diagram of secure customer access: engineer workstation connects via SSO and MFA to a jump host in an AWS management VPC, over a site-to-site VPN tunnel to the customer's FortiGate firewall and internal estate, with Terraform and OPA policy checks above and observability below.">
+                    <path id="ap1" class="arch-edge" d="M150,218 H180"/>
+                    <path id="ap2" class="arch-edge" d="M310,218 H390"/>
+                    <path id="ap3" class="arch-edge" d="M550,218 H660"/>
+                    <path id="ap4" class="arch-edge" d="M780,218 H820"/>
+                    <path id="ap5" class="arch-edge" d="M885,246 V262 H925 V290"/>
+                    <path class="arch-edge-dashed" d="M490,80 V120"/>
+                    <path class="arch-edge-dashed" d="M490,390 V320"/>
 
-                    <rect class="arch-node" x="20" y="130" width="110" height="50" rx="8"/>
-                    <text class="arch-text" x="75" y="152" text-anchor="middle">Users</text>
-                    <text class="arch-sub" x="75" y="168" text-anchor="middle">recruiters too</text>
-
-                    <rect class="arch-node" x="190" y="130" width="130" height="50" rx="8"/>
-                    <text class="arch-text" x="255" y="152" text-anchor="middle">CDN + WAF</text>
-                    <text class="arch-sub" x="255" y="168" text-anchor="middle">CloudFront</text>
-
-                    <rect class="arch-node" x="380" y="130" width="120" height="50" rx="8"/>
-                    <text class="arch-text" x="440" y="152" text-anchor="middle">Load Balancer</text>
-                    <text class="arch-sub" x="440" y="168" text-anchor="middle">ALB · TLS</text>
-
-                    <rect class="arch-node arch-node-accent" x="380" y="20" width="130" height="50" rx="8"/>
-                    <text class="arch-text" x="445" y="42" text-anchor="middle">OPA / Conftest</text>
-                    <text class="arch-sub" x="445" y="58" text-anchor="middle">policy as code</text>
-
-                    <rect class="arch-node" x="560" y="60" width="200" height="190" rx="10"/>
-                    <text class="arch-text" x="660" y="85" text-anchor="middle">Kubernetes (EKS)</text>
-                    <rect class="arch-node" x="580" y="100" width="160" height="34" rx="6"/>
-                    <text class="arch-sub" x="660" y="121" text-anchor="middle">pod · app</text>
-                    <rect class="arch-node" x="580" y="142" width="160" height="34" rx="6"/>
-                    <text class="arch-sub" x="660" y="163" text-anchor="middle">pod · app</text>
-                    <rect class="arch-node" x="580" y="184" width="160" height="34" rx="6"/>
-                    <text class="arch-sub" x="660" y="205" text-anchor="middle">pod · Falco / eBPF</text>
-
-                    <rect class="arch-node" x="800" y="130" width="120" height="50" rx="8"/>
-                    <text class="arch-text" x="860" y="152" text-anchor="middle">Data Layer</text>
-                    <text class="arch-sub" x="860" y="168" text-anchor="middle">RDS · S3</text>
-
-                    <rect class="arch-node" x="380" y="250" width="140" height="50" rx="8"/>
-                    <text class="arch-text" x="450" y="272" text-anchor="middle">Observability</text>
-                    <text class="arch-sub" x="450" y="288" text-anchor="middle">Datadog · SIEM</text>
+                    <g class="anode" data-key="workstation" tabindex="0" role="button" aria-label="Engineer workstation — details">
+                        <rect class="arch-node" x="20" y="190" width="130" height="56" rx="8"/>
+                        <text class="arch-text" x="85" y="214" text-anchor="middle">Engineer</text>
+                        <text class="arch-sub" x="85" y="231" text-anchor="middle">workstation · Linux</text>
+                    </g>
+                    <g class="anode" data-key="sso" tabindex="0" role="button" aria-label="SSO and MFA identity layer — details">
+                        <rect class="arch-node" x="180" y="190" width="130" height="56" rx="8"/>
+                        <text class="arch-text" x="245" y="214" text-anchor="middle">SSO + MFA</text>
+                        <text class="arch-sub" x="245" y="231" text-anchor="middle">IAM Identity Center</text>
+                    </g>
+                    <g class="anode" data-key="vpc" tabindex="0" role="button" aria-label="AWS management VPC — details">
+                        <rect class="arch-node arch-node-accent" x="340" y="120" width="280" height="200" rx="10"/>
+                        <text class="arch-sub" x="480" y="143" text-anchor="middle">Management VPC (AWS · eu-west-2)</text>
+                    </g>
+                    <g class="anode" data-key="jumphost" tabindex="0" role="button" aria-label="Jump host bastion — details">
+                        <rect class="arch-node" x="390" y="200" width="160" height="56" rx="8"/>
+                        <text class="arch-text" x="470" y="224" text-anchor="middle">Jump Host</text>
+                        <text class="arch-sub" x="470" y="241" text-anchor="middle">EC2 · SSM · no :22</text>
+                    </g>
+                    <g class="anode" data-key="tunnel" tabindex="0" role="button" aria-label="Encrypted internet tunnel — details">
+                        <rect class="arch-node" x="660" y="190" width="120" height="56" rx="8"/>
+                        <text class="arch-text" x="720" y="214" text-anchor="middle">Internet</text>
+                        <text class="arch-sub" x="720" y="231" text-anchor="middle">IPsec tunnel</text>
+                    </g>
+                    <g class="anode" data-key="fw" tabindex="0" role="button" aria-label="Customer edge FortiGate firewall — details">
+                        <rect class="arch-node" x="820" y="190" width="130" height="56" rx="8"/>
+                        <text class="arch-text" x="885" y="214" text-anchor="middle">Customer Edge</text>
+                        <text class="arch-sub" x="885" y="231" text-anchor="middle">FortiGate FW</text>
+                    </g>
+                    <g class="anode" data-key="lan" tabindex="0" role="button" aria-label="Customer estate — details">
+                        <rect class="arch-node" x="800" y="290" width="250" height="70" rx="8"/>
+                        <text class="arch-text" x="925" y="318" text-anchor="middle">Customer Estate</text>
+                        <text class="arch-sub" x="925" y="336" text-anchor="middle">servers · switches · VoIP · M365</text>
+                    </g>
+                    <g class="anode" data-key="iac" tabindex="0" role="button" aria-label="Terraform with OPA and Conftest policy checks — details">
+                        <rect class="arch-node" x="390" y="30" width="200" height="50" rx="8"/>
+                        <text class="arch-text" x="490" y="52" text-anchor="middle">Terraform + OPA</text>
+                        <text class="arch-sub" x="490" y="68" text-anchor="middle">policy-checked IaC</text>
+                    </g>
+                    <g class="anode" data-key="obs" tabindex="0" role="button" aria-label="Observability and runtime security — details">
+                        <rect class="arch-node" x="390" y="390" width="200" height="50" rx="8"/>
+                        <text class="arch-text" x="490" y="412" text-anchor="middle">Observability</text>
+                        <text class="arch-sub" x="490" y="428" text-anchor="middle">CloudWatch · Datadog · Falco</text>
+                    </g>
 
                     <circle r="4" fill="#00d4aa"><animateMotion dur="2.2s" repeatCount="indefinite"><mpath href="#ap1"/></animateMotion></circle>
                     <circle r="4" fill="#38bdf8"><animateMotion dur="2.6s" begin="0.4s" repeatCount="indefinite"><mpath href="#ap2"/></animateMotion></circle>
                     <circle r="4" fill="#00d4aa"><animateMotion dur="2.4s" begin="0.8s" repeatCount="indefinite"><mpath href="#ap3"/></animateMotion></circle>
                     <circle r="4" fill="#ffd93d"><animateMotion dur="2.8s" begin="0.2s" repeatCount="indefinite"><mpath href="#ap4"/></animateMotion></circle>
+                    <circle r="4" fill="#ff6b6b"><animateMotion dur="2.0s" begin="1.1s" repeatCount="indefinite"><mpath href="#ap5"/></animateMotion></circle>
                 </svg>
+            </div>
+            <div class="arch-detail" id="arch-detail" aria-live="polite">
+                <div class="arch-detail-title" id="arch-detail-title">// hover or tap a node</div>
+                <div class="arch-detail-body" id="arch-detail-body">Every hop on this map is a workflow I've actually run in production — from SSM sessions through a bastion, down an IPsec tunnel, to FortiGate configs on a customer's edge.</div>
+                <div class="arch-detail-certs" id="arch-detail-certs"></div>
             </div>
         </div>
     </section>
@@ -1676,104 +2504,25 @@
             <div class="section-header">
                 <div class="section-tag">Verified Artifacts</div>
                 <h2 class="section-title">Certifications</h2>
-                <p class="section-desc">52 verified badges on Credly. Here are the highlights most relevant to cloud engineering.</p>
+                <p class="section-desc">Live credentials pulled from Credly — auto-updating as new badges are earned.</p>
             </div>
-            <div class="certs-grid">
-                <div class="cert-item">
-                    <div class="cert-icon">&#9729;</div>
-                    <div class="cert-text">
-                        <h4>Well-Architected Proficient</h4>
-                        <p>AWS — Mar 2024</p>
-                    </div>
-                </div>
-                <div class="cert-item">
-                    <div class="cert-icon">&#9729;</div>
-                    <div class="cert-text">
-                        <h4>AWS Knowledge: Security Champion</h4>
-                        <p>AWS — Sep 2025</p>
-                    </div>
-                </div>
-                <div class="cert-item">
-                    <div class="cert-icon">&#9729;</div>
-                    <div class="cert-text">
-                        <h4>AWS Knowledge: Amazon EKS</h4>
-                        <p>AWS — Apr 2025</p>
-                    </div>
-                </div>
-                <div class="cert-item">
-                    <div class="cert-icon">&#128737;</div>
-                    <div class="cert-text">
-                        <h4>Fortinet Certified Associate Cybersecurity</h4>
-                        <p>Fortinet — Expires Jul 2027</p>
-                    </div>
-                </div>
-                <div class="cert-item">
-                    <div class="cert-icon">&#128737;</div>
-                    <div class="cert-text">
-                        <h4>Fortinet Certified Fundamentals Cybersecurity</h4>
-                        <p>Fortinet — Expires Jul 2027</p>
-                    </div>
-                </div>
-                <div class="cert-item">
-                    <div class="cert-icon">&#128230;</div>
-                    <div class="cert-text">
-                        <h4>Chainguard Container Crusader</h4>
-                        <p>Chainguard — Jun 2025</p>
-                    </div>
-                </div>
-                <div class="cert-item">
-                    <div class="cert-icon">&#128039;</div>
-                    <div class="cert-text">
-                        <h4>LFS261: DevOps and SRE Fundamentals</h4>
-                        <p>The Linux Foundation — Aug 2025</p>
-                    </div>
-                </div>
-                <div class="cert-item">
-                    <div class="cert-icon">&#128039;</div>
-                    <div class="cert-text">
-                        <h4>LFS158: Introduction to Kubernetes</h4>
-                        <p>The Linux Foundation — Mar 2025</p>
-                    </div>
-                </div>
-                <div class="cert-item">
-                    <div class="cert-icon">&#128200;</div>
-                    <div class="cert-text">
-                        <h4>Site Reliability Engineer Learning Path</h4>
-                        <p>Datadog — May 2026</p>
-                    </div>
-                </div>
-                <div class="cert-item">
-                    <div class="cert-icon">&#128200;</div>
-                    <div class="cert-text">
-                        <h4>Cloud Security Engineer — Cloud SIEM</h4>
-                        <p>Datadog — May 2026</p>
-                    </div>
-                </div>
-                <div class="cert-item">
-                    <div class="cert-icon">&#128029;</div>
-                    <div class="cert-text">
-                        <h4>Discovery: Platform Engineer</h4>
-                        <p>Isovalent (Cilium) — Sep 2024</p>
-                    </div>
-                </div>
-                <div class="cert-item">
-                    <div class="cert-icon">&#128039;</div>
-                    <div class="cert-text">
-                        <h4>LFD140: GitHub for Open Standards Development</h4>
-                        <p>The Linux Foundation — Jan 2026</p>
-                    </div>
-                </div>
-                <div class="cert-item">
-                    <div class="cert-icon">&#128203;</div>
-                    <div class="cert-text">
-                        <h4>AZ-104 (In Progress)</h4>
-                        <p>Microsoft Azure Administrator — Currently pursuing</p>
-                    </div>
-                </div>
+            <div class="live-certs" style="display: grid; gap: 1.5rem;">
+                <img src="https://credly-readme-stats.onrender.com/api/stats?username=alam-zaib-ahmad&theme=dark&hide_border=true&bg_color=0d1321&title_color=00d4aa&text_color=e2e8f0&icon_color=38bdf8&border_color=1e293b&custom_title=Credential+Stats" 
+                     alt="Live Credly badge statistics" 
+                     loading="lazy" 
+                     style="max-width: 100%; height: auto; border-radius: 10px; display: block; margin: 0 auto;">
             </div>
+            <ul class="print-only cert-print-list">
+                <li>52 verified badges on Credly — credly.com/users/alam-zaib-ahmad/badges</li>
+                <li>AWS Well-Architected Proficient · AWS Knowledge: Security Champion · AWS EKS</li>
+                <li>Linux Foundation: Kubernetes &amp; Cloud Native, DevOps &amp; SRE Fundamentals</li>
+                <li>Fortinet Certified Associate &amp; Fundamentals (Cybersecurity)</li>
+                <li>Datadog SRE Learning Path · Datadog Cloud SIEM · Isovalent (Cilium) Platform Engineer</li>
+                <li>In progress: AWS Solutions Architect Associate — exam January</li>
+            </ul>
             <div style="text-align: center; margin-top: 2rem;">
                 <a href="https://www.credly.com/users/alam-zaib-ahmad/badges" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="display: inline-flex;">
-                    <span>&#127942;</span> View all 52 badges on Credly
+                    <span>&#127942;</span> View all badges on Credly
                 </a>
             </div>
         </div>
@@ -1788,14 +2537,14 @@
             </div>
             <div class="contact-grid">
                 <div class="contact-info">
-                    <h3>Open to Junior Cloud / DevOps Engineer Roles</h3>
+                    <h3>Open to Cloud &amp; Platform Engineering Roles</h3>
                     <p style="color: var(--text-secondary); margin-bottom: 1rem;">
                         Currently based in Hemel Hempstead, England. Open to remote, hybrid, and London-area opportunities.
                     </p>
                     <p style="color: var(--text-secondary);">
                         <span class="mono" style="color: var(--accent-success);">Status:</span> Available for opportunities<br>
                         <span class="mono" style="color: var(--accent-success);">Location:</span> Hemel Hempstead, UK<br>
-                        <span class="mono" style="color: var(--accent-success);">Clearance:</span> Open to work
+                        <span class="mono" style="color: var(--accent-success);">Availability:</span> Immediate start
                     </p>
                     <div style="margin-top: 1.5rem;">
                         <button class="btn btn-secondary" id="print-cv">
@@ -1804,7 +2553,7 @@
                     </div>
                 </div>
                 <div class="contact-links">
-                    <a href="mailto:alamzaibahmad615@gmail.com" class="contact-link">
+                    <a href="mailto:alamzaibahmad615@gmail.com" target="_self" class="contact-link">
                         <div class="icon">&#9993;</div>
                         <div>
                             <div style="font-weight: 600;">Email</div>
@@ -1829,6 +2578,601 @@
             </div>
         </div>
     </section>
+    <section id="security-at-the-speed-of-synth" class="article-section" aria-labelledby="security-article-title">
+<section class="article-hero">
+<div class="kicker">Published Intelligence · Aug 2026</div>
+<h1 id="security-article-title">Security at the <span class="gradient-text">Speed of Synth</span></h1>
+<p class="standfirst">CDK-nag, CloudFormation Guard, CodePipeline and Amazon Q Developer — how to make insecure infrastructure undeliverable without ever leaving the AWS toolchain.</p>
+<div aria-label="Article metadata" class="meta-panel">
+<div aria-hidden="true" class="meta-bar">
+<span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+<span class="meta-title">alam@builder-center:~/writing</span>
+</div>
+<div class="meta-body">
+<div class="meta-item">
+<div class="meta-label">Author</div>
+<div class="meta-value">Alam Ahmed</div>
+</div>
+<div class="meta-item">
+<div class="meta-label">Role</div>
+<div class="meta-value">AWS Community Builder</div>
+</div>
+<div class="meta-item">
+<div class="meta-label">Topic</div>
+<div class="meta-value">Policy as Code</div>
+</div>
+</div>
+</div>
+</section>
+<div class="article-layout">
+<aside aria-label="Article contents" class="article-toc">
+<div class="toc-title">cat article.map</div>
+<a class="" href="#the-gate-is-in-the-wrong-place">The gate is in the wrong place</a>
+<a class="" href="#layer-1--the-editor-amazon-q-developer-as-the-first-reviewer">Layer 1 — The editor: Amazon Q Developer as the first reviewer</a>
+<a class="" href="#layer-2--synth-time-cdk-nag-makes-the-cdk-refuse">Layer 2 — Synth time: cdk-nag makes the CDK refuse</a>
+<a class="toc-sub" href="#1-acknowledge-deliberately-not-silently">1. Acknowledge deliberately, not silently</a>
+<a class="toc-sub" href="#2-ship-your-own-nagpack">2. Ship your own NagPack</a>
+<a class="toc-sub" href="#3-warnings-are-a-migration-strategy-not-a-permanent-hiding-place">3. Warnings are a migration strategy, not a permanent hiding place</a>
+<a class="" href="#layer-3--the-pipeline-cloudformation-guard-inside-codepipeline">Layer 3 — The pipeline: CloudFormation Guard inside CodePipeline</a>
+<a class="toc-sub" href="#avoid-turning-two-layers-into-two-sources-of-truth">Avoid turning two layers into two sources of truth</a>
+<a class="toc-sub" href="#harden-the-pipeline-itself">Harden the pipeline itself</a>
+<a class="" href="#layer-4--the-backstop-the-cloud-says-no">Layer 4 — The backstop: the cloud says no</a>
+<a class="" href="#not-a-cdk-shop-the-pattern-still-works">Not a CDK shop? The pattern still works</a>
+<a class="" href="#design-a-real-escape-hatch">Design a real escape hatch</a>
+<a class="" href="#know-what-this-costs">Know what this costs</a>
+<a class="" href="#measure-whether-the-road-is-actually-faster">Measure whether the road is actually faster</a>
+<a class="" href="#what-id-tell-my-past-self">What I'd tell my past self</a>
+</aside>
+<article class="article-body" id="article-content">
+<h2 id="the-gate-is-in-the-wrong-place">The gate is in the wrong place</h2>
+<p>Here's a scene every AWS shop will recognise. A developer writes a CDK stack on Monday. The pull request lands on Wednesday. Security review happens on Friday — in a spreadsheet, by a human who is also reviewing eleven other teams — and the deployment goes out the following Tuesday with a <code>0.0.0.0/0</code> ingress rule nobody clocked, because it was hidden inside a convenience method three construct levels deep.</p>
+<p>We keep calling this "shift-left security," but look at where the gate actually sits: after the code is written, after the review, millimetres in front of production — staffed by the most overloaded people in the building.</p>
+<p>That's not shifting left. That's just a slower right.</p>
+<p>I'm a DevTools person, so my instinct is never "add another review." It's <strong>move the check into the tool the developer is already using</strong>. And this is where the AWS-native toolchain has quietly become genuinely excellent — because security enforcement can now live at every stage of the developer loop:</p>
+<pre class="text"><code>INNER LOOP (seconds)          OUTER LOOP (minutes)           RUNTIME (always)
+─────────────────────         ─────────────────────          ─────────────────
+Editor: Amazon Q Developer    Synth: cdk-nag                 Config rules
+  security scanning           Pipeline: CodeBuild + Guard    Security Hub
+CLI: cdk synth fails          Deploy: CodePipeline gates     RCPs / SCPs
+  on violations                                                (the hard backstop)</code></pre>
+<p>Same policies. Multiple enforcement points. The developer gets feedback in seconds in the editor, the pipeline hard-blocks in minutes, and the cloud itself is the final backstop. Nobody waits for Friday's spreadsheet.</p>
+<p>Let's build the whole thing — and, just as importantly, let's talk about where the model needs operational discipline.</p>
+<hr/>
+<h2 id="layer-1--the-editor-amazon-q-developer-as-the-first-reviewer">Layer 1 — The editor: Amazon Q Developer as the first reviewer</h2>
+<p>The cheapest security finding is the one that never gets typed. Amazon Q Developer in the IDE does two useful jobs here: it can generate infrastructure code that starts closer to AWS best practice, and its security scanning can flag issues inline — hardcoded credentials, overly permissive IAM, unencrypted resources — before the file is even saved.</p>
+<p>There is a practical caveat, though: <strong>AI assistance is probabilistic, not deterministic</strong>. Giving the assistant good repository context — a README that documents your tagging standard, encryption baseline and module conventions — can improve the quality of suggestions where the tool supports that context. But it is not a guarantee. The model does not become your control plane just because it has read your standards document.</p>
+<p>So treat the AI layer as a force multiplier, not a foundation. It can reduce the number of mistakes that reach the next stage. It should never be the only thing standing between a bad idea and production.</p>
+<p>You don't build a security posture on "the model probably won't suggest a public bucket." You build it on deterministic checks. That's the next layer.</p>
+<hr/>
+<h2 id="layer-2--synth-time-cdk-nag-makes-the-cdk-refuse">Layer 2 — Synth time: cdk-nag makes the CDK refuse</h2>
+<p>This is the crown jewel of AWS-native policy-as-code. If you're a CDK shop and not using it, stop reading and install <code>cdk-nag</code> right now. I'll wait.</p>
+<p><code>cdk-nag</code> walks your construct tree at synthesis and evaluates every CloudFormation resource against a rule pack — AWS Solutions, NIST 800-53, HIPAA, PCI DSS, Serverless and more. If a resource violates a rule at <code>ERROR</code> level, <code>cdk synth</code> itself fails. The template never materialises. There is nothing to deploy.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="co">// bin/app.ts</span></span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="im">import</span> { App<span class="op">,</span> Validations } <span class="im">from</span> <span class="st">'aws-cdk-lib'</span><span class="op">;</span></span>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="im">import</span> { AwsSolutionsChecks<span class="op">,</span> NIST80053R5Checks } <span class="im">from</span> <span class="st">'cdk-nag'</span><span class="op">;</span></span>
+<span id="cb2-4"><a aria-hidden="true" href="#cb2-4" tabindex="-1"></a><span class="im">import</span> { PlatformStack } <span class="im">from</span> <span class="st">'../lib/platform-stack'</span><span class="op">;</span></span>
+<span id="cb2-5"><a aria-hidden="true" href="#cb2-5" tabindex="-1"></a></span>
+<span id="cb2-6"><a aria-hidden="true" href="#cb2-6" tabindex="-1"></a><span class="kw">const</span> app <span class="op">=</span> <span class="kw">new</span> <span class="fu">App</span>()<span class="op">;</span></span>
+<span id="cb2-7"><a aria-hidden="true" href="#cb2-7" tabindex="-1"></a><span class="kw">new</span> <span class="fu">PlatformStack</span>(app<span class="op">,</span> <span class="st">'PlatformStack'</span>)<span class="op">;</span></span>
+<span id="cb2-8"><a aria-hidden="true" href="#cb2-8" tabindex="-1"></a></span>
+<span id="cb2-9"><a aria-hidden="true" href="#cb2-9" tabindex="-1"></a><span class="co">// Every construct in the app, every synth, every time</span></span>
+<span id="cb2-10"><a aria-hidden="true" href="#cb2-10" tabindex="-1"></a>Validations<span class="op">.</span><span class="fu">of</span>(app)<span class="op">.</span><span class="fu">addPlugins</span>(<span class="kw">new</span> <span class="fu">AwsSolutionsChecks</span>(app<span class="op">,</span> { verbose<span class="op">:</span> <span class="kw">true</span> }))<span class="op">;</span></span>
+<span id="cb2-11"><a aria-hidden="true" href="#cb2-11" tabindex="-1"></a>Validations<span class="op">.</span><span class="fu">of</span>(app)<span class="op">.</span><span class="fu">addPlugins</span>(<span class="kw">new</span> <span class="fu">NIST80053R5Checks</span>(app))<span class="op">;</span></span>
+<span id="cb2-12"><a aria-hidden="true" href="#cb2-12" tabindex="-1"></a></span>
+<span id="cb2-13"><a aria-hidden="true" href="#cb2-13" tabindex="-1"></a>app<span class="op">.</span><span class="fu">synth</span>()<span class="op">;</span></span></code></pre></div>
+<p>Watch what happens when a developer writes the classic mistake:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="co">// lib/platform-stack.ts — what not to do</span></span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">const</span> sg <span class="op">=</span> <span class="kw">new</span> ec2<span class="op">.</span><span class="fu">SecurityGroup</span>(<span class="kw">this</span><span class="op">,</span> <span class="st">'BastionSg'</span><span class="op">,</span> { vpc })<span class="op">;</span></span>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a>sg<span class="op">.</span><span class="fu">addIngressRule</span>(ec2<span class="op">.</span><span class="at">Peer</span><span class="op">.</span><span class="fu">anyIpv4</span>()<span class="op">,</span> ec2<span class="op">.</span><span class="at">Port</span><span class="op">.</span><span class="fu">tcp</span>(<span class="dv">22</span>))<span class="op">;</span></span></code></pre></div>
+<pre class="text"><code>$ cdk synth
+[Error at /PlatformStack/BastionSg/Resource] AwsSolutions-EC23:
+The Security Group allows for 0.0.0.0/0 ingress.
+[Error at /PlatformStack/BastionSg/Resource] NIST80053R5-EC2-...</code></pre>
+<p>Synth fails. Feedback arrives in about ten seconds, in the terminal the developer is already staring at, naming the exact construct path and the exact rule. Compare that to the Friday spreadsheet.</p>
+<p>Three details separate teams who succeed with <code>cdk-nag</code> from teams who disable it in a fortnight.</p>
+<h3 id="1-acknowledge-deliberately-not-silently">1. Acknowledge deliberately, not silently</h3>
+<p>Every suppression should be code, reviewed in a pull request, with a mandatory reason and an expiry or review date:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a>Validations<span class="op">.</span><span class="fu">of</span>(sg)<span class="op">.</span><span class="fu">acknowledge</span>({</span>
+<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a>  id<span class="op">:</span> <span class="st">'AwsSolutions-EC23'</span><span class="op">,</span></span>
+<span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a>  reason<span class="op">:</span> <span class="st">'Bastion reachable from office egress IP only; JIRA SEC-412; review 2026-12-01'</span><span class="op">,</span></span>
+<span id="cb5-4"><a aria-hidden="true" href="#cb5-4" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<p>Acknowledgments are auditable in version control and recorded in CDK's policy-validation report. For compliance tooling that expects the older template-level format, <code>cdk-nag</code> can also write acknowledged rules into CloudFormation metadata. An exception with a ticket number, an owner and a review date is governance. A <code>--force</code> flag is not.</p>
+<p>Make the exception format boring and consistent:</p>
+<ul>
+<li><strong>Rule ID</strong></li>
+<li><strong>Business or technical reason</strong></li>
+<li><strong>Named owner</strong></li>
+<li><strong>Ticket</strong></li>
+<li><strong>Expiry or review date</strong></li>
+<li><strong>Compensating control</strong></li>
+</ul>
+<p>The expiry date matters. An exception without a deadline is not an exception; it is a quiet policy deletion.</p>
+<h3 id="2-ship-your-own-nagpack">2. Ship your own NagPack</h3>
+<p>The built-in packs encode AWS's opinions. Your organisation has its own — mandatory cost-allocation tags, approved regions, naming standards, approved KMS keys. A custom pack is one class:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="co">// lib/org-checks.ts</span></span>
+<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="im">import</span> { CfnResource } <span class="im">from</span> <span class="st">'aws-cdk-lib'</span><span class="op">;</span></span>
+<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a><span class="im">import</span> { IConstruct } <span class="im">from</span> <span class="st">'constructs'</span><span class="op">;</span></span>
+<span id="cb6-4"><a aria-hidden="true" href="#cb6-4" tabindex="-1"></a><span class="im">import</span> {</span>
+<span id="cb6-5"><a aria-hidden="true" href="#cb6-5" tabindex="-1"></a>  NagMessageLevel<span class="op">,</span></span>
+<span id="cb6-6"><a aria-hidden="true" href="#cb6-6" tabindex="-1"></a>  NagPack<span class="op">,</span></span>
+<span id="cb6-7"><a aria-hidden="true" href="#cb6-7" tabindex="-1"></a>  NagPackProps<span class="op">,</span></span>
+<span id="cb6-8"><a aria-hidden="true" href="#cb6-8" tabindex="-1"></a>  NagRuleCompliance<span class="op">,</span></span>
+<span id="cb6-9"><a aria-hidden="true" href="#cb6-9" tabindex="-1"></a>} <span class="im">from</span> <span class="st">'cdk-nag'</span><span class="op">;</span></span>
+<span id="cb6-10"><a aria-hidden="true" href="#cb6-10" tabindex="-1"></a></span>
+<span id="cb6-11"><a aria-hidden="true" href="#cb6-11" tabindex="-1"></a><span class="im">export</span> <span class="kw">class</span> OrgChecks <span class="kw">extends</span> NagPack {</span>
+<span id="cb6-12"><a aria-hidden="true" href="#cb6-12" tabindex="-1"></a>  <span class="kw">public</span> <span class="kw">readonly</span> name <span class="op">=</span> <span class="st">'OrgChecks'</span><span class="op">;</span></span>
+<span id="cb6-13"><a aria-hidden="true" href="#cb6-13" tabindex="-1"></a></span>
+<span id="cb6-14"><a aria-hidden="true" href="#cb6-14" tabindex="-1"></a>  <span class="kw">constructor</span>(scope<span class="op">?:</span> IConstruct<span class="op">,</span> props<span class="op">?:</span> NagPackProps) {</span>
+<span id="cb6-15"><a aria-hidden="true" href="#cb6-15" tabindex="-1"></a>    <span class="kw">super</span>(scope<span class="op">,</span> props)<span class="op">;</span></span>
+<span id="cb6-16"><a aria-hidden="true" href="#cb6-16" tabindex="-1"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">packName</span> <span class="op">=</span> <span class="st">'Org'</span><span class="op">;</span></span>
+<span id="cb6-17"><a aria-hidden="true" href="#cb6-17" tabindex="-1"></a>  }</span>
+<span id="cb6-18"><a aria-hidden="true" href="#cb6-18" tabindex="-1"></a></span>
+<span id="cb6-19"><a aria-hidden="true" href="#cb6-19" tabindex="-1"></a>  <span class="kw">protected</span> <span class="fu">checkResource</span>(node<span class="op">:</span> CfnResource)<span class="op">:</span> <span class="dt">void</span> {</span>
+<span id="cb6-20"><a aria-hidden="true" href="#cb6-20" tabindex="-1"></a>    <span class="kw">this</span><span class="op">.</span><span class="fu">applyRule</span>({</span>
+<span id="cb6-21"><a aria-hidden="true" href="#cb6-21" tabindex="-1"></a>      ruleSuffixOverride<span class="op">:</span> <span class="st">'ResourceOwnerTag'</span><span class="op">,</span></span>
+<span id="cb6-22"><a aria-hidden="true" href="#cb6-22" tabindex="-1"></a>      info<span class="op">:</span> <span class="st">'Every resource must carry an "owner" tag.'</span><span class="op">,</span></span>
+<span id="cb6-23"><a aria-hidden="true" href="#cb6-23" tabindex="-1"></a>      explanation<span class="op">:</span> <span class="st">'Untagged resources cannot be attributed during incident response or cost review.'</span><span class="op">,</span></span>
+<span id="cb6-24"><a aria-hidden="true" href="#cb6-24" tabindex="-1"></a>      level<span class="op">:</span> NagMessageLevel<span class="op">.</span><span class="at">ERROR</span><span class="op">,</span></span>
+<span id="cb6-25"><a aria-hidden="true" href="#cb6-25" tabindex="-1"></a>      rule<span class="op">:</span> (resource<span class="op">:</span> CfnResource) <span class="kw">=&gt;</span> {</span>
+<span id="cb6-26"><a aria-hidden="true" href="#cb6-26" tabindex="-1"></a>        <span class="kw">const</span> tags <span class="op">=</span> resource<span class="op">.</span><span class="at">stack</span><span class="op">.</span><span class="fu">resolve</span>(resource<span class="op">.</span><span class="at">tags</span><span class="op">.</span><span class="fu">renderTags</span>())<span class="op">;</span></span>
+<span id="cb6-27"><a aria-hidden="true" href="#cb6-27" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">isArray</span>(tags) <span class="op">&amp;&amp;</span> tags<span class="op">.</span><span class="fu">some</span>(t <span class="kw">=&gt;</span> t<span class="op">.</span><span class="at">Key</span> <span class="op">===</span> <span class="st">'owner'</span>)</span>
+<span id="cb6-28"><a aria-hidden="true" href="#cb6-28" tabindex="-1"></a>          <span class="op">?</span> NagRuleCompliance<span class="op">.</span><span class="at">COMPLIANT</span></span>
+<span id="cb6-29"><a aria-hidden="true" href="#cb6-29" tabindex="-1"></a>          <span class="op">:</span> NagRuleCompliance<span class="op">.</span><span class="at">NON_COMPLIANT</span><span class="op">;</span></span>
+<span id="cb6-30"><a aria-hidden="true" href="#cb6-30" tabindex="-1"></a>      }<span class="op">,</span></span>
+<span id="cb6-31"><a aria-hidden="true" href="#cb6-31" tabindex="-1"></a>      node<span class="op">,</span></span>
+<span id="cb6-32"><a aria-hidden="true" href="#cb6-32" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb6-33"><a aria-hidden="true" href="#cb6-33" tabindex="-1"></a>  }</span>
+<span id="cb6-34"><a aria-hidden="true" href="#cb6-34" tabindex="-1"></a>}</span></code></pre></div>
+<p>Publish it as an internal package — CodeArtifact is the obvious home — pin the version, and every team inherits the organisation's standards on their next dependency update. This is the DevTools dream: <strong>policy distributed as a dependency</strong>.</p>
+<h3 id="3-warnings-are-a-migration-strategy-not-a-permanent-hiding-place">3. Warnings are a migration strategy, not a permanent hiding place</h3>
+<p>Run new packs at <code>WARN</code> for a fixed period while teams remediate, then promote them to <code>ERROR</code>. Hard-blocking fifty legacy findings on day one is how policy-as-code initiatives get routed around.</p>
+<p>But warnings need a plan. Otherwise they become background noise.</p>
+<p>A workable adoption path looks like this:</p>
+<ol type="1">
+<li><strong>Baseline the estate.</strong> Use AWS Config, Security Hub and your existing scanners to understand what is already non-compliant.</li>
+<li><strong>Introduce rules at <code>WARN</code>.</strong> Announce the window and the deadline before the first build fails.</li>
+<li><strong>Group findings by service or team.</strong> "S3 public access" and "open security groups" are easier to burn down than one giant wall of findings.</li>
+<li><strong>Fix the highest-risk classes first.</strong> Public exposure, IAM privilege escalation, unencrypted data and missing audit trails usually outrank naming conventions.</li>
+<li><strong>Promote by cohort.</strong> Move new applications to <code>ERROR</code> first, then platform-owned modules, then legacy estates as remediation completes.</li>
+<li><strong>Expire exceptions.</strong> Require an owner, ticket and review date for every suppression.</li>
+<li><strong>Audit the bypasses monthly.</strong> If the same team needs the same exception every month, the policy, the module or the training needs attention.</li>
+</ol>
+<p>The secure path must be the fastest path — but during migration, you also need a visible path from today's reality to tomorrow's baseline.</p>
+<hr/>
+<h2 id="layer-3--the-pipeline-cloudformation-guard-inside-codepipeline">Layer 3 — The pipeline: CloudFormation Guard inside CodePipeline</h2>
+<p><code>cdk-nag</code> validates at the construct layer. But constructs aren't the only way templates come into existence. Raw overrides, imported templates via <code>cloudformation-include</code>, generated resources and legacy CloudFormation estates being modernised can all bypass the intent expressed in high-level constructs.</p>
+<p>You need a second, independent check on the synthesized template itself. That's what CloudFormation Guard (<code>cfn-guard</code>) is for: a policy language that evaluates the final JSON or YAML artifact.</p>
+<pre class="guard"><code># pipeline.guard — no public S3 buckets, no world-open ingress
+
+rule no_public_buckets {
+  let buckets = Resources.*[ Type == "AWS::S3::Bucket" ]
+
+  when %buckets !empty {
+    %buckets.Properties.PublicAccessBlockConfiguration exists
+    %buckets.Properties.PublicAccessBlockConfiguration.BlockPublicAcls == true
+    %buckets.Properties.PublicAccessBlockConfiguration.BlockPublicPolicy == true
+      &lt;&lt;Bucket %buckets is missing a public access block&gt;&gt;
+  }
+}
+
+rule no_world_open_ingress {
+  let sgs = Resources.*[ Type == "AWS::EC2::SecurityGroup" ]
+
+  when %sgs !empty {
+    %sgs.Properties.SecurityGroupIngress[*].CidrIp != "0.0.0.0/0"
+      &lt;&lt;SecurityGroup %sgs allows ingress from 0.0.0.0/0&gt;&gt;
+  }
+}</code></pre>
+<p>Now wire it into a native AWS pipeline. The shape of it in CDK Pipelines — or a plain CodeBuild step, because the idea is the same:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="co">// A validation wave that runs Guard against every synthesized template</span></span>
+<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a>pipeline<span class="op">.</span><span class="fu">addWave</span>(<span class="st">'PolicyValidation'</span><span class="op">,</span> {</span>
+<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a>  pre<span class="op">:</span> [</span>
+<span id="cb8-4"><a aria-hidden="true" href="#cb8-4" tabindex="-1"></a>    <span class="kw">new</span> <span class="fu">CodeBuildStep</span>(<span class="st">'CfnGuard'</span><span class="op">,</span> {</span>
+<span id="cb8-5"><a aria-hidden="true" href="#cb8-5" tabindex="-1"></a>      input<span class="op">:</span> synthStep<span class="op">,</span> <span class="co">// the cdk.out cloud assembly</span></span>
+<span id="cb8-6"><a aria-hidden="true" href="#cb8-6" tabindex="-1"></a>      installCommands<span class="op">:</span> [</span>
+<span id="cb8-7"><a aria-hidden="true" href="#cb8-7" tabindex="-1"></a>        <span class="st">'curl --proto "=https" --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/main/install-guard.sh | sh'</span><span class="op">,</span></span>
+<span id="cb8-8"><a aria-hidden="true" href="#cb8-8" tabindex="-1"></a>        <span class="st">'export PATH=$PATH:~/.guard/bin'</span><span class="op">,</span></span>
+<span id="cb8-9"><a aria-hidden="true" href="#cb8-9" tabindex="-1"></a>      ]<span class="op">,</span></span>
+<span id="cb8-10"><a aria-hidden="true" href="#cb8-10" tabindex="-1"></a>      commands<span class="op">:</span> [</span>
+<span id="cb8-11"><a aria-hidden="true" href="#cb8-11" tabindex="-1"></a>        <span class="st">'for t in cdk.out/*.template.json; do cfn-guard validate -r pipeline.guard -d "$t" || exit 1; done'</span><span class="op">,</span></span>
+<span id="cb8-12"><a aria-hidden="true" href="#cb8-12" tabindex="-1"></a>      ]<span class="op">,</span></span>
+<span id="cb8-13"><a aria-hidden="true" href="#cb8-13" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb8-14"><a aria-hidden="true" href="#cb8-14" tabindex="-1"></a>  ]<span class="op">,</span></span>
+<span id="cb8-15"><a aria-hidden="true" href="#cb8-15" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<p>Two checkers, two layers, two different perspectives, one property that matters: a finding has to be acknowledged deliberately twice to slip through both. The placement matters too — this runs against the cloud assembly <strong>before any deploy stage</strong>, so the blast radius of a policy failure is a red pipeline, not a broken account.</p>
+<h3 id="avoid-turning-two-layers-into-two-sources-of-truth">Avoid turning two layers into two sources of truth</h3>
+<p>The obvious objection is duplication: "Why am I maintaining one rule in TypeScript and another in Guard's DSL?"</p>
+<p>The answer is not to write every rule twice forever. It is to be clear about what each layer owns:</p>
+<ul>
+<li><strong><code>cdk-nag</code> owns construct intent.</strong> It can see patterns, L2 constructs and abstractions before they become CloudFormation.</li>
+<li><strong>Guard owns the deployable artifact.</strong> It checks what CloudFormation will actually receive, including raw overrides and imported templates.</li>
+</ul>
+<p>For a small estate, a documented mapping between NagPack rules and Guard rules may be enough. For a larger organisation, define a shared policy catalogue — rule ID, description, severity, owner, remediation link — and generate or review both implementations from it. The policy has one identity even if it has two technical expressions.</p>
+<p>That prevents the slow divergence where <code>cdk-nag</code> says one thing, Guard says another, and nobody remembers which is authoritative.</p>
+<h3 id="harden-the-pipeline-itself">Harden the pipeline itself</h3>
+<p>A few pipeline-hardening notes from the DevTools side, because the pipeline is also an attack surface:</p>
+<ul>
+<li><strong>Do not let the pipeline authenticate with long-lived credentials.</strong> Use CodeConnections for source-control integration, OIDC where an external CI system needs AWS access, and short-lived, least-privilege IAM roles for deployment. If your pipeline still relies on an IAM user's access key sitting in a parameter store, that is your highest-priority security finding. Everything else in this article is garnish.</li>
+<li><strong>Policy files are pipeline inputs.</strong> Version and review them like application code. A pull request that weakens <code>pipeline.guard</code> should trigger the same scrutiny as a pull request that opens a port — ideally stricter, with a security-team <code>CODEOWNERS</code> review on the policy path.</li>
+<li><strong>Manual approval is not a substitute for automation.</strong> Use it where judgment or blast radius genuinely requires a human: irreversible production data migrations, shared networking changes, unusual cost increases, third-party vendor access or ambiguous data-classification decisions.</li>
+<li><strong>Design for approval fatigue.</strong> A human reviewing fifty routine deployments a day is not a control; they are a bottleneck with a mouse. Automate the objective checks and reserve human review for the decisions that need context, trade-offs and accountability.</li>
+</ul>
+<hr/>
+<h2 id="layer-4--the-backstop-the-cloud-says-no">Layer 4 — The backstop: the cloud says no</h2>
+<p>Everything above can still be bypassed by someone with console access and sufficient privilege. So the final layer isn't in the toolchain at all — it's in AWS Organizations.</p>
+<p>Resource Control Policies are the non-negotiable floor where they are available: no matter what any pipeline, developer or break-glass role attempts, an RCP can make entire classes of action — disabling CloudTrail, leaving the approved region set, touching the billing configuration — impossible at the organisation level.</p>
+<p>Where RCPs are not yet available or not yet adopted, Service Control Policies are the nearest organisation-level equivalent, with the caveat that they are attached to organisations, OUs or accounts rather than directly to resources. That makes OU design part of your security architecture. A coarse SCP applied to the wrong OU can either block legitimate work or leave a gap you thought you had closed.</p>
+<p>Pair the preventive controls with AWS Config conformance packs for continuous detection and Security Hub to aggregate findings into one pane.</p>
+<p>The layered logic, stated plainly:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Layer</th>
+<th>Tool</th>
+<th>Failure mode it covers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Editor</td>
+<td>Amazon Q Developer</td>
+<td>Mistakes caught before they are committed</td>
+</tr>
+<tr class="even">
+<td>Synth</td>
+<td>cdk-nag</td>
+<td>Insecure constructs and CDK-level patterns</td>
+</tr>
+<tr class="odd">
+<td>Pipeline</td>
+<td>cfn-guard in CodePipeline</td>
+<td>Raw overrides, imported and legacy templates</td>
+</tr>
+<tr class="even">
+<td>Organisation</td>
+<td>RCPs or SCPs</td>
+<td>Console changes, compromised credentials, break-glass misuse</td>
+</tr>
+<tr class="odd">
+<td>Runtime</td>
+<td>Config + Security Hub</td>
+<td>Drift and anything that slips through the earlier layers</td>
+</tr>
+</tbody>
+</table>
+<p>Any single layer can fail. All five failing simultaneously is a very different bet.</p>
+<hr/>
+<h2 id="not-a-cdk-shop-the-pattern-still-works">Not a CDK shop? The pattern still works</h2>
+<p>The tools change, but the architecture does not.</p>
+<p>For a Terraform estate, the equivalent path might be:</p>
+<ul>
+<li><strong>Authoring:</strong> editor diagnostics and AI-assisted review</li>
+<li><strong>Static analysis:</strong> TFLint, Checkov or tfsec</li>
+<li><strong>Plan-time policy:</strong> OPA/Conftest against <code>terraform plan</code>, or Sentinel in HCP Terraform</li>
+<li><strong>Pipeline:</strong> policy checks before apply</li>
+<li><strong>Organisation:</strong> RCPs or SCPs</li>
+<li><strong>Runtime:</strong> Config and Security Hub</li>
+</ul>
+<p>The principle is portable even when the syntax isn't: fast feedback close to the author, deterministic checks against the deployable artifact, preventive guardrails at the organisation boundary, and detective controls for drift.</p>
+<p>The same applies to mixed estates. A legacy CloudFormation account might skip the <code>cdk-nag</code> layer entirely but still use Guard in the pipeline, organisation policies as the floor, and Config for continuous detection. The point is not purity. The point is coverage.</p>
+<hr/>
+<h2 id="design-a-real-escape-hatch">Design a real escape hatch</h2>
+<p>If you don't design an escape hatch, your developers will.</p>
+<p>There will be legitimate cases where a control needs to be bypassed: a temporary debugging stack in a sandbox, a proof of concept, a vendor integration with an unusual requirement. Pretending otherwise does not make your environment more secure. It just pushes the workaround out of sight.</p>
+<p>A good escape hatch is:</p>
+<ul>
+<li><strong>Explicit:</strong> The developer chooses a documented exception mechanism rather than disabling the check.</li>
+<li><strong>Scoped:</strong> It applies to one resource, stack, account or OU — not the whole organisation.</li>
+<li><strong>Time-bound:</strong> It expires or requires reapproval.</li>
+<li><strong>Owned:</strong> A person or team is accountable for it.</li>
+<li><strong>Auditable:</strong> Security can list every active exception without spelunking through build logs.</li>
+<li><strong>Environment-aware:</strong> Sandbox exceptions should not automatically inherit production privileges.</li>
+</ul>
+<p>For example, a temporary sandbox exception might carry a tag such as <code>policy-exception: SEC-412:2026-12-01</code>, with the pipeline rejecting it outside approved sandbox accounts. The exact mechanism matters less than the properties: narrow, temporary, visible and owned.</p>
+<hr/>
+<h2 id="know-what-this-costs">Know what this costs</h2>
+<p>The inner-loop controls are inexpensive. <code>cdk-nag</code> and CloudFormation Guard are open source, and the marginal cost is mostly developer time plus a few extra seconds or minutes in synthesis and CI.</p>
+<p>The cost profile changes as you move outward:</p>
+<ul>
+<li><strong>CodeBuild/CodePipeline:</strong> build minutes and pipeline execution time</li>
+<li><strong>Amazon Q Developer:</strong> depends on the tier and licensing model</li>
+<li><strong>AWS Config:</strong> configuration items, rule evaluations and conformance packs</li>
+<li><strong>Security Hub:</strong> security checks and finding ingestion</li>
+<li><strong>Operational overhead:</strong> maintaining rule packs, triaging findings and reviewing exceptions</li>
+</ul>
+<p>That does not mean you should skip the outer layers. It means you should phase them deliberately. Start with the controls that remove the most risk per pound spent, then expand coverage as the organisation matures.</p>
+<p>The cheapest control is still the mistake that never reaches production. The most expensive one is the incident nobody detected until the bill, the auditor or the attacker found it first.</p>
+<hr/>
+<h2 id="measure-whether-the-road-is-actually-faster">Measure whether the road is actually faster</h2>
+<p>"Security as code" sounds good in a slide deck. You need metrics to know whether it is working in reality.</p>
+<p>Track a small set of signals:</p>
+<ul>
+<li><strong>Lead time from pull request to deployment</strong></li>
+<li><strong>Time spent waiting for manual security review</strong></li>
+<li><strong>Number of findings reaching production</strong></li>
+<li><strong>Number and age of active exceptions</strong></li>
+<li><strong>Percentage of repositories covered by each policy layer</strong></li>
+<li><strong>Mean time to remediate a finding</strong></li>
+<li><strong>False-positive or noisy-rule reports from developers</strong></li>
+<li><strong>Policy-related build failures by rule and team</strong></li>
+</ul>
+<p>Do not optimise only for "number of blocked builds." A rule that blocks constantly may be finding real risk, but it may also be badly written, poorly documented or aimed at the wrong layer. The goal is not more red pipelines. The goal is fewer production findings without slowing delivery to a crawl.</p>
+<p>When the system is working, two things happen at once: security findings move left, and the total time to ship a compliant change goes down.</p>
+<hr/>
+<h2 id="what-id-tell-my-past-self">What I'd tell my past self</h2>
+<p>I came to this from the NOC — from being the person paged when the ungoverned change went wrong. The lesson that took the longest to learn wasn't technical. It was this: developers don't route around security because they're careless. They route around it because the secure path is slower.</p>
+<p>Every layer in this article shares one design goal: <strong>the secure path must be the fastest path</strong>. Ten-second feedback in the editor. A red pipeline in five minutes instead of a review in five days. Compliant patterns shipped as constructs and rule packs, so doing it right is literally less typing than doing it wrong.</p>
+<p>But speed alone is not enough. The road also needs maintenance: a migration plan for legacy findings, a shared policy catalogue so the layers do not drift apart, time-bound exceptions, and metrics that tell you whether the whole thing is helping or just generating noise.</p>
+<p>That's what DevTools advocacy means to me in 2026: not more gates, better roads — and a maintenance crew for the roads we build.</p>
+<p>The AWS toolchain — Q Developer, CDK, <code>cdk-nag</code>, Guard, CodePipeline, RCPs, SCPs, Config and Security Hub — finally gives us the materials. The only thing left is to pave it, measure it, and keep it clear.</p>
+<hr/>
+<p><em>Any opinions in this article are those of the individual author and may not reflect the opinions of AWS.</em></p>
+</article>
+</div>
+<footer class="article-footer">
+<a class="button" href="#writing">← Back to writing</a>
+<a class="button" href="mailto:alamzaibahmad615@gmail.com?subject=Security%20at%20the%20Speed%20of%20Synth">Discuss this article →</a>
+</footer>
+    </section>
+<!-- BUILDER-ARTICLE-BODIES:START -->
+<section id="terraforming-the-well-architected-way-recap-from-the-aws-london-waug-summer-special" class="article-section" aria-labelledby="terraforming-the-well-architected-way-recap-from-the-aws-london-waug-summer-special-title">
+<section class="article-hero">
+<div class="kicker">Published Intelligence · Jul 2026</div>
+<h1 id="terraforming-the-well-architected-way-recap-from-the-aws-london-waug-summer-special-title">Terraforming the Well-Architected Way: Recap from the AWS London WAUG Summer Special</h1>
+<p class="standfirst">AWS London Well-Architected User Group recap — practical lessons on Terraform reviews that catch real risk</p>
+<div aria-label="Article metadata" class="meta-panel">
+<div aria-hidden="true" class="meta-bar">
+<span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+<span class="meta-title">alam@builder-center:~/writing</span>
+</div>
+<div class="meta-body">
+<div class="meta-item">
+<div class="meta-label">Author</div>
+<div class="meta-value">Alam Ahmed</div>
+</div>
+<div class="meta-item">
+<div class="meta-label">Role</div>
+<div class="meta-value">AWS Community Builder</div>
+</div>
+<div class="meta-item">
+<div class="meta-label">Published</div>
+<div class="meta-value">Jul 2026</div>
+</div>
+</div>
+</div>
+</section>
+<div class="article-layout">
+<aside aria-label="Article contents" class="article-toc">
+<div class="toc-title">cat article.map</div>
+<a href="#x6Tj6PQ-the-venue-aws-holborn">The Venue: AWS Holborn</a>
+<a href="#x6Tj6PQ-my-talk-terraforming-the-well-architected-way">My Talk: Terraforming the Well-Architected Way</a>
+</aside>
+<article class="article-body" data-lazy-article="articles/terraforming-the-well-architected-way-recap-from-the-aws-london-waug-summer-special.html" data-canonical="https://builder.aws.com/content/3HGyvM25DcXQaOeeIUhGF6Tj6PQ/terraforming-the-well-architected-way-recap-from-the-aws-london-waug-summer-special">
+<p class="article-lazy-placeholder">// full text loads when you get here &mdash; or <a href="https://builder.aws.com/content/3HGyvM25DcXQaOeeIUhGF6Tj6PQ/terraforming-the-well-architected-way-recap-from-the-aws-london-waug-summer-special" target="_blank" rel="noopener noreferrer">read it on AWS Builder Center</a></p>
+</article>
+</div>
+<footer class="article-footer">
+<a class="button" href="#writing">&larr; Back to writing</a>
+<a class="button" href="https://builder.aws.com/content/3HGyvM25DcXQaOeeIUhGF6Tj6PQ/terraforming-the-well-architected-way-recap-from-the-aws-london-waug-summer-special" target="_blank" rel="noopener noreferrer">Discuss on Builder Center &rarr;</a>
+</footer>
+</section>
+<section id="the-guarded-canary-how-to-safely-ship-ai-generated-infrastructure-on-aws" class="article-section" aria-labelledby="the-guarded-canary-how-to-safely-ship-ai-generated-infrastructure-on-aws-title">
+<section class="article-hero">
+<div class="kicker">Published Intelligence · Jul 2026</div>
+<h1 id="the-guarded-canary-how-to-safely-ship-ai-generated-infrastructure-on-aws-title">The Guarded Canary: How to Safely Ship AI-Generated Infrastructure on AWS</h1>
+<p class="standfirst">A guarded deployment pattern for AI-generated infrastructure using Lambda MicroVMs, policy checks and progressive delivery</p>
+<div aria-label="Article metadata" class="meta-panel">
+<div aria-hidden="true" class="meta-bar">
+<span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+<span class="meta-title">alam@builder-center:~/writing</span>
+</div>
+<div class="meta-body">
+<div class="meta-item">
+<div class="meta-label">Author</div>
+<div class="meta-value">Alam Ahmed</div>
+</div>
+<div class="meta-item">
+<div class="meta-label">Role</div>
+<div class="meta-value">AWS Community Builder</div>
+</div>
+<div class="meta-item">
+<div class="meta-label">Published</div>
+<div class="meta-value">Jul 2026</div>
+</div>
+</div>
+</div>
+</section>
+<div class="article-layout">
+<aside aria-label="Article contents" class="article-toc">
+<div class="toc-title">cat article.map</div>
+<a href="#xIRin0A-the-problem-ai-agents-dont-understand-context">The Problem: AI Agents Don't Understand Context</a>
+<a href="#xIRin0A-but-contracts-can-be-broken">But Contracts Can Be Broken</a>
+<a href="#xIRin0A-enter-lambda-microvms-the-isolated-canary-cage">Enter Lambda MicroVMs: The Isolated Canary Cage</a>
+<a href="#xIRin0A-progressive-policy-the-four-stage-pipeline">Progressive Policy: The Four-Stage Pipeline</a>
+<a class="toc-sub" href="#xIRin0A-stage-1-spec-validation-pre-generation">Stage 1: Spec Validation (Pre-Generation)</a>
+<a class="toc-sub" href="#xIRin0A-stage-2-static-guardrailing-post-generation-pre-plan">Stage 2: Static Guardrailing (Post-Generation, Pre-Plan)</a>
+<a class="toc-sub" href="#xIRin0A-stage-3-shadow-apply-pre-production">Stage 3: Shadow Apply (Pre-Production)</a>
+<a class="toc-sub" href="#xIRin0A-stage-4-microvm-live-canary-isolated-production-validation">Stage 4: MicroVM Live Canary (Isolated Production Validation)</a>
+<a href="#xIRin0A-the-scp-of-ai-when-guardrails-become-the-architecture">The SCP of AI: When Guardrails Become the Architecture</a>
+<a href="#xIRin0A-what-we-learned-so-far">What We Learned (So Far)</a>
+<a href="#xIRin0A-a-practical-starting-point">A Practical Starting Point</a>
+</aside>
+<article class="article-body" data-lazy-article="articles/the-guarded-canary-how-to-safely-ship-ai-generated-infrastructure-on-aws.html" data-canonical="https://builder.aws.com/content/3FuJq2YhQh31l3A3FOxBwIRin0A/the-guarded-canary-how-to-safely-ship-ai-generated-infrastructure-on-aws">
+<p class="article-lazy-placeholder">// full text loads when you get here &mdash; or <a href="https://builder.aws.com/content/3FuJq2YhQh31l3A3FOxBwIRin0A/the-guarded-canary-how-to-safely-ship-ai-generated-infrastructure-on-aws" target="_blank" rel="noopener noreferrer">read it on AWS Builder Center</a></p>
+</article>
+</div>
+<footer class="article-footer">
+<a class="button" href="#writing">&larr; Back to writing</a>
+<a class="button" href="https://builder.aws.com/content/3FuJq2YhQh31l3A3FOxBwIRin0A/the-guarded-canary-how-to-safely-ship-ai-generated-infrastructure-on-aws" target="_blank" rel="noopener noreferrer">Discuss on Builder Center &rarr;</a>
+</footer>
+</section>
+<section id="terraform-at-msp-scale-engineering-multi-tenant-infrastructure-as-a-service-in" class="article-section" aria-labelledby="terraform-at-msp-scale-engineering-multi-tenant-infrastructure-as-a-service-in-title">
+<section class="article-hero">
+<div class="kicker">Published Intelligence · Jun 2026</div>
+<h1 id="terraform-at-msp-scale-engineering-multi-tenant-infrastructure-as-a-service-in-title">Terraform at MSP Scale: Engineering Multi-Tenant Infrastructure as a Service in 2026</h1>
+<p class="standfirst">Beyond terraform apply — orchestrating hundreds of MSP accounts with guardrails and infrastructure as a product</p>
+<div aria-label="Article metadata" class="meta-panel">
+<div aria-hidden="true" class="meta-bar">
+<span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+<span class="meta-title">alam@builder-center:~/writing</span>
+</div>
+<div class="meta-body">
+<div class="meta-item">
+<div class="meta-label">Author</div>
+<div class="meta-value">Alam Ahmed</div>
+</div>
+<div class="meta-item">
+<div class="meta-label">Role</div>
+<div class="meta-value">AWS Community Builder</div>
+</div>
+<div class="meta-item">
+<div class="meta-label">Published</div>
+<div class="meta-value">Jun 2026</div>
+</div>
+</div>
+</div>
+</section>
+<div class="article-layout">
+<aside aria-label="Article contents" class="article-toc">
+<div class="toc-title">cat article.map</div>
+<a href="#xRgIIaA-the-problem-terraform-doesnt-scale-by-default">The Problem: Terraform Doesn't Scale by Default</a>
+<a href="#xRgIIaA-the-multi-account-reality-why-provider-aliases-arent-enough">The Multi-Account Reality: Why Provider Aliases Aren't Enough</a>
+<a href="#xRgIIaA-the-msp-terraform-architecture-foundation-vs-application-layers">The MSP Terraform Architecture: Foundation vs. Application Layers</a>
+<a class="toc-sub" href="#xRgIIaA-layer-1-the-foundation-shared-services-account">Layer 1: The Foundation (Shared Services Account)</a>
+<a class="toc-sub" href="#xRgIIaA-layer-2-the-application-layer-client-accounts">Layer 2: The Application Layer (Client Accounts)</a>
+<a href="#xRgIIaA-state-management-at-scale-native-s3-locking-dynamodb-is-deprecated">State Management at Scale: Native S3 Locking (DynamoDB Is Deprecated)</a>
+<a href="#xRgIIaA-the-gitops-pipeline-aws-codepipeline--hcp-terraform-or-self-hosted">The GitOps Pipeline: AWS CodePipeline + HCP Terraform (or Self-Hosted)</a>
+<a class="toc-sub" href="#xRgIIaA-pipeline-architecture--">Pipeline Architecture</a>
+<a class="toc-sub" href="#xRgIIaA-the-pipeline-flow">The Pipeline Flow</a>
+<a href="#xRgIIaA-multi-tenancy-patterns-silo-pool-and-bridge">Multi-Tenancy Patterns: Silo, Pool, and Bridge</a>
+<a class="toc-sub" href="#xRgIIaA-the-silo-model">The Silo Model</a>
+<a class="toc-sub" href="#xRgIIaA-the-pool-model">The Pool Model</a>
+<a class="toc-sub" href="#xRgIIaA-the-bridge-model-recommended-for-msps">The Bridge Model (Recommended for MSPs)</a>
+<a href="#xRgIIaA-guardrails-scps-iam-conditions-and-terraform-policy-as-code">Guardrails: SCPs, IAM Conditions, and Terraform Policy-as-Code</a>
+<a class="toc-sub" href="#xRgIIaA-scp-level-guardrails">SCP-Level Guardrails</a>
+<a class="toc-sub" href="#xRgIIaA-terraform-policy-as-code">Terraform Policy-as-Code</a>
+<a class="toc-sub" href="#xRgIIaA-iam-condition-keys-for-context-aware-access">IAM Condition Keys for Context-Aware Access</a>
+<a href="#xRgIIaA-cost-governance-finops-as-code">Cost Governance: FinOps as Code</a>
+<a href="#xRgIIaA-the-2026-reality-the-terraform-ecosystem-has-fragmented">The 2026 Reality: The Terraform Ecosystem Has Fragmented</a>
+<a href="#xRgIIaA-conclusion-infrastructure-as-a-product">Conclusion: Infrastructure as a Product</a>
+</aside>
+<article class="article-body" data-lazy-article="articles/terraform-at-msp-scale-engineering-multi-tenant-infrastructure-as-a-service-in.html" data-canonical="https://builder.aws.com/content/3FDkVLwnZueCOxVOJGoXNRgIIaA/terraform-at-msp-scale-engineering-multi-tenant-infrastructure-as-a-service-in">
+<p class="article-lazy-placeholder">// full text loads when you get here &mdash; or <a href="https://builder.aws.com/content/3FDkVLwnZueCOxVOJGoXNRgIIaA/terraform-at-msp-scale-engineering-multi-tenant-infrastructure-as-a-service-in" target="_blank" rel="noopener noreferrer">read it on AWS Builder Center</a></p>
+</article>
+</div>
+<footer class="article-footer">
+<a class="button" href="#writing">&larr; Back to writing</a>
+<a class="button" href="https://builder.aws.com/content/3FDkVLwnZueCOxVOJGoXNRgIIaA/terraform-at-msp-scale-engineering-multi-tenant-infrastructure-as-a-service-in" target="_blank" rel="noopener noreferrer">Discuss on Builder Center &rarr;</a>
+</footer>
+</section>
+<section id="the-unseen-pipeline-engineering-developer-velocity-with-aws-dev-tools-in" class="article-section" aria-labelledby="the-unseen-pipeline-engineering-developer-velocity-with-aws-dev-tools-in-title">
+<section class="article-hero">
+<div class="kicker">Published Intelligence · Jun 2026</div>
+<h1 id="the-unseen-pipeline-engineering-developer-velocity-with-aws-dev-tools-in-title">The Unseen Pipeline: Engineering Developer Velocity with AWS DevTools in 2026</h1>
+<p class="standfirst">Featured in the AWS Community Builders Spotlight — how Kiro, AgentCore and Transform are reshaping developer experience</p>
+<div aria-label="Article metadata" class="meta-panel">
+<div aria-hidden="true" class="meta-bar">
+<span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+<span class="meta-title">alam@builder-center:~/writing</span>
+</div>
+<div class="meta-body">
+<div class="meta-item">
+<div class="meta-label">Author</div>
+<div class="meta-value">Alam Ahmed</div>
+</div>
+<div class="meta-item">
+<div class="meta-label">Role</div>
+<div class="meta-value">AWS Community Builder</div>
+</div>
+<div class="meta-item">
+<div class="meta-label">Published</div>
+<div class="meta-value">Jun 2026</div>
+</div>
+</div>
+</div>
+</section>
+<div class="article-layout">
+<aside aria-label="Article contents" class="article-toc">
+<div class="toc-title">cat article.map</div>
+<a class="toc-sub" href="#xwsruIe-the-blueprint-project-as-code">The Blueprint: Project-as-Code</a>
+<a href="#xwsruIe-the-complete-stack-terraform-module">The Complete Stack: Terraform Module</a>
+<a href="#xwsruIe-the-2026-devops-imperative-developer-experience-as-infrastructure">The 2026 DevOps Imperative: Developer Experience as Infrastructure</a>
+</aside>
+<article class="article-body" data-lazy-article="articles/the-unseen-pipeline-engineering-developer-velocity-with-aws-dev-tools-in.html" data-canonical="https://builder.aws.com/content/3ElShp5DBoeQCRfc5kaBhwsruIe/the-unseen-pipeline-engineering-developer-velocity-with-aws-dev-tools-in">
+<p class="article-lazy-placeholder">// full text loads when you get here &mdash; or <a href="https://builder.aws.com/content/3ElShp5DBoeQCRfc5kaBhwsruIe/the-unseen-pipeline-engineering-developer-velocity-with-aws-dev-tools-in" target="_blank" rel="noopener noreferrer">read it on AWS Builder Center</a></p>
+</article>
+</div>
+<footer class="article-footer">
+<a class="button" href="#writing">&larr; Back to writing</a>
+<a class="button" href="https://builder.aws.com/content/3ElShp5DBoeQCRfc5kaBhwsruIe/the-unseen-pipeline-engineering-developer-velocity-with-aws-dev-tools-in" target="_blank" rel="noopener noreferrer">Discuss on Builder Center &rarr;</a>
+</footer>
+</section>
+<section id="progressive-delivery-on-aws-app-config-feature-flags-lambda-canary-deployments-and-real-time-observability" class="article-section" aria-labelledby="progressive-delivery-on-aws-app-config-feature-flags-lambda-canary-deployments-and-real-time-observability-title">
+<section class="article-hero">
+<div class="kicker">Published Intelligence · May 2026</div>
+<h1 id="progressive-delivery-on-aws-app-config-feature-flags-lambda-canary-deployments-and-real-time-observability-title">Progressive Delivery on AWS: AppConfig Feature Flags, Lambda Canary Deployments, and Real-Time Observability</h1>
+<p class="standfirst">AppConfig targeting, Lambda canary deployments and CloudWatch Synthetics for automated promotion and rollback</p>
+<div aria-label="Article metadata" class="meta-panel">
+<div aria-hidden="true" class="meta-bar">
+<span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+<span class="meta-title">alam@builder-center:~/writing</span>
+</div>
+<div class="meta-body">
+<div class="meta-item">
+<div class="meta-label">Author</div>
+<div class="meta-value">Alam Ahmed</div>
+</div>
+<div class="meta-item">
+<div class="meta-label">Role</div>
+<div class="meta-value">AWS Community Builder</div>
+</div>
+<div class="meta-item">
+<div class="meta-label">Published</div>
+<div class="meta-value">May 2026</div>
+</div>
+</div>
+</div>
+</section>
+<div class="article-layout">
+<aside aria-label="Article contents" class="article-toc">
+<div class="toc-title">cat article.map</div>
+<a href="#xlrSP8w-the-problem-staging-is-a-lie">The Problem: Staging Is a Lie</a>
+<a href="#xlrSP8w-the-2026-aws-progressive-delivery-stack">The 2026 AWS Progressive Delivery Stack</a>
+<a href="#xlrSP8w-whats-new-appconfig-enhanced-targeting-march-2026">What's New: AppConfig Enhanced Targeting (March 2026)</a>
+<a class="toc-sub" href="#xlrSP8w-key-design-decisions">Key Design Decisions</a>
+<a href="#xlrSP8w-deep-dive-appconfig-feature-flags-with-enhanced-targeting">Deep Dive: AppConfig Feature Flags with Enhanced Targeting</a>
+<a class="toc-sub" href="#xlrSP8w-the-configuration-schema">The Configuration Schema</a>
+<a class="toc-sub" href="#xlrSP8w-runtime-evaluation-with-lambda-powertools">Runtime Evaluation with Lambda Powertools</a>
+<a href="#xlrSP8w-infrastructure-codedeploy-canary-for-lambda">Infrastructure: CodeDeploy Canary for Lambda</a>
+<a class="toc-sub" href="#xlrSP8w-traffic-shifting-configuration-">Traffic Shifting Configuration</a>
+<a class="toc-sub" href="#xlrSP8w-codedeploy-deployment-group-terraform-">CodeDeploy Deployment Group (Terraform)</a>
+<a href="#xlrSP8w-tldr">TL;DR</a>
+<a href="#xlrSP8w-the-problem-staging-is-a-lie-1">The Problem: Staging Is a Lie</a>
+<a href="#xlrSP8w-the-2026-aws-progressive-delivery-stack-1">The 2026 AWS Progressive Delivery Stack</a>
+<a href="#xlrSP8w-whats-new-appconfig-enhanced-targeting-march-2026-1">What's New: AppConfig Enhanced Targeting (March 2026)</a>
+<a href="#xlrSP8w-architecture-end-to-end-canary-pipeline">Architecture: End-to-End Canary Pipeline</a>
+<a class="toc-sub" href="#xlrSP8w-key-design-decisions-1">Key Design Decisions</a>
+<a href="#xlrSP8w-deep-dive-appconfig-feature-flags-with-enhanced-targeting-1">Deep Dive: AppConfig Feature Flags with Enhanced Targeting</a>
+<a class="toc-sub" href="#xlrSP8w-the-configuration-schema-1">The Configuration Schema</a>
+<a class="toc-sub" href="#xlrSP8w-runtime-evaluation-with-lambda-powertools-1">Runtime Evaluation with Lambda Powertools</a>
+<a href="#xlrSP8w-infrastructure-codedeploy-canary-for-lambda-1">Infrastructure: CodeDeploy Canary for Lambda</a>
+<a class="toc-sub" href="#xlrSP8w-traffic-shifting-configuration">Traffic Shifting Configuration</a>
+<a class="toc-sub" href="#xlrSP8w-codedeploy-deployment-group-terraform">CodeDeploy Deployment Group (Terraform)</a>
+<a class="toc-sub" href="#xlrSP8w-traffic-shifting-schedule">Traffic Shifting Schedule</a>
+<a href="#xlrSP8w-safety-layer-cloudwatch-synthetics--alarms">Safety Layer: CloudWatch Synthetics + Alarms</a>
+<a class="toc-sub" href="#xlrSP8w-api-canary-for-critical-path--">API Canary for Critical Path</a>
+<a class="toc-sub" href="#xlrSP8w-cloudwatch-alarm--auto-rollback-">CloudWatch Alarm → Auto-Rollback</a>
+</aside>
+<article class="article-body" data-lazy-article="articles/progressive-delivery-on-aws-app-config-feature-flags-lambda-canary-deployments-and-real-time-observability.html" data-canonical="https://builder.aws.com/content/3EM8bMXL03D2K5eG4alo8lrSP8w/progressive-delivery-on-aws-app-config-feature-flags-lambda-canary-deployments-and-real-time-observability">
+<p class="article-lazy-placeholder">// full text loads when you get here &mdash; or <a href="https://builder.aws.com/content/3EM8bMXL03D2K5eG4alo8lrSP8w/progressive-delivery-on-aws-app-config-feature-flags-lambda-canary-deployments-and-real-time-observability" target="_blank" rel="noopener noreferrer">read it on AWS Builder Center</a></p>
+</article>
+</div>
+<footer class="article-footer">
+<a class="button" href="#writing">&larr; Back to writing</a>
+<a class="button" href="https://builder.aws.com/content/3EM8bMXL03D2K5eG4alo8lrSP8w/progressive-delivery-on-aws-app-config-feature-flags-lambda-canary-deployments-and-real-time-observability" target="_blank" rel="noopener noreferrer">Discuss on Builder Center &rarr;</a>
+</footer>
+</section>
+<!-- BUILDER-ARTICLE-BODIES:END -->
     </main>
 
     <footer>
@@ -1863,46 +3207,35 @@
     <script>
         const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        /* ---------- Boot Sequence (skippable) ---------- */
-        const bootLines = [
-            { text: 'BIOS Date: 08/13/2026 14:26:00 UTC', type: 'info', delay: 80 },
-            { text: 'CPU: Cloud Engineer v2.0', type: 'success', delay: 180 },
-            { text: 'Memory Test: 640K OK... 1048576K OK', type: 'success', delay: 280 },
-            { text: 'Initializing Terraform providers...', type: 'info', delay: 420 },
-            { text: '  - provider[registry.terraform.io/hashicorp/aws] ~> 5.0', type: 'info', delay: 520 },
-            { text: '  - provider[registry.terraform.io/hashicorp/azurerm] ~> 3.0', type: 'info', delay: 620 },
-            { text: '  - provider[registry.terraform.io/hashicorp/kubernetes] ~> 2.0', type: 'info', delay: 720 },
-            { text: 'Loading modules: networking, compute, security...', type: 'warn', delay: 880 },
-            { text: '  [WARN] Legacy MSP experience detected. Compiling to cloud-native...', type: 'warn', delay: 1040 },
-            { text: '  [OK] NOC troubleshooting skills imported successfully', type: 'success', delay: 1200 },
-            { text: 'Starting Kubernetes cluster...', type: 'info', delay: 1360 },
-            { text: '  Pod "alam-ahmed-portfolio" created', type: 'success', delay: 1520 },
-            { text: '  Service exposed on port 443', type: 'success', delay: 1620 },
-            { text: 'Running security scan (OPA + Conftest)...', type: 'info', delay: 1780 },
-            { text: '  [PASS] No misconfigurations found', type: 'success', delay: 1940 },
-            { text: '  [PASS] Security as Code policies enforced', type: 'success', delay: 2040 },
-            { text: 'Applying infrastructure...', type: 'info', delay: 2200 },
-            { text: '  aws_s3_bucket.portfolio: Creation complete', type: 'success', delay: 2360 },
-            { text: '  aws_cloudfront_distribution.cdn: Creation complete', type: 'success', delay: 2460 },
-            { text: '  kubernetes_ingress.portfolio: Creation complete', type: 'success', delay: 2560 },
-            { text: 'Apply complete! Resources: 42 added, 0 changed, 0 destroyed.', type: 'success', delay: 2720 },
-            { text: 'Outputs:', type: 'info', delay: 2880 },
-            { text: '  portfolio_url = "https://alam-ahmed.dev"', type: 'success', delay: 2980 },
-            { text: '  status      = "READY_FOR_PRODUCTION"', type: 'success', delay: 3080 },
-            { text: '', type: 'info', delay: 3220 },
-            { text: '[WARN] Detected recruiter eyeballs. Increasing font size by 0% and pretending to be humble...', type: 'warn', delay: 3320 },
-            { text: 'Boot sequence complete. Welcome, recruiter.', type: 'success', delay: 3600 },
-        ];
+        /* ---------- Network helpers: every external call gets a bounded timeout ---------- */
+        function fetchWithTimeout(resource, options = {}, timeoutMs = 8000) {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(new DOMException('timeout after ' + timeoutMs + 'ms', 'TimeoutError')), timeoutMs);
+            return fetch(resource, Object.assign({}, options, { signal: controller.signal }))
+                .finally(() => clearTimeout(timer));
+        }
 
+        /* ---------- Deploy Splash (fast, skippable) ---------- */
         const bootEl = document.getElementById('boot-sequence');
-        const bootInner = document.getElementById('boot-inner');
+        const bootBarFill = document.getElementById('boot-bar-fill');
+        const bootStatus = document.getElementById('boot-status');
+        const bootStages = Array.from(document.querySelectorAll('#boot-stages .boot-stage'));
         const bootTimers = [];
         let bootDone = false;
+
+        const splashSteps = [
+            { pct: 22,  label: 'initializing providers…',              delay: 120 },
+            { pct: 46,  label: '0 policy violations · OPA + Conftest', delay: 430 },
+            { pct: 74,  label: 'plan: 42 to add, 0 to destroy',        delay: 740 },
+            { pct: 100, label: '<span class="ok">apply complete — welcome.</span>', delay: 1050 },
+        ];
 
         function finishBoot() {
             if (bootDone) return;
             bootDone = true;
             bootTimers.forEach(clearTimeout);
+            bootStages.forEach(s => { s.classList.remove('active'); s.classList.add('passed'); });
+            bootBarFill.style.width = '100%';
             bootEl.classList.add('done');
             afterBoot();
         }
@@ -1910,25 +3243,26 @@
         if (prefersReduced) {
             finishBoot();
         } else {
-            bootLines.forEach((line, i) => {
+            splashSteps.forEach((step, i) => {
                 bootTimers.push(setTimeout(() => {
-                    const div = document.createElement('div');
-                    div.className = `boot-line ${line.type}`;
-                    div.textContent = line.text;
-                    bootInner.appendChild(div);
-                    if (i === bootLines.length - 1) {
-                        bootTimers.push(setTimeout(finishBoot, 1100));
+                    bootStages.forEach((s, j) => {
+                        s.classList.toggle('passed', j < i);
+                        s.classList.toggle('active', j === i);
+                    });
+                    bootBarFill.style.width = step.pct + '%';
+                    bootStatus.innerHTML = step.label;
+                    if (i === splashSteps.length - 1) {
+                        bootTimers.push(setTimeout(finishBoot, 500));
                     }
-                }, line.delay));
+                }, step.delay));
             });
             bootEl.addEventListener('click', finishBoot);
             window.addEventListener('keydown', function onKey() {
                 finishBoot();
                 window.removeEventListener('keydown', onKey);
             });
-            // Failsafe: never hold visitors on the boot screen longer than 4s,
-            // even if a timer is throttled (background tab, slow device).
-            bootTimers.push(setTimeout(finishBoot, 4000));
+            // Failsafe: never hold visitors on the splash longer than 2.5s.
+            bootTimers.push(setTimeout(finishBoot, 2500));
         }
 
         /* ---------- Post-boot: terminal reveal, typewriter, counters ---------- */
@@ -2130,7 +3464,7 @@
                 }
             });
         }, { rootMargin: '-40% 0px -55% 0px' });
-        ['about', 'experience', 'videos', 'talks', 'writing', 'projects', 'skills', 'contact'].forEach(id => {
+        ['about', 'experience', 'videos', 'talks', 'decks', 'writing', 'projects', 'skills', 'contact'].forEach(id => {
             const el = document.getElementById(id);
             if (el) spyObserver.observe(el);
         });
@@ -2185,6 +3519,7 @@
                 if (target) {
                     e.preventDefault();
                     target.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth' });
+                    history.pushState(null, '', id);
                 }
             });
         });
@@ -2192,11 +3527,71 @@
         /* ---------- Footer year ---------- */
         document.getElementById('footer-year').textContent = new Date().getFullYear();
 
-        /* ---------- Telemetry: uptime, caffeine, counters, sparklines ---------- */
-        const careerStart = new Date('2023-03-01T00:00:00');
-        const uptimeDays = Math.floor((Date.now() - careerStart.getTime()) / 86400000);
-        document.getElementById('uptime-days').textContent = uptimeDays.toLocaleString();
-        document.getElementById('coffee-cups').textContent = 2 + (new Date().getDay() % 3);
+        /* ---------- Telemetry: counters & sparklines ---------- */
+
+        /* ---------- Live London clock (Region card) ---------- */
+        const clockEl = document.getElementById('london-clock');
+        if (clockEl) {
+            const clockFmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+            const tickClock = () => { clockEl.textContent = clockFmt.format(new Date()); };
+            tickClock();
+            setInterval(tickClock, 1000);
+        }
+
+        /* ---------- Live weather: Open-Meteo (free, no API key, CORS-open) ---------- */
+        (function liveWeather() {
+            const el = document.getElementById('region-weather');
+            if (!el) return;
+            const WMO = {
+                0: 'clear sky', 1: 'mostly clear', 2: 'partly cloudy', 3: 'overcast',
+                45: 'fog', 48: 'rime fog', 51: 'light drizzle', 53: 'drizzle', 55: 'heavy drizzle',
+                56: 'freezing drizzle', 57: 'freezing drizzle', 61: 'light rain', 63: 'rain', 65: 'heavy rain',
+                66: 'freezing rain', 67: 'freezing rain', 71: 'light snow', 73: 'snow', 75: 'heavy snow',
+                77: 'snow grains', 80: 'light showers', 81: 'showers', 82: 'heavy showers',
+                85: 'snow showers', 86: 'snow showers', 95: 'thunderstorm', 96: 'thunderstorm + hail', 99: 'thunderstorm + hail'
+            };
+            fetchWithTimeout('https://api.open-meteo.com/v1/forecast?latitude=51.7532&longitude=-0.4486&current=temperature_2m,weather_code,wind_speed_10m', {}, 8000)
+                .then(r => { if (!r.ok) throw new Error('wx'); return r.json(); })
+                .then(d => {
+                    const c = d.current;
+                    el.textContent = Math.round(c.temperature_2m) + '°C · ' + (WMO[c.weather_code] || 'unknown') + ' · wind ' + Math.round(c.wind_speed_10m) + ' km/h · Hemel Hempstead';
+                })
+                .catch(() => { /* static fallback text stays */ });
+        })();
+
+        /* ---------- Live GitHub activity: last public push (cached 30 min) ---------- */
+        (function lastCommit() {
+            const valEl = document.getElementById('gh-last-push');
+            const subEl = document.getElementById('gh-last-push-sub');
+            if (!valEl) return;
+            const EV_CACHE = 'gh_events_cache_v1';
+            const rel = iso => {
+                const s = (Date.now() - new Date(iso).getTime()) / 1000;
+                if (s < 3600) return Math.max(1, Math.floor(s / 60)) + 'm ago';
+                if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+                return Math.floor(s / 86400) + 'd ago';
+            };
+            const apply = ev => {
+                valEl.textContent = rel(ev.created_at);
+                subEl.textContent = 'pushed to ' + ev.repo.name.split('/')[1];
+            };
+            try {
+                const cached = JSON.parse(localStorage.getItem(EV_CACHE) || 'null');
+                if (cached && cached.ev && Date.now() - cached.t < 1800000) { apply(cached.ev); return; }
+            } catch (e) { /* ignore corrupt cache */ }
+            const get = u => fetchWithTimeout(`https://api.github.com/users/${u}/events/public?per_page=30`, {}, 8000)
+                .then(r => { if (!r.ok) throw new Error('rate-limited'); return r.json(); });
+            // NB: GH_USER/GH_LEGACY are declared later in this script — use literals here.
+            get('alam-cloud').catch(() => get('InfraPlatformer'))
+                .then(events => {
+                    if (!Array.isArray(events)) throw new Error('bad payload');
+                    const push = events.find(e => e.type === 'PushEvent') || events[0];
+                    if (!push) throw new Error('empty');
+                    try { localStorage.setItem(EV_CACHE, JSON.stringify({ t: Date.now(), ev: push })); } catch (e) {}
+                    apply(push);
+                })
+                .catch(() => { subEl.textContent = 'github api rate-limited — see repos below'; });
+        })();
 
         const teleObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -2260,6 +3655,8 @@
         };
         const projectsGrid = document.getElementById('projects-grid');
         const CACHE_KEY = 'gh_repos_cache_v1';
+        const GH_USER = 'alam-cloud';
+        const GH_LEGACY = 'InfraPlatformer';
 
         function repoCard(r) {
             const a = document.createElement('a');
@@ -2279,7 +3676,15 @@
 
         function renderRepos(repos) {
             projectsGrid.innerHTML = '';
-            repos.slice(0, 6).forEach(r => projectsGrid.appendChild(repoCard(r)));
+            // Skip profile repos, forks, and empty undescribed shells — showing
+            // "No description yet · 0 stars" cards reads as an empty GitHub.
+            const skip = new Set([GH_USER, GH_USER + '.github.io', GH_LEGACY, GH_LEGACY + '.github.io']);
+            const pick = repos.filter(r =>
+                !r.fork && !skip.has(r.name) && r.description && r.description.trim()
+            );
+            // Nothing presentable yet → curated cards beat a wall of empty repos.
+            if (!pick.length) { renderRepoFallback(); return; }
+            pick.slice(0, 6).forEach(r => projectsGrid.appendChild(repoCard(r)));
         }
 
         function renderRepoFallback() {
@@ -2307,10 +3712,8 @@
                 const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
                 if (cached && Date.now() - cached.t < 3600000) { renderRepos(cached.data); return; }
             } catch (e) { /* ignore corrupt cache */ }
-            const GH_USER = 'alam-cloud';
-            const GH_LEGACY = 'InfraPlatformer';
             const fetchRepos = (user) =>
-                fetch(`https://api.github.com/users/${user}/repos?sort=pushed&per_page=6&type=public`)
+                fetchWithTimeout(`https://api.github.com/users/${user}/repos?sort=pushed&per_page=6&type=public`, {}, 8000)
                     .then(res => { if (!res.ok) throw new Error('rate-limited'); return res.json(); })
                     .then(data => {
                         if (!Array.isArray(data) || !data.length) throw new Error('empty');
@@ -2325,53 +3728,6 @@
                 .catch(renderRepoFallback);
         })();
 
-        /* ---------- Guestbook (Supabase free tier) ---------- */
-        const SUPABASE_URL = 'https://aegzmbudzrnupnknamoi.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_8iS6Mf5aP9UERrpxIj_WUQ_pKxf81Y1';
-        const guestbookReady = () =>
-            !SUPABASE_URL.includes('PASTE_') && !SUPABASE_ANON_KEY.includes('PASTE_');
-        let sbClient = null;
-        async function getSb() {
-            if (!guestbookReady()) return null;
-            if (!sbClient) {
-                const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
-                sbClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            }
-            return sbClient;
-        }
-        const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-        /* ---------- Live infrastructure metrics (Supabase) ---------- */
-        (async function liveMetrics() {
-            const visEl = document.getElementById('live-visitors');
-            const latEl = document.getElementById('live-latency');
-            const latSub = document.getElementById('live-latency-sub');
-            if (!guestbookReady()) {
-                visEl.textContent = 'soon';
-                latEl.textContent = '—';
-                latSub.textContent = 'database not provisioned yet';
-                return;
-            }
-            try {
-                const t0 = performance.now();
-                const sb = await getSb();
-                const { data, error } = await sb.rpc('increment_visitors');
-                const ms = Math.round(performance.now() - t0);
-                if (error) throw error;
-                latEl.textContent = ms;
-                // Count-up animation for the real visitor count
-                const target = parseInt(data, 10);
-                const t1 = performance.now(), dur = 1200;
-                (function tick() {
-                    const p = Math.min((performance.now() - t1) / dur, 1);
-                    visEl.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))).toLocaleString();
-                    if (p < 1) requestAnimationFrame(tick);
-                })();
-            } catch (e) {
-                visEl.textContent = 'err';
-                latSub.textContent = 'metrics feed unreachable — site still fine, it is static';
-            }
-        })();
 
         /* ---------- Interactive CLI ---------- */
         const cliOverlay = document.getElementById('cli-overlay');
@@ -2392,8 +3748,6 @@
                 '  <span class="inf">certs</span>         certification highlights',
                 '  <span class="inf">contact</span>       how to reach Alam',
                 '  <span class="inf">cv</span>            print / save this page as a PDF CV',
-                '  <span class="inf">sign &lt;name&gt; &lt;msg&gt;</span>  sign the guestbook',
-                '  <span class="inf">guestbook</span>     read the guestbook',
                 '  <span class="inf">sudo hire alam</span>  you know you want to',
                 '  <span class="inf">clear</span>         wipe the terminal',
                 '  <span class="inf">exit</span>          close this terminal'
@@ -2411,10 +3765,12 @@
             skills: () => [
                 'Terraform 95% · AWS 90% · Docker 90% · Bash 90%',
                 'OPA/Conftest 85% · Python 85% · Kubernetes 80% · CI/CD 80%',
-                '<span class="wrn">Currently levelling up:</span> AZ-104 (Azure Administrator)'
+                '<span class="wrn">Currently levelling up:</span> AWS SAA (Solutions Architect Associate)'
             ],
             talks: () => [
-                '<span class="inf">Article:</span> The Next Frontier in IAM — AWS Builder Center (2026)',
+                // BUILDER-LATEST-ARTICLE:START
+                "<span class=\"inf\">Article:</span> Security as Code: Terraform Operations on AWS in the Age of Frontier Agents (Oct 2026) &#11088; Spotlight",
+                // BUILDER-LATEST-ARTICLE:END
                 'Terraforming the Well-Architected Way — AWS London HQ (33)',
                 'eBPF: Revolutionizing Cloud-Native Security — Cloud Native London (50)',
                 'Security as Code with Terraform & OPA — Yorkshire DevOps (35)',
@@ -2424,45 +3780,35 @@
             articles: () => CLI_COMMANDS.writing(),
             writing: () => [
                 '<span class="ok">Published on AWS Builder Center:</span>',
-                '  <span class="inf">2026</span>  The Next Frontier in IAM: Manufacturing Identity Context',
-                '  <span class="inf">Jun 26</span> The Unseen Pipeline: Engineering Developer Velocity <span class="wrn">&#11088; Spotlight pick</span>',
-                '  <span class="inf">Apr 26</span> The Zero-Trust Fortress: Impenetrable AWS Environments',
-                '  <span class="inf">Apr 26</span> Automating Cloud Defense with IaC & eBPF',
-                '  <span class="inf">Jul 25</span> Breaking into Cloud: Aspiring Platform Engineer',
+                // BUILDER-TERMINAL-ARTICLES:START
+                "  <span class=\"inf\">Oct 26</span> Security as Code: Terraform Operations on AWS in the Age of… <span class=\"wrn\">&#11088; Spotlight pick</span>",
+                "  <span class=\"inf\">Aug 26</span> Security at the Speed of Synth: Policy as Code in the AWS…",
+                "  <span class=\"inf\">Jul 26</span> Terraforming the Well-Architected Way: Recap from the AWS London…",
+                "  <span class=\"inf\">Jul 26</span> The Guarded Canary: How to Safely Ship AI-Generated Infrastructure…",
+                "  <span class=\"inf\">Jun 26</span> Terraform at MSP Scale: Engineering Multi-Tenant Infrastructure as…",
+                "  <span class=\"inf\">Jun 26</span> The Unseen Pipeline: Engineering Developer Velocity with AWS… <span class=\"wrn\">&#11088; Spotlight pick</span>",
+                "  <span class=\"inf\">May 26</span> Progressive Delivery on AWS: AppConfig Feature Flags, Lambda…",
+                // BUILDER-TERMINAL-ARTICLES:END
                 'Full list + links in the /writing section'
             ],
             certs: () => [
-                '52 badges on Credly. Highlights:',
+                'Badges verified on Credly. Highlights:',
                 'AWS Well-Architected Proficient · AWS Security Champion · AWS EKS',
                 'Fortinet FCA/FCF · Linux Foundation K8s & SRE · Datadog SRE path'
             ],
             contact: () => [
-                '<span class="ok">email</span>    <a href="mailto:alamzaibahmad615@gmail.com">alamzaibahmad615@gmail.com</a>',
+                '<span class="ok">email</span>    <a href="mailto:alamzaibahmad615@gmail.com" target="_self">alamzaibahmad615@gmail.com</a>',
                 '<span class="ok">linkedin</span>  <a href="https://www.linkedin.com/in/alam-ahmed-cloud-engineer" target="_blank" rel="noopener noreferrer">alam-ahmed-cloud-engineer</a>',
                 '<span class="ok">github</span>    <a href="https://github.com/alam-cloud" target="_blank" rel="noopener noreferrer">alam-cloud</a> <span class="muted">(legacy: InfraPlatformer)</span>'
             ],
             cv: () => { window.print(); return ['Opening print dialog — save as PDF for a recruiter-friendly CV.']; },
-            guestbook: async () => {
-                const sb = await getSb();
-                if (!sb) return ['<span class="wrn">guestbook offline</span> — database not provisioned yet. Check back soon.'];
-                const { data, error } = await sb.from('guestbook').select('name, message, created_at').order('created_at', { ascending: false }).limit(10);
-                if (error) return [`<span class="wrn">query failed:</span> ${esc(error.message)}`];
-                if (!data.length) return ['Guestbook is empty. Be the first: <span class="inf">sign YourName your message</span>'];
-                const lines = ['<span class="ok">== guestbook (last ' + data.length + ') ==</span>'];
-                data.forEach(r => {
-                    const d = new Date(r.created_at).toISOString().slice(0, 10);
-                    lines.push(`<span class="inf">${d}</span> <span class="ok">${esc(r.name)}</span>: ${esc(r.message)}`);
-                });
-                lines.push('', 'Leave yours: <span class="inf">sign YourName your message</span>');
-                return lines;
-            },
             clear: () => { cliOutput.innerHTML = ''; return []; },
             exit: () => { closeCli(); return []; },
             'sudo hire alam': () => [
                 '<span class="wrn">[sudo] password for recruiter: ********</span>',
                 '<span class="ok">Permission granted.</span> Excellent decision detected.',
                 'Deploying offer letter pipeline...',
-                '<span class="ok">Next step:</span> type <span class="inf">contact</span> or email <a href="mailto:alamzaibahmad615@gmail.com">alamzaibahmad615@gmail.com</a>'
+                '<span class="ok">Next step:</span> type <span class="inf">contact</span> or email <a href="mailto:alamzaibahmad615@gmail.com" target="_self">alamzaibahmad615@gmail.com</a>'
             ]
         };
 
@@ -2491,6 +3837,8 @@
         function closeCli() { cliOverlay.classList.remove('open'); }
 
         document.getElementById('cli-close').addEventListener('click', closeCli);
+        document.getElementById('open-terminal-btn').addEventListener('click', openCli);
+        document.getElementById('hero-terminal').addEventListener('click', openCli);
         cliOverlay.addEventListener('click', e => { if (e.target === cliOverlay) closeCli(); });
 
         cliInput.addEventListener('keydown', e => {
@@ -2505,29 +3853,7 @@
                 echo.innerHTML = `<span class="ok">guest:~$</span> ${raw.replace(/</g, '&lt;')}`;
                 cliOutput.appendChild(echo);
                 const cmd = raw.toLowerCase();
-                if (cmd.startsWith('sign')) {
-                    const arg = raw.slice(4).trim();
-                    if (!arg) {
-                        cliPrint(['usage: <span class="inf">sign YourName your message here</span>']);
-                    } else {
-                        const sp = arg.indexOf(' ');
-                        const name = sp === -1 ? arg : arg.slice(0, sp);
-                        const message = sp === -1 ? '' : arg.slice(sp + 1).trim();
-                        if (!message || name.length > 30 || message.length > 200) {
-                            cliPrint(['<span class="wrn">rejected:</span> need a name AND a message (name ≤30 chars, message ≤200).']);
-                        } else {
-                            cliPrint(['<span class="muted">provisioning guestbook entry...</span>']);
-                            (async () => {
-                                const sb = await getSb();
-                                if (!sb) { cliPrint(['<span class="wrn">guestbook offline</span> — database not provisioned yet. Check back soon.']); return; }
-                                const { error } = await sb.from('guestbook').insert({ name, message });
-                                cliPrint(error
-                                    ? [`<span class="wrn">deploy failed:</span> ${esc(error.message)}`]
-                                    : ['<span class="ok">entry committed.</span> guestbook updated — run <span class="inf">guestbook</span> to see it.']);
-                            })();
-                        }
-                    }
-                } else if (CLI_COMMANDS[cmd]) {
+                if (CLI_COMMANDS[cmd]) {
                     const out = CLI_COMMANDS[cmd]();
                     if (out instanceof Promise) out.then(lines => cliPrint(lines)).catch(() => cliPrint(['<span class="wrn">command failed.</span>']));
                     else cliPrint(out);
@@ -2548,6 +3874,7 @@
             }
         });
 
+
         /* ---------- Global keyboard shortcuts ---------- */
         const SECTION_ORDER = ['about', 'experience', 'videos', 'talks', 'writing', 'projects', 'skills', 'contact'];
         document.addEventListener('keydown', e => {
@@ -2560,7 +3887,7 @@
             } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
                 e.preventDefault();
                 openCli();
-            } else if (/^[1-7]$/.test(e.key)) {
+            } else if (/^[1-8]$/.test(e.key)) {
                 const target = document.getElementById(SECTION_ORDER[parseInt(e.key, 10) - 1]);
                 if (target) target.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth' });
             }
@@ -2579,6 +3906,320 @@
         if (prefersReduced) {
             document.querySelectorAll('animateMotion').forEach(m => m.remove());
         }
+    </script>
+
+    <script>
+        /* ---------- Interactive architecture diagram ---------- */
+        const ARCH_INFO = {
+            workstation: {
+                title: 'Engineer Workstation',
+                body: 'Hardened Linux daily driver — full-disk encryption, no stored customer credentials, everything auditable. All access flows to the right from here. There is no back door.',
+                certs: ['LFS261: DevOps & SRE Fundamentals']
+            },
+            sso: {
+                title: 'Identity — SSO + MFA',
+                body: 'IAM Identity Center with MFA. Temporary, scoped credentials only — zero standing access keys. Same zero-trust model I wrote about in "The Zero-Trust Fortress" on AWS Builder Center.',
+                certs: ['AWS Knowledge: Security Champion']
+            },
+            vpc: {
+                title: 'Management VPC (AWS)',
+                body: 'Private subnets, least-privilege security groups, VPC Flow Logs, no public IPs. eu-west-2, because latency matters when you are the one on call.',
+                certs: ['AWS Well-Architected Proficient']
+            },
+            jumphost: {
+                title: 'Jump Host / Bastion',
+                body: 'The single hardened entry point. SSM Session Manager instead of an open port 22, every session logged to CloudTrail. One door — fully watched.',
+                certs: ['AWS Knowledge: Security Champion', 'LFS261: DevOps & SRE']
+            },
+            tunnel: {
+                title: 'The Hostile Bit in the Middle',
+                body: 'Everything crosses the internet encrypted — site-to-site IPsec (IKEv2) with BGP for automatic tunnel failover. Assume it is watched; design accordingly. The NOC teaches you fast what a dropped tunnel at 2am feels like.',
+                certs: ['Fortinet Certified Associate']
+            },
+            fw: {
+                title: 'Customer Edge — FortiGate',
+                body: 'Fortinet firewall at the customer site: IPS, web filtering, VLAN segmentation, and the VPN termination point. I hold both Fortinet cybersecurity certifications and have configured these in production.',
+                certs: ['Fortinet Certified Associate', 'Fortinet Certified Fundamentals']
+            },
+            lan: {
+                title: 'Customer Estate',
+                body: 'Servers, managed switches, VoIP, hosted desktops, Microsoft 365 — the MSP world. This is what I supported at Computors and now at boxxe: 1,400+ tickets deep across P1–P4.',
+                certs: ['1,400+ tickets resolved @ Computors']
+            },
+            iac: {
+                title: 'Terraform + OPA / Conftest',
+                body: 'The whole thing is code. Every change is a pull request, and OPA/Conftest policies block public security groups, 0.0.0.0/0 SSH, and unencrypted storage before anything applies. Security as Code — the subject of my Yorkshire DevOps talk.',
+                certs: ['AWS Well-Architected Proficient', 'Speaker: Security as Code w/ Terraform & OPA']
+            },
+            obs: {
+                title: 'Observability & Runtime Security',
+                body: 'CloudWatch + Datadog for metrics, logs and SIEM; Falco/eBPF for runtime threat detection on anything containerised. If it blinks, I see it — preferably before the customer does.',
+                certs: ['Datadog SRE Learning Path', 'Datadog Cloud SIEM', 'Isovalent (Cilium) Platform Engineer']
+            }
+        };
+
+        const archDetail = document.getElementById('arch-detail');
+        const archTitle = document.getElementById('arch-detail-title');
+        const archBody = document.getElementById('arch-detail-body');
+        const archCerts = document.getElementById('arch-detail-certs');
+
+        function showArchNode(node) {
+            document.querySelectorAll('.anode.active').forEach(n => n.classList.remove('active'));
+            node.classList.add('active');
+            const info = ARCH_INFO[node.dataset.key];
+            if (!info) return;
+            archTitle.textContent = '// ' + info.title;
+            archBody.textContent = info.body;
+            archCerts.innerHTML = '';
+            info.certs.forEach(c => {
+                const chip = document.createElement('span');
+                chip.className = 'arch-cert-chip';
+                chip.textContent = '\u2713 ' + c;
+                archCerts.appendChild(chip);
+            });
+        }
+
+        document.querySelectorAll('.anode').forEach(node => {
+            node.addEventListener('mouseenter', () => showArchNode(node));
+            node.addEventListener('focus', () => showArchNode(node));
+            node.addEventListener('click', () => showArchNode(node));
+            node.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showArchNode(node); }
+            });
+        });
+    </script>
+
+    <!-- Live Credly badge count fetch -->
+    <script>
+    (function() {
+        // Fetch live badge count from credly-readme-stats and update telemetry
+        fetchWithTimeout('https://credly-readme-stats.onrender.com/api/stats?username=alam-zaib-ahmad', {}, 10000)
+            .then(function(r) { return r.text(); })
+            .then(function(svg) {
+                var match = svg.match(/Total Badges:\s*(\d+)/);
+                if (match) {
+                    var count = parseInt(match[1], 10);
+                    var el = document.getElementById('live-cert-count');
+                    if (el) {
+                        el.setAttribute('data-tele', count);
+                        el.textContent = count;
+                        // Trigger the existing counter animation if it hasn't run yet
+                        if (window.animateTelemetry) window.animateTelemetry();
+                    }
+                }
+            })
+            .catch(function() { /* fallback: hardcoded value remains */ });
+    })();
+    </script>
+
+
+    <script>
+        /* ---------- Embedded article utilities ---------- */
+        // Adds the "copy" button to every code block under the given root. Runs at
+        // load for inline bodies and again after each lazily fetched body lands.
+        function enhanceArticleBody(root) {
+            root.querySelectorAll('pre').forEach((pre) => {
+                if (pre.querySelector('.copy-code')) return;
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'copy-code';
+                button.textContent = 'copy';
+                button.addEventListener('click', async () => {
+                    try {
+                        await navigator.clipboard.writeText(pre.innerText.replace(/^copy\n/, ''));
+                        button.textContent = 'copied';
+                        setTimeout(() => { button.textContent = 'copy'; }, 1400);
+                    } catch (error) {
+                        button.textContent = 'select manually';
+                    }
+                });
+                pre.prepend(button);
+            });
+        }
+        document.querySelectorAll('.article-section .article-body').forEach(enhanceArticleBody);
+
+        /* ---------- Lazy article bodies: full text ships as articles/<slug>.html
+           and is fetched the first time the reader gets near it ---------- */
+        (function lazyArticles() {
+            const bodies = document.querySelectorAll('.article-body[data-lazy-article]');
+            if (!bodies.length) return;
+
+            const loadBody = (el) => {
+                if (el.dataset.lazyState === 'loading' || el.dataset.lazyState === 'done') return Promise.resolve();
+                el.dataset.lazyState = 'loading';
+                return fetchWithTimeout(el.dataset.lazyArticle, {}, 12000)
+                    .then(r => { if (!r.ok) throw new Error('http ' + r.status); return r.text(); })
+                    .then(html => {
+                        el.innerHTML = html;
+                        el.dataset.lazyState = 'done';
+                        enhanceArticleBody(el);
+                    })
+                    .catch(() => {
+                        el.dataset.lazyState = 'error';
+                        el.innerHTML = '<p class="article-lazy-placeholder">// full text could not be loaded &mdash; '
+                            + '<a href="' + el.dataset.canonical + '" target="_blank" rel="noopener noreferrer">read it on AWS Builder Center</a></p>';
+                    });
+            };
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) return;
+                        observer.unobserve(entry.target);
+                        loadBody(entry.target);
+                    });
+                }, { rootMargin: '800px 0px' });
+                bodies.forEach(el => observer.observe(el));
+            } else {
+                bodies.forEach(loadBody);
+            }
+
+            // TOC links point at headings inside the lazy body: pull the body in,
+            // then honour the anchor once the content exists.
+            document.querySelectorAll('.article-toc a[href^="#"]').forEach(link => {
+                link.addEventListener('click', e => {
+                    const section = link.closest('.article-section');
+                    const body = section && section.querySelector('.article-body[data-lazy-article]');
+                    if (!body || body.dataset.lazyState === 'done') return;
+                    e.preventDefault();
+                    const anchor = link.getAttribute('href').slice(1);
+                    loadBody(body).then(() => {
+                        const target = document.getElementById(anchor);
+                        if (target) target.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth' });
+                    });
+                });
+            });
+
+            // Deep links (…/#article-slug) load their body immediately.
+            const loadHashTarget = () => {
+                if (!location.hash) return;
+                let section;
+                try { section = document.querySelector(location.hash); } catch (e) { return; }
+                const body = section && section.querySelector
+                    ? (section.matches('.article-body[data-lazy-article]') ? section : section.querySelector('.article-body[data-lazy-article]'))
+                    : null;
+                if (body) loadBody(body);
+            };
+            loadHashTarget();
+            window.addEventListener('hashchange', loadHashTarget);
+        })();
+    </script>
+    <!-- Slide deck viewer -->
+    <div id="deck-viewer" role="dialog" aria-modal="true" aria-label="Slide deck viewer">
+        <div class="dv-titlebar">
+            <button type="button" class="terminal-btn red" id="dv-close-dot" aria-label="Close viewer"></button>
+            <span class="terminal-btn yellow" aria-hidden="true"></span>
+            <span class="terminal-btn green" aria-hidden="true"></span>
+            <span class="dv-title"><span class="dv-cmd">alam@slides:~$</span> <span id="dv-title">present deck</span></span>
+            <span class="dv-counter" id="dv-counter">1 / 1</span>
+            <a class="dv-btn" id="dv-pdf" href="#" target="_blank" rel="noopener noreferrer">&#8681; pdf</a>
+            <button type="button" class="dv-btn" id="dv-fullscreen">&#9974; fullscreen</button>
+            <button type="button" class="dv-btn" id="dv-close">esc &#10005;</button>
+        </div>
+        <div class="dv-stage" id="dv-stage">
+            <button type="button" class="dv-nav prev" id="dv-prev" aria-label="Previous slide">&#8249;</button>
+            <img class="dv-slide" id="dv-slide" alt="Slide">
+            <button type="button" class="dv-nav next" id="dv-next" aria-label="Next slide">&#8250;</button>
+        </div>
+        <div class="dv-footer">
+            <div class="dv-progress"><div class="dv-progress-fill" id="dv-progress"></div></div>
+            <div class="dv-hints">
+                <span class="dv-hint-keys"><kbd>&larr;</kbd>/<kbd>&rarr;</kbd> navigate &nbsp; <kbd>Home</kbd>/<kbd>End</kbd> jump &nbsp; <kbd>F</kbd> fullscreen &nbsp; <kbd>Esc</kbd> exit</span>
+                <span id="dv-venue"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function deckViewer() {
+        var DECKS = {
+            'terraforming-the-well-architected-way': { title: 'Terraforming the Well-Architected Way', slides: 15, venue: 'AWS London WAUG · Jul 2026' },
+            'shifting-security-left': { title: 'Shifting Security Left — Secure CI/CD for Multi-Cloud', slides: 12, venue: 'London DevOps Meetup · Mar 2026' },
+            'ebpf-cloud-native-security': { title: 'eBPF: Revolutionizing Cloud-Native Security', slides: 32, venue: 'Cloud Native London · Feb 2026' },
+            'elasticsearch-terraform': { title: 'Elastic Observability — Automating Elastic with Terraform', slides: 22, venue: 'Elastic London · Sep 2025' }
+        };
+        var viewer = document.getElementById('deck-viewer');
+        var img = document.getElementById('dv-slide');
+        var counter = document.getElementById('dv-counter');
+        var progress = document.getElementById('dv-progress');
+        var titleEl = document.getElementById('dv-title');
+        var venueEl = document.getElementById('dv-venue');
+        var pdfEl = document.getElementById('dv-pdf');
+        var prevBtn = document.getElementById('dv-prev');
+        var nextBtn = document.getElementById('dv-next');
+        var current = null, index = 0, lastFocus = null;
+
+        function pad(n) { return (n < 10 ? '0' : '') + n; }
+        function src(slug, i) { return 'decks/' + slug + '/slide-' + pad(i) + '.jpg'; }
+
+        function render() {
+            img.src = src(current, index + 1);
+            img.alt = DECKS[current].title + ' — slide ' + (index + 1) + ' of ' + DECKS[current].slides;
+            counter.textContent = pad(index + 1) + ' / ' + pad(DECKS[current].slides);
+            progress.style.width = ((index + 1) / DECKS[current].slides * 100) + '%';
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === DECKS[current].slides - 1;
+            // preload neighbours
+            [index + 2, index - 0].forEach(function(n) {
+                if (n >= 1 && n <= DECKS[current].slides) { (new Image()).src = src(current, n); }
+            });
+        }
+        function go(d) {
+            var n = index + d;
+            if (n < 0 || n > DECKS[current].slides - 1) return;
+            index = n; render();
+        }
+        function open(slug) {
+            if (!DECKS[slug]) return;
+            current = slug; index = 0;
+            lastFocus = document.activeElement;
+            titleEl.textContent = 'present ' + slug + '.deck';
+            venueEl.textContent = DECKS[slug].venue;
+            pdfEl.href = 'decks/' + slug + '/' + slug + '.pdf';
+            viewer.classList.add('open');
+            requestAnimationFrame(function() { viewer.classList.add('visible'); });
+            document.body.style.overflow = 'hidden';
+            render();
+            nextBtn.focus();
+        }
+        function close() {
+            viewer.classList.remove('visible');
+            setTimeout(function() { viewer.classList.remove('open'); }, 250);
+            document.body.style.overflow = '';
+            if (document.fullscreenElement) document.exitFullscreen();
+            if (lastFocus && lastFocus.focus) lastFocus.focus();
+        }
+
+        document.querySelectorAll('[data-deck]').forEach(function(el) {
+            el.addEventListener('click', function() { open(el.getAttribute('data-deck')); });
+        });
+        prevBtn.addEventListener('click', function() { go(-1); });
+        nextBtn.addEventListener('click', function() { go(1); });
+        document.getElementById('dv-close').addEventListener('click', close);
+        document.getElementById('dv-close-dot').addEventListener('click', close);
+        document.getElementById('dv-fullscreen').addEventListener('click', function() {
+            if (document.fullscreenElement) { document.exitFullscreen(); }
+            else if (viewer.requestFullscreen) { viewer.requestFullscreen(); }
+        });
+        document.addEventListener('keydown', function(e) {
+            if (!viewer.classList.contains('open')) return;
+            if (e.key === 'Escape') { close(); }
+            else if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(1); }
+            else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+            else if (e.key === 'Home') { index = 0; render(); }
+            else if (e.key === 'End') { index = DECKS[current].slides - 1; render(); }
+            else if (e.key === 'f' || e.key === 'F') { document.getElementById('dv-fullscreen').click(); }
+        });
+        // touch swipe
+        var touchX = null;
+        document.getElementById('dv-stage').addEventListener('touchstart', function(e) { touchX = e.changedTouches[0].clientX; }, { passive: true });
+        document.getElementById('dv-stage').addEventListener('touchend', function(e) {
+            if (touchX === null) return;
+            var dx = e.changedTouches[0].clientX - touchX;
+            if (Math.abs(dx) > 48) go(dx < 0 ? 1 : -1);
+            touchX = null;
+        }, { passive: true });
+    })();
     </script>
 </body>
 </html>
